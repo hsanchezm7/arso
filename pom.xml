@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.um.arso</groupId>
   <artifactId>arso</artifactId>
@@ -7,32 +8,102 @@
   <name>arso</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
+  <modules>
+    <module>productos</module>
+    <module>usuarios</module>
+  </modules>
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <eclipselink.version>2.7.15</eclipselink.version>
+    <javax.persistence.version>2.2</javax.persistence.version>
+    <jaxb.version>2.3.1</jaxb.version>
+    <junit.version>5.11.0</junit.version>
     <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.source>17</maven.compiler.source>
+    <mysql.version>8.0.33</mysql.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <slf4j.version>1.7.36</slf4j.version>
   </properties>
   <dependencyManagement>
     <dependencies>
+      <!-- JUnit5 -->
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.11.0</version>
+        <version>${junit.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <!-- SLF4J -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <!-- JPA -->
+      <dependency>
+        <groupId>javax.persistence</groupId>
+        <artifactId>javax.persistence-api</artifactId>
+        <version>${javax.persistence.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>eclipselink</artifactId>
+        <version>${eclipselink.version}</version>
+      </dependency>
+      <!-- JAXB -->
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>${jaxb.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>${jaxb.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>${mysql.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    <!-- JUnit5 -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
+      <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- Optionally: parameterized tests support -->
+
+    <!-- SLF4J -->
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <scope>test</scope>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- JPA -->
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>javax.persistence-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>eclipselink</artifactId>
+    </dependency>
+
+    <!-- JAXB -->
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
     </dependency>
   </dependencies>
   <build>
@@ -78,11 +149,68 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.6.1</version>
         </plugin>
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.43.0</version>
+
+          <configuration>
+            <java>
+              <googleJavaFormat>
+                <style>AOSP</style>
+              </googleJavaFormat>
+              <importOrder/>
+              <removeUnusedImports/>
+              <toggleOffOn/>
+              <trimTrailingWhitespace/>
+              <endWithNewline/>
+            </java>
+
+            <pom>
+              <includes>
+                <include>pom.xml</include>
+              </includes>
+
+              <!-- https://github.com/Ekryd/sortpom -->
+              <sortPom>
+                <expandEmptyElements>false</expandEmptyElements>
+                <sortDependencyExclusions/>
+                <sortProperties>true</sortProperties>
+              </sortPom>
+            </pom>
+
+            <markdown>
+              <includes>
+                <include>**/*.md</include>
+              </includes>
+              <excludes>
+                <exclude>**/target/**/*.md</exclude>
+              </excludes>
+
+              <trimTrailingWhitespace/>
+              <endWithNewline/>
+
+              <prettier>
+                <prettierVersion>3.1.0</prettierVersion>
+                <config>
+                  <printWidth>100</printWidth>
+                  <proseWrap>always</proseWrap>
+                  <singleQuote>false</singleQuote>
+                </config>
+              </prettier>
+            </markdown>
+          </configuration>
+
+          <executions>
+            <execution>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
-  <modules>
-    <module>productos</module>
-    <module>usuarios</module>
-  </modules>
 </project>
