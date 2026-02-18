@@ -2,6 +2,7 @@ package es.um.arso.usuarios.servicio.test;
 
 import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 import es.um.arso.servicio.FactoriaServicios;
+import es.um.arso.usuarios.modelo.Usuario;
 import es.um.arso.usuarios.servicio.IServicioUsuarios;
 import es.um.arso.utils.EntityManagerHelper;
 import java.time.LocalDate;
@@ -27,9 +28,10 @@ public class ProgramaUsuarios {
                             LocalDate.of(1995, 5, 21),
                             "600124226");
 
-            // Sólo modificamos el nombre, los demás campos se pasan a null para no
-            // cambiarlos
-            servicio.modificar(id1, "Ana María", null, null, null, null);
+
+            Usuario mod1 = new Usuario();
+            mod1.setNombre("Ana María");
+            servicio.modificar(id1, mod1);
 
             // Test 2: alta + modificación de varios campos (apellidos, clave, fecha y
             // teléfono)
@@ -42,9 +44,12 @@ public class ProgramaUsuarios {
                             LocalDate.of(1990, 3, 10),
                             null);
 
-            // Cambiamos apellidos, clave, fecha de nacimiento y teléfono
-            servicio.modificar(
-                    id2, null, "García", "nuevaClave456", LocalDate.of(1990, 4, 1), "600998877");
+            Usuario mod2 = new Usuario();
+            mod2.setApellidos("García");
+            mod2.setClave("nuevaClave456");
+            mod2.setFechaNacimiento(LocalDate.of(1990, 4, 1));
+            mod2.setTelefono("600998877");
+            servicio.modificar(id2, mod2);
 
             log.info("Pruebas de usuarios completadas.");
         } catch (Exception e) {

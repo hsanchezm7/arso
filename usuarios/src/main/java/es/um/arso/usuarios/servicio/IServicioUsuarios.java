@@ -4,6 +4,7 @@ import es.um.arso.repositorio.EntidadNoEncontrada;
 import es.um.arso.repositorio.RepositorioException;
 import es.um.arso.usuarios.modelo.Usuario;
 import java.time.LocalDate;
+import java.util.List;
 
 public interface IServicioUsuarios {
 
@@ -16,14 +17,10 @@ public interface IServicioUsuarios {
             String telefono)
             throws RepositorioException;
 
-    void modificar(
-            String id,
-            String nombre,
-            String apellidos,
-            String clave,
-            LocalDate fechaNacimiento,
-            String telefono)
+    void modificar(String id, Usuario usuario)
             throws RepositorioException, EntidadNoEncontrada;
 
-    Usuario get(String id) throws RepositorioException, EntidadNoEncontrada;
+    Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada;
+
+    List<UsuarioResumen> recuperarTodos() throws RepositorioException;
 }

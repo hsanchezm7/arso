@@ -6,6 +6,8 @@ import es.um.arso.repositorio.Repositorio;
 import es.um.arso.repositorio.RepositorioException;
 import es.um.arso.usuarios.modelo.Usuario;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,20 +43,18 @@ public class ServicioUsuarios implements IServicioUsuarios {
     }
 
     @Override
-    public void modificar(
-            String id,
-            String nombre,
-            String apellidos,
-            String clave,
-            LocalDate fechaNacimiento,
-            String telefono)
+    public void modificar(String id, Usuario usuario)
             throws RepositorioException, EntidadNoEncontrada {
         Usuario u = repoUsuarios.getById(id);
-        if (nombre != null && !nombre.isEmpty()) u.setNombre(nombre);
-        if (apellidos != null && !apellidos.isEmpty()) u.setApellidos(apellidos);
-        if (clave != null && !clave.isEmpty()) u.setClave(clave);
-        if (fechaNacimiento != null) u.setFechaNacimiento(fechaNacimiento);
-        if (telefono != null) u.setTelefono(telefono);
+        if (usuario.getNombre() != null && !usuario.getNombre().isEmpty())
+            u.setNombre(usuario.getNombre());
+        if (usuario.getApellidos() != null && !usuario.getApellidos().isEmpty())
+            u.setApellidos(usuario.getApellidos());
+        if (usuario.getClave() != null && !usuario.getClave().isEmpty())
+            u.setClave(usuario.getClave());
+        if (usuario.getFechaNacimiento() != null)
+            u.setFechaNacimiento(usuario.getFechaNacimiento());
+        if (usuario.getTelefono() != null) u.setTelefono(usuario.getTelefono());
 
         repoUsuarios.update(u);
 
@@ -62,7 +62,27 @@ public class ServicioUsuarios implements IServicioUsuarios {
     }
 
     @Override
-    public Usuario get(String id) throws RepositorioException, EntidadNoEncontrada {
+    public Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada {
         return repoUsuarios.getById(id);
+    }
+
+    @Override
+    public List<UsuarioResumen> recuperarTodos() throws RepositorioException {
+        LinkedList<UsuarioResumen> resultado = new LinkedList<>();
+
+        for (String id : repoUsuarios.getIds()) {
+            try {
+                Usuario usuario = recuperar(id);
+                UsuarioResumen resumen = new UsuarioResumen();
+                resumen.setId(usuario.getId());
+                resumen.setNombre(usuario.getNombre());
+                resumen.setEmail(usuario.getEmail());
+                resultado.add(resumen);
+            } catch (EntidadNoEncontrada e) {
+                log.warn("Usuario no encontrado al recuperar todos: id={}", id);
+            }
+        }
+
+        return resultado;
     }
 }
