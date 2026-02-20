@@ -4,26 +4,31 @@ import es.um.arso.productos.modelo.Categoria;
 import es.um.arso.productos.modelo.EstadoProducto;
 import es.um.arso.productos.modelo.Producto;
 import es.um.arso.productos.modelo.Usuario;
+import es.um.arso.productos.repositorio.RepositorioCategorias;
+import es.um.arso.productos.repositorio.RepositorioProductos;
+import es.um.arso.productos.repositorio.RepositorioUsuarios;
 import es.um.arso.repositorio.EntidadNoEncontrada;
-import es.um.arso.repositorio.FactoriaRepositorios;
-import es.um.arso.repositorio.Repositorio;
-import es.um.arso.repositorio.RepositorioException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional
 public class ServicioProductos implements IServicioProductos {
 
     private static final Logger log = LoggerFactory.getLogger(ServicioProductos.class);
 
-    private Repositorio<Producto, String> repositorioProductos =
-            FactoriaRepositorios.getRepositorio(Producto.class);
-    private Repositorio<Categoria, String> repositorioCategorias =
-            FactoriaRepositorios.getRepositorio(Categoria.class);
-    private Repositorio<Usuario, String> repositorioUsuarios =
-            FactoriaRepositorios.getRepositorio(Usuario.class);
+    @Autowired private RepositorioProductos repositorioProductos;
+
+    @Autowired private RepositorioCategorias repositorioCategorias;
+
+    @Autowired private RepositorioUsuarios repositorioUsuarios;
 
     @Override
     public String crear(
@@ -34,45 +39,56 @@ public class ServicioProductos implements IServicioProductos {
             String categoriaId,
             boolean envioDisponible,
             String vendedorId)
-            throws RepositorioException {
+            throws EntidadNoEncontrada {
 
         if (titulo == null || titulo.isEmpty())
             throw new IllegalArgumentException("titulo obligatorio");
         if (precio == null || precio < 0) throw new IllegalArgumentException("precio no válido");
         if (estado == null) throw new IllegalArgumentException("estado obligatorio");
 
-        Categoria categoria = null;
-        Usuario vendedor = null;
-        try {
-            categoria = repositorioCategorias.getById(categoriaId);
-            vendedor = repositorioUsuarios.getById(vendedorId);
-        } catch (EntidadNoEncontrada e) {
-            throw new IllegalArgumentException("Categoria o vendedor inexistente");
-        }
+        Categoria categoria =
+                repositorioCategorias
+                        .findById(categoriaId)
+                        .orElseThrow(
+                                () ->
+                                        new EntidadNoEncontrada(
+                                                "Categoria " + categoriaId + " no encontrada"));
+        Usuario vendedor =
+                repositorioUsuarios
+                        .findById(vendedorId)
+                        .orElseThrow(
+                                () ->
+                                        new EntidadNoEncontrada(
+                                                "Vendedor " + vendedorId + " no encontrado"));
 
         Producto producto =
                 new Producto(
                         titulo, descripcion, precio, estado, categoria, envioDisponible, vendedor);
-        String id = repositorioProductos.add(producto);
-        log.info("Producto creado: id={}", id);
-        return id;
+        producto = repositorioProductos.save(producto);
+        log.info("Producto creado: id={}", producto.getId());
+        return producto.getId();
     }
 
     @Override
     public void asignarLugarRecogida(
             String productoId, String descripcion, Double longitud, Double latitud)
-            throws RepositorioException, EntidadNoEncontrada {
-        Producto producto = repositorioProductos.getById(productoId);
+            throws EntidadNoEncontrada {
+        Producto producto =
+                repositorioProductos
+                        .findById(productoId)
+                        .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
         producto.asignarLugarRecogida(descripcion, longitud, latitud);
-        repositorioProductos.update(producto);
-
+        repositorioProductos.save(producto);
         log.info("Lugar recogida asignado producto={}", productoId);
     }
 
     @Override
     public void modificar(String productoId, Double nuevoPrecio, String nuevaDescripcion)
-            throws RepositorioException, EntidadNoEncontrada {
-        Producto producto = repositorioProductos.getById(productoId);
+            throws EntidadNoEncontrada {
+        Producto producto =
+                repositorioProductos
+                        .findById(productoId)
+                        .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
         if (nuevoPrecio != null) {
             if (nuevoPrecio < 0) throw new IllegalArgumentException("precio no válido");
             producto.setPrecio(nuevoPrecio);
@@ -80,39 +96,35 @@ public class ServicioProductos implements IServicioProductos {
         if (nuevaDescripcion != null && !nuevaDescripcion.isEmpty()) {
             producto.setDescripcion(nuevaDescripcion);
         }
-        repositorioProductos.update(producto);
-        try {
-            log.info("Producto modificado: id={}", productoId);
-        } catch (Exception ex) {
-            // ignore logging failures
-        }
+        repositorioProductos.save(producto);
+        log.info("Producto modificado: id={}", productoId);
     }
 
     @Override
-    public void anadirVisualizacion(String productoId)
-            throws RepositorioException, EntidadNoEncontrada {
-        Producto producto = repositorioProductos.getById(productoId);
+    public void anadirVisualizacion(String productoId) throws EntidadNoEncontrada {
+        Producto producto =
+                repositorioProductos
+                        .findById(productoId)
+                        .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
         producto.incrementarVisualizaciones();
-        repositorioProductos.update(producto);
-
+        repositorioProductos.save(producto);
         log.info("Visualizacion añadida producto={}", productoId);
     }
 
     @Override
-    public Producto getProducto(String id) throws RepositorioException, EntidadNoEncontrada {
-        return repositorioProductos.getById(id);
+    @Transactional(readOnly = true)
+    public Producto getProducto(String id) throws EntidadNoEncontrada {
+        return repositorioProductos
+                .findById(id)
+                .orElseThrow(() -> new EntidadNoEncontrada(id + " no existe"));
     }
 
     @Override
-    public List<ProductoResumen> getHistorialMes(int mes, int anio) throws RepositorioException {
+    @Transactional(readOnly = true)
+    public List<ProductoResumen> getHistorialMes(int mes, int anio) {
         LocalDateTime inicio = LocalDateTime.of(anio, mes, 1, 0, 0);
         LocalDateTime fin = inicio.plusMonths(1);
-        return repositorioProductos.getAll().stream()
-                .filter(
-                        p ->
-                                p.getFechaPublicacion() != null
-                                        && !p.getFechaPublicacion().isBefore(inicio)
-                                        && p.getFechaPublicacion().isBefore(fin))
+        return repositorioProductos.getByPublicadosEntre(inicio, fin).stream()
                 .sorted((a, b) -> Integer.compare(b.getVisualizaciones(), a.getVisualizaciones()))
                 .map(
                         p -> {
@@ -130,21 +142,23 @@ public class ServicioProductos implements IServicioProductos {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Producto> buscar(
-            String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo)
-            throws RepositorioException {
+            String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo) {
         java.util.Set<String> categoriasPermitidas = new java.util.HashSet<>();
         if (categoriaId != null) {
-            try {
-                Categoria cat = repositorioCategorias.getById(categoriaId);
-                categoriasPermitidas.add(categoriaId);
-                for (Categoria d : cat.getDescendientes()) categoriasPermitidas.add(d.getId());
-            } catch (EntidadNoEncontrada e) {
-                // si no existe, no filtramos por categoría
-            }
+            repositorioCategorias
+                    .findById(categoriaId)
+                    .ifPresent(
+                            cat -> {
+                                categoriasPermitidas.add(categoriaId);
+                                for (Categoria d : cat.getDescendientes())
+                                    categoriasPermitidas.add(d.getId());
+                            });
         }
 
-        java.util.stream.Stream<Producto> stream = repositorioProductos.getAll().stream();
+        java.util.stream.Stream<Producto> stream =
+                StreamSupport.stream(repositorioProductos.findAll().spliterator(), false);
 
         if (!categoriasPermitidas.isEmpty()) {
             stream =

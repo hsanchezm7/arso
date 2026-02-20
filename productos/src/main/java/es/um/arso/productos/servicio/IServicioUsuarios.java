@@ -2,7 +2,6 @@ package es.um.arso.productos.servicio;
 
 import es.um.arso.productos.modelo.Usuario;
 import es.um.arso.repositorio.EntidadNoEncontrada;
-import es.um.arso.repositorio.RepositorioException;
 import java.time.LocalDate;
 
 public interface IServicioUsuarios {
@@ -13,8 +12,7 @@ public interface IServicioUsuarios {
             String email,
             String clave,
             LocalDate fechaNacimiento,
-            String telefono)
-            throws RepositorioException;
+            String telefono);
 
     void modificar(
             String id,
@@ -23,7 +21,7 @@ public interface IServicioUsuarios {
             String clave,
             LocalDate fechaNacimiento,
             String telefono)
-            throws RepositorioException, EntidadNoEncontrada;
+            throws EntidadNoEncontrada;
 
-    Usuario get(String id) throws RepositorioException, EntidadNoEncontrada;
+    Usuario get(String id) throws EntidadNoEncontrada;
 }

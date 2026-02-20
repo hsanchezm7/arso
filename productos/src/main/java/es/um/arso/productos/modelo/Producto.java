@@ -1,24 +1,22 @@
 package es.um.arso.productos.modelo;
 
-import es.um.arso.repositorio.Identificable;
 import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@NamedQuery(name = "Producto.getByIds", query = "SELECT p FROM Producto p WHERE p.id in :ids")
-public class Producto implements Identificable {
+public class Producto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
     private String titulo;

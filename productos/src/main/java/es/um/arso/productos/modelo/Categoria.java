@@ -1,6 +1,5 @@
 package es.um.arso.productos.modelo;
 
-import es.um.arso.repositorio.Identificable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -10,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Categoria implements Identificable {
+public class Categoria {
 
     @Id private String id;
     private String nombre;

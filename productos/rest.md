@@ -1,12 +1,11 @@
 # Especificación REST - Microservicio Productos
 
-Este documento describe, de forma informal, la especificación REST 
-para el microservicio de productos. Las operaciones descritas se 
-aplican sobre las colecciones de:
+Este documento describe, de forma informal, la especificación REST para el microservicio de
+productos. Las operaciones descritas se aplican sobre las colecciones de:
 
- - **Productos**
+- **Productos**
 
- - **Categorías**
+- **Categorías**
 
 ## Productos
 
