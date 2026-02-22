@@ -85,4 +85,19 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
         return resultado;
     }
+
+    @Override
+    public Usuario autenticar(String email, String clave) throws RepositorioException {
+        if (email == null || email.isEmpty() || clave == null || clave.isEmpty()) {
+            return null;
+        }
+
+        for (Usuario usuario : repoUsuarios.getAll()) {
+            if (email.equals(usuario.getEmail()) && clave.equals(usuario.getClave())) {
+                return usuario;
+            }
+        }
+
+        return null;
+    }
 }

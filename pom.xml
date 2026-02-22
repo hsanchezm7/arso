@@ -15,18 +15,22 @@
     <eclipselink.version>2.7.15</eclipselink.version>
     <javax.persistence.version>2.2</javax.persistence.version>
     <jaxb.version>2.3.1</jaxb.version>
+    <jjwt.version>0.9.1</jjwt.version>
     <jersey.version>2.41</jersey.version>
     <jetty.version>10.0.20</jetty.version>
+    <javax.servlet.version>2.5</javax.servlet.version>
     <junit.version>5.11.0</junit.version>
-
-    <maven.compiler.release>17</maven.compiler.release>
-    <maven.compiler.source>17</maven.compiler.source>
     <mysql.version>8.0.33</mysql.version>
+    <slf4j.version>1.7.36</slf4j.version>
+    <spring-boot.version>2.6.1</spring-boot.version>
+
+
+    <maven.compiler.release>8</maven.compiler.release>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <slf4j.version>1.7.36</slf4j.version>
-    <spring-boot.version>2.6.1</spring-boot.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -99,6 +103,16 @@
         <groupId>org.glassfish.jersey.media</groupId>
         <artifactId>jersey-media-json-gson</artifactId>
         <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt</artifactId>
+        <version>${jjwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>${javax.servlet.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -183,6 +197,13 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.6.1</version>
         </plugin>
+
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring-boot.version}</version>
+        </plugin>
+        
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>

@@ -14,6 +14,9 @@ import es.um.arso.usuarios.servicio.UsuarioResumen;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,6 +28,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import io.jsonwebtoken.Claims;
 
 @Path("/usuarios")
 public class ControladorUsuarios {
@@ -34,8 +38,12 @@ public class ControladorUsuarios {
     @Context 
     private UriInfo uriInfo;
 
+    @Context
+    private HttpServletRequest servletRequest;
+
     // POST /usuarios
     @POST
+    @PermitAll
     @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response crear(UsuarioCreateDto dto) throws RepositorioException {
 
@@ -55,6 +63,7 @@ public class ControladorUsuarios {
     // GET /usuarios/{id}
     @GET
     @Path("/{id}")
+    @RolesAllowed("USUARIO")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response getUsuario(@PathParam("id") String id)
             throws RepositorioException, EntidadNoEncontrada {
@@ -67,9 +76,17 @@ public class ControladorUsuarios {
     // PUT /usuarios/{id}
     @PUT
     @Path("/{id}")
+    @RolesAllowed("USUARIO")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response modificar(@PathParam("id") String id, UsuarioUpdateDto dto)
             throws RepositorioException, EntidadNoEncontrada {
+
+        Claims claims = (Claims) servletRequest.getAttribute("claims");
+        if (claims == null || claims.getSubject() == null || !id.equals(claims.getSubject())) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("solo puede modificar sus propios datos")
+                    .build();
+        }
 
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
@@ -85,6 +102,7 @@ public class ControladorUsuarios {
 
     // GET /usuarios
     @GET
+    @RolesAllowed("USUARIO")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response getListadoUsuarios() throws RepositorioException {
 
