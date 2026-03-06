@@ -15,6 +15,9 @@ import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -188,5 +191,51 @@ public class ServicioProductos implements IServicioProductos {
         }
 
         return stream.collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductoResumen> getHistorialMesPaginado(int mes, int anio, Pageable paginacion) {
+        List<ProductoResumen> historial = getHistorialMes(mes, anio);
+        int start = (int) paginacion.getOffset();
+        int end = Math.min((start + paginacion.getPageSize()), historial.size());
+        List<ProductoResumen> pageContent =
+                start > historial.size() ? List.of() : historial.subList(start, end);
+        return new PageImpl<>(pageContent, paginacion, historial.size());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductoResumen> buscarPaginado(
+            String categoriaId,
+            String texto,
+            EstadoProducto estadoMinimo,
+            Double precioMaximo,
+            Pageable paginacion) {
+        List<Producto> productos = buscar(categoriaId, texto, estadoMinimo, precioMaximo);
+        int start = (int) paginacion.getOffset();
+        int end = Math.min((start + paginacion.getPageSize()), productos.size());
+        List<Producto> pageContent =
+                start > productos.size() ? List.of() : productos.subList(start, end);
+
+        List<ProductoResumen> resumenes =
+                pageContent.stream()
+                        .map(
+                                p -> {
+                                    ProductoResumen r = new ProductoResumen();
+                                    r.setId(p.getId());
+                                    r.setTitulo(p.getTitulo());
+                                    r.setPrecio(p.getPrecio());
+                                    r.setFechaPublicacion(p.getFechaPublicacion());
+                                    r.setNombreCategoria(
+                                            p.getCategoria() != null
+                                                    ? p.getCategoria().getNombre()
+                                                    : null);
+                                    r.setVisualizaciones(p.getVisualizaciones());
+                                    return r;
+                                })
+                        .collect(Collectors.toList());
+
+        return new PageImpl<>(resumenes, paginacion, productos.size());
     }
 }

@@ -4,6 +4,8 @@ import es.um.arso.productos.modelo.EstadoProducto;
 import es.um.arso.productos.modelo.Producto;
 import es.um.arso.repositorio.EntidadNoEncontrada;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IServicioProductos {
 
@@ -32,4 +34,13 @@ public interface IServicioProductos {
 
     List<Producto> buscar(
             String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo);
+
+    Page<ProductoResumen> getHistorialMesPaginado(int mes, int anio, Pageable paginacion);
+
+    Page<ProductoResumen> buscarPaginado(
+            String categoriaId,
+            String texto,
+            EstadoProducto estadoMinimo,
+            Double precioMaximo,
+            Pageable paginacion);
 }

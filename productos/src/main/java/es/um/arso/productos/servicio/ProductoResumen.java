@@ -3,6 +3,7 @@ package es.um.arso.productos.servicio;
 import java.time.LocalDateTime;
 
 public class ProductoResumen {
+
     private String id;
     private String titulo;
     private Double precio;

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.um.arso</groupId>
   <artifactId>arso</artifactId>
@@ -23,12 +22,10 @@
     <mysql.version>8.0.33</mysql.version>
     <slf4j.version>1.7.36</slf4j.version>
     <spring-boot.version>2.6.1</spring-boot.version>
-
-
+    <springdoc.version>1.5.10</springdoc.version>
     <maven.compiler.release>8</maven.compiler.release>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -41,6 +38,11 @@
         <version>${spring-boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-ui</artifactId>
+        <version>${springdoc.version}</version>
       </dependency>
       <!-- JUnit5 -->
       <dependency>
@@ -123,13 +125,11 @@
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
-
     <!-- SLF4J -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-
     <!-- JPA -->
     <dependency>
       <groupId>javax.persistence</groupId>
@@ -139,7 +139,6 @@
       <groupId>org.eclipse.persistence</groupId>
       <artifactId>eclipselink</artifactId>
     </dependency>
-
     <!-- JAXB -->
     <dependency>
       <groupId>javax.xml.bind</groupId>
@@ -197,13 +196,11 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.6.1</version>
         </plugin>
-
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${spring-boot.version}</version>
         </plugin>
-        
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
@@ -213,7 +210,6 @@
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
           <version>2.43.0</version>
-
           <configuration>
             <java>
               <googleJavaFormat>
@@ -225,12 +221,10 @@
               <trimTrailingWhitespace/>
               <endWithNewline/>
             </java>
-
             <pom>
               <includes>
                 <include>pom.xml</include>
               </includes>
-
               <!-- https://github.com/Ekryd/sortpom -->
               <sortPom>
                 <expandEmptyElements>false</expandEmptyElements>
@@ -238,7 +232,6 @@
                 <sortProperties>true</sortProperties>
               </sortPom>
             </pom>
-
             <markdown>
               <includes>
                 <include>**/*.md</include>
@@ -246,10 +239,8 @@
               <excludes>
                 <exclude>**/target/**/*.md</exclude>
               </excludes>
-
               <trimTrailingWhitespace/>
               <endWithNewline/>
-
               <prettier>
                 <prettierVersion>3.1.0</prettierVersion>
                 <config>
@@ -260,7 +251,6 @@
               </prettier>
             </markdown>
           </configuration>
-
           <executions>
             <execution>
               <goals>
