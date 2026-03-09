@@ -4,7 +4,6 @@ import es.um.arso.repositorio.RepositorioException;
 import es.um.arso.servicio.FactoriaServicios;
 import es.um.arso.usuarios.modelo.Usuario;
 import es.um.arso.usuarios.servicio.IServicioUsuarios;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,12 +16,14 @@ import javax.ws.rs.core.Response;
 @Path("/auth")
 public class ControladorAuth {
 
-    private final IServicioUsuarios servicio = FactoriaServicios.getServicio(IServicioUsuarios.class);
+    private final IServicioUsuarios servicio =
+            FactoriaServicios.getServicio(IServicioUsuarios.class);
 
     @POST
     @Path("/login")
     @PermitAll
-    public Response login(@FormParam("username") String username, @FormParam("password") String password)
+    public Response login(
+            @FormParam("username") String username, @FormParam("password") String password)
             throws RepositorioException {
 
         Map<String, Object> claims = verificarCredenciales(username, password);

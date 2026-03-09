@@ -17,8 +17,7 @@ public interface IServicioUsuarios {
             String telefono)
             throws RepositorioException;
 
-    void modificar(String id, Usuario usuario)
-            throws RepositorioException, EntidadNoEncontrada;
+    void modificar(String id, Usuario usuario) throws RepositorioException, EntidadNoEncontrada;
 
     Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada;
 

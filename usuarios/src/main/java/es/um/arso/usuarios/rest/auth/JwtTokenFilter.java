@@ -20,11 +20,9 @@ import javax.ws.rs.ext.Provider;
 @Priority(Priorities.AUTHENTICATION)
 public class JwtTokenFilter implements ContainerRequestFilter {
 
-    @Context 
-    private ResourceInfo resourceInfo;
+    @Context private ResourceInfo resourceInfo;
 
-    @Context 
-    private HttpServletRequest servletRequest;
+    @Context private HttpServletRequest servletRequest;
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
@@ -57,10 +55,10 @@ public class JwtTokenFilter implements ContainerRequestFilter {
                 String[] allowedRoles =
                         resourceInfo.getResourceMethod().getAnnotation(RolesAllowed.class).value();
                 Set<String> roles =
-                        new HashSet<>(
-                                Arrays.asList(claims.get("roles", String.class).split(",")));
+                        new HashSet<>(Arrays.asList(claims.get("roles", String.class).split(",")));
 
-                if (roles.stream().noneMatch(userRole -> Arrays.asList(allowedRoles).contains(userRole))) {
+                if (roles.stream()
+                        .noneMatch(userRole -> Arrays.asList(allowedRoles).contains(userRole))) {
                     requestContext.abortWith(
                             Response.status(Response.Status.FORBIDDEN)
                                     .entity("no tiene rol de acceso")

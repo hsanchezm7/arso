@@ -1,8 +1,7 @@
 # Especificación REST - Microservicio Usuarios
 
-Este documento describe, de forma informal, la especificación REST 
-para el microservicio de usuarios. Las operaciones descritas se 
-aplican únicamente sobre las colección de Usuarios.
+Este documento describe, de forma informal, la especificación REST para el microservicio de
+usuarios. Las operaciones descritas se aplican únicamente sobre las colección de Usuarios.
 
 ## Usuarios
 

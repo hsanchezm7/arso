@@ -28,7 +28,6 @@ public class ProgramaUsuarios {
                             LocalDate.of(1995, 5, 21),
                             "600124226");
 
-
             Usuario mod1 = new Usuario();
             mod1.setNombre("Ana María");
             servicio.modificar(id1, mod1);

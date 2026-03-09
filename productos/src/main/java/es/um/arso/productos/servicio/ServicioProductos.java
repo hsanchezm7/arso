@@ -9,6 +9,7 @@ import es.um.arso.productos.repositorio.RepositorioProductos;
 import es.um.arso.productos.repositorio.RepositorioUsuarios;
 import es.um.arso.repositorio.EntidadNoEncontrada;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -200,7 +201,7 @@ public class ServicioProductos implements IServicioProductos {
         int start = (int) paginacion.getOffset();
         int end = Math.min((start + paginacion.getPageSize()), historial.size());
         List<ProductoResumen> pageContent =
-                start > historial.size() ? List.of() : historial.subList(start, end);
+                start > historial.size() ? Collections.emptyList() : historial.subList(start, end);
         return new PageImpl<>(pageContent, paginacion, historial.size());
     }
 
@@ -216,7 +217,7 @@ public class ServicioProductos implements IServicioProductos {
         int start = (int) paginacion.getOffset();
         int end = Math.min((start + paginacion.getPageSize()), productos.size());
         List<Producto> pageContent =
-                start > productos.size() ? List.of() : productos.subList(start, end);
+                start > productos.size() ? Collections.emptyList() : productos.subList(start, end);
 
         List<ProductoResumen> resumenes =
                 pageContent.stream()

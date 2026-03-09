@@ -1,7 +1,7 @@
 package es.um.arso.usuarios.servicio;
 
 public class UsuarioResumen {
-    
+
     private String id;
     private String nombre;
     private String email;
@@ -31,5 +31,4 @@ public class UsuarioResumen {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }
