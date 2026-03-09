@@ -4,13 +4,14 @@ import es.um.arso.repositorio.EntidadNoEncontrada;
 import es.um.arso.repositorio.RepositorioException;
 import es.um.arso.servicio.FactoriaServicios;
 import es.um.arso.usuarios.modelo.Usuario;
+import es.um.arso.usuarios.rest.Listado.ResumenExtendido;
 import es.um.arso.usuarios.rest.dto.UsuarioCreateDto;
 import es.um.arso.usuarios.rest.dto.UsuarioDto;
+import es.um.arso.usuarios.rest.dto.UsuarioNombreDto;
 import es.um.arso.usuarios.rest.dto.UsuarioUpdateDto;
-import es.um.arso.usuarios.rest.Listado.ResumenExtendido;
 import es.um.arso.usuarios.servicio.IServicioUsuarios;
 import es.um.arso.usuarios.servicio.UsuarioResumen;
-
+import io.jsonwebtoken.Claims;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,23 +29,20 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import io.jsonwebtoken.Claims;
 
 @Path("/usuarios")
 public class ControladorUsuarios {
 
     private IServicioUsuarios servicio = FactoriaServicios.getServicio(IServicioUsuarios.class);
 
-    @Context 
-    private UriInfo uriInfo;
+    @Context private UriInfo uriInfo;
 
-    @Context
-    private HttpServletRequest servletRequest;
+    @Context private HttpServletRequest servletRequest;
 
     // POST /usuarios
     @POST
     @PermitAll
-    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response crear(UsuarioCreateDto dto) throws RepositorioException {
 
         String id =
@@ -70,6 +68,19 @@ public class ControladorUsuarios {
 
         Usuario usuario = servicio.recuperar(id);
         UsuarioDto dto = toUsuarioDTO(usuario);
+        return Response.status(Response.Status.OK).entity(dto).build();
+    }
+
+    // GET /usuarios/{id}/nombre (tarea 6)
+    @GET
+    @Path("/{id}/nombre")
+    @PermitAll
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response getNombreUsuario(@PathParam("id") String id)
+            throws RepositorioException, EntidadNoEncontrada {
+
+        Usuario usuario = servicio.recuperar(id);
+        UsuarioNombreDto dto = new UsuarioNombreDto(usuario.getId(), usuario.getNombre());
         return Response.status(Response.Status.OK).entity(dto).build();
     }
 
@@ -107,7 +118,7 @@ public class ControladorUsuarios {
     public Response getListadoUsuarios() throws RepositorioException {
 
         List<UsuarioResumen> resultado = servicio.recuperarTodos();
-        
+
         LinkedList<ResumenExtendido> extendido = new LinkedList<>();
 
         for (UsuarioResumen u : resultado) {
@@ -136,7 +147,7 @@ public class ControladorUsuarios {
         dto.setEmail(u.getEmail());
         dto.setFechaNacimiento(u.getFechaNacimiento());
         dto.setTelefono(u.getTelefono());
-        
+
         return dto;
     }
 }
