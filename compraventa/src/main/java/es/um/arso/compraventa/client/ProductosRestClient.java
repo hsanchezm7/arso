@@ -1,6 +1,6 @@
 package es.um.arso.compraventa.client;
 
-import es.um.arso.compraventa.servicio.puertos.ProductoInfo;
+import es.um.arso.compraventa.servicio.puertos.out.ProductoInfo;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;

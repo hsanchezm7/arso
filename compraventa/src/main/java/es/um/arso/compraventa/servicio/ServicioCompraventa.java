@@ -1,11 +1,13 @@
 package es.um.arso.compraventa.servicio;
 
 import es.um.arso.compraventa.modelo.Compraventa;
+import es.um.arso.compraventa.modelo.eventos.EventoCompraventaCreada;
+import es.um.arso.compraventa.puertos.out.PublicadorEventos;
 import es.um.arso.compraventa.repositorio.RepositorioCompraventas;
-import es.um.arso.compraventa.servicio.puertos.IServicioProductosExterno;
-import es.um.arso.compraventa.servicio.puertos.IServicioUsuariosExterno;
-import es.um.arso.compraventa.servicio.puertos.ProductoInfo;
-import es.um.arso.compraventa.servicio.puertos.UsuarioInfo;
+import es.um.arso.compraventa.servicio.puertos.out.IServicioProductosExterno;
+import es.um.arso.compraventa.servicio.puertos.out.IServicioUsuariosExterno;
+import es.um.arso.compraventa.servicio.puertos.out.ProductoInfo;
+import es.um.arso.compraventa.servicio.puertos.out.UsuarioInfo;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,8 @@ public class ServicioCompraventa implements IServicioCompraventa {
     @Autowired private IServicioProductosExterno servicioProductosExterno;
 
     @Autowired private IServicioUsuariosExterno servicioUsuariosExterno;
+
+    @Autowired private PublicadorEventos publicadorEventos;
 
     @Override
     public String realizarCompraventa(String idProducto, String idComprador) throws Exception {
@@ -45,9 +49,10 @@ public class ServicioCompraventa implements IServicioCompraventa {
             throw new RuntimeException("Comprador no encontrado: " + idComprador);
         }
 
-        UsuarioInfo vendedor = servicioUsuariosExterno.getUsuario(producto.getIdVendedor());
+        String idVendedor = producto.getIdVendedor();
+        UsuarioInfo vendedor = servicioUsuariosExterno.getUsuario(idVendedor);
         if (vendedor == null) {
-            throw new RuntimeException("Vendedor no encontrado: " + producto.getIdVendedor());
+            throw new RuntimeException("Vendedor no encontrado: " + idVendedor);
         }
 
         String recogidaString =
@@ -59,7 +64,7 @@ public class ServicioCompraventa implements IServicioCompraventa {
                         producto.getTitulo(),
                         producto.getPrecio(),
                         recogidaString,
-                        producto.getIdVendedor(),
+                        idVendedor,
                         vendedor.getNombre(),
                         idComprador,
                         comprador.getNombre());
@@ -67,6 +72,14 @@ public class ServicioCompraventa implements IServicioCompraventa {
         compraventa = repositorioCompraventas.save(compraventa);
 
         log.info("Compraventa realizada: id={}", compraventa.getId());
+
+        // TODO: como idProducto es la entidad afectada, se podría eliminar
+        // el campo idProducto de la clase Java.
+        EventoCompraventaCreada evento =
+                new EventoCompraventaCreada(idProducto, idProducto, idVendedor, idComprador);
+
+        publicadorEventos.emitirEvento(evento);
+
         return compraventa.getId();
     }
 

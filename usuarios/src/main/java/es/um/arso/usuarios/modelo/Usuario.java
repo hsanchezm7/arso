@@ -23,7 +23,11 @@ public class Usuario implements Identificable {
     private String clave;
     private LocalDate fechaNacimiento;
     private String telefono;
+
     private boolean administrador = false;
+
+    private int numeroCompras = 0;
+    private int numeroVentas = 0;
 
     public Usuario() {}
 
@@ -97,5 +101,54 @@ public class Usuario implements Identificable {
 
     public void setAdministrador(boolean administrador) {
         this.administrador = administrador;
+    }
+
+    public int getNumeroCompras() {
+        return numeroCompras;
+    }
+
+    public void setNumeroCompras(int numeroCompras) {
+        this.numeroCompras = numeroCompras;
+    }
+
+    public void incrementarNumeroCompras() {
+        this.numeroCompras++;
+    }
+
+    public int getNumeroVentas() {
+        return numeroVentas;
+    }
+
+    public void setNumeroVentas(int numeroVentas) {
+        this.numeroVentas = numeroVentas;
+    }
+
+    public void incrementarNumeroVentas() {
+        this.numeroVentas++;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario [id="
+                + id
+                + ", email="
+                + email
+                + ", nombre="
+                + nombre
+                + ", apellidos="
+                + apellidos
+                + ", clave="
+                + clave
+                + ", fechaNacimiento="
+                + fechaNacimiento
+                + ", telefono="
+                + telefono
+                + ", administrador="
+                + administrador
+                + ", numeroCompras="
+                + numeroCompras
+                + ", numeroVentas="
+                + numeroVentas
+                + "]";
     }
 }

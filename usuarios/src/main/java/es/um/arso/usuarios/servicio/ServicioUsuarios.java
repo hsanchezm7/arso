@@ -46,6 +46,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
     public void modificar(String id, Usuario usuario)
             throws RepositorioException, EntidadNoEncontrada {
         Usuario u = repoUsuarios.getById(id);
+
         if (usuario.getNombre() != null && !usuario.getNombre().isEmpty())
             u.setNombre(usuario.getNombre());
         if (usuario.getApellidos() != null && !usuario.getApellidos().isEmpty())
@@ -55,6 +56,10 @@ public class ServicioUsuarios implements IServicioUsuarios {
         if (usuario.getFechaNacimiento() != null)
             u.setFechaNacimiento(usuario.getFechaNacimiento());
         if (usuario.getTelefono() != null) u.setTelefono(usuario.getTelefono());
+
+        u.setAdministrador(usuario.isAdministrador());
+        u.setNumeroCompras(usuario.getNumeroCompras());
+        u.setNumeroVentas(usuario.getNumeroVentas());
 
         repoUsuarios.update(u);
 

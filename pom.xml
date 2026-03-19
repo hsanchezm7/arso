@@ -15,7 +15,7 @@
   <properties>
     <eclipselink.version>2.7.15</eclipselink.version>
     <javax.persistence.version>2.2</javax.persistence.version>
-    <javax.servlet.version>2.5</javax.servlet.version>
+    <javax.servlet.version>3.0.1</javax.servlet.version>
     <jaxb.version>2.3.1</jaxb.version>
     <jersey.version>2.41</jersey.version>
     <jetty.version>10.0.20</jetty.version>
@@ -31,6 +31,7 @@
     <slf4j.version>1.7.36</slf4j.version>
     <spring-boot.version>2.6.1</spring-boot.version>
     <springdoc.version>1.5.10</springdoc.version>
+    <rabbitmq.version>5.8.0</rabbitmq.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -128,6 +129,11 @@
         <groupId>com.squareup.retrofit2</groupId>
         <artifactId>converter-gson</artifactId>
         <version>${retrofit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.rabbitmq</groupId>
+        <artifactId>amqp-client</artifactId>
+        <version>${rabbitmq.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -86,7 +86,10 @@ public class ControladorProductos {
             throws Exception {
 
         this.servicioProductos.modificar(
-                id, modificacion.getPrecio(), modificacion.getDescripcion());
+                id,
+                modificacion.getPrecio(),
+                modificacion.getDescripcion(),
+                modificacion.isDisponibilidad());
         return ResponseEntity.noContent().build();
     }
 

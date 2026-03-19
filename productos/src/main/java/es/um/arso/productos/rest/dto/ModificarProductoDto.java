@@ -9,6 +9,8 @@ public class ModificarProductoDto {
 
     private String descripcion;
 
+    private boolean disponibilidad;
+
     public ModificarProductoDto() {}
 
     public Double getPrecio() {
@@ -25,5 +27,13 @@ public class ModificarProductoDto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public boolean isDisponibilidad() {
+        return disponibilidad;
+    }
+
+    public void setDisponibilidad(boolean disponibilidad) {
+        this.disponibilidad = disponibilidad;
     }
 }

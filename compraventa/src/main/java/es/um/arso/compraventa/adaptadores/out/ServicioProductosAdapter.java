@@ -1,8 +1,8 @@
-package es.um.arso.compraventa.adaptadores;
+package es.um.arso.compraventa.adaptadores.out;
 
 import es.um.arso.compraventa.client.ProductosRestClient;
-import es.um.arso.compraventa.servicio.puertos.IServicioProductosExterno;
-import es.um.arso.compraventa.servicio.puertos.ProductoInfo;
+import es.um.arso.compraventa.servicio.puertos.out.IServicioProductosExterno;
+import es.um.arso.compraventa.servicio.puertos.out.ProductoInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;

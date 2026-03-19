@@ -1,4 +1,4 @@
-package es.um.arso.compraventa.servicio.puertos;
+package es.um.arso.compraventa.servicio.puertos.out;
 
 public interface IServicioUsuariosExterno {
 

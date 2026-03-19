@@ -40,6 +40,8 @@ public class Producto {
     @JoinColumn(name = "vendedor_fk")
     private Usuario vendedor;
 
+    private boolean disponible;
+
     public Producto() {}
 
     public Producto(
@@ -154,5 +156,32 @@ public class Producto {
 
     public void asignarLugarRecogida(String descripcion, Double longitud, Double latitud) {
         this.recogida = new LugarRecogida(descripcion, longitud, latitud);
+    }
+
+    public boolean isDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto [id="
+                + id
+                + ", titulo="
+                + titulo
+                + ", descripcion="
+                + descripcion
+                + ", precio="
+                + precio
+                + ", estado="
+                + estado
+                + ", fechaPublicacion="
+                + fechaPublicacion
+                + ", disponible="
+                + disponible
+                + "]";
     }
 }

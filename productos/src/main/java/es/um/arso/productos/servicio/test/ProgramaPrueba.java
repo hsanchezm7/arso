@@ -106,7 +106,7 @@ public class ProgramaPrueba implements CommandLineRunner {
         log.info("Lugar de recogida asignado");
 
         // TEST C: Modificar datos
-        servicioProductos.modificar(prodId, 39.99, "Silla ergonómica - oferta");
+        servicioProductos.modificar(prodId, 39.99, "Silla ergonómica - oferta", true);
         log.info("Producto modificado");
 
         // TEST D: Añadir visualizaciones

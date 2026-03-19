@@ -23,7 +23,8 @@ public interface IServicioProductos {
             String productoId, String descripcion, Double longitud, Double latitud)
             throws EntidadNoEncontrada;
 
-    void modificar(String productoId, Double nuevoPrecio, String nuevaDescripcion)
+    void modificar(
+            String productoId, Double nuevoPrecio, String nuevaDescripcion, boolean estaDisponible)
             throws EntidadNoEncontrada;
 
     void anadirVisualizacion(String productoId) throws EntidadNoEncontrada;

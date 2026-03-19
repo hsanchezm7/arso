@@ -87,7 +87,8 @@ public class ServicioProductos implements IServicioProductos {
     }
 
     @Override
-    public void modificar(String productoId, Double nuevoPrecio, String nuevaDescripcion)
+    public void modificar(
+            String productoId, Double nuevoPrecio, String nuevaDescripcion, boolean estaDisponible)
             throws EntidadNoEncontrada {
         Producto producto =
                 repositorioProductos
@@ -100,6 +101,9 @@ public class ServicioProductos implements IServicioProductos {
         if (nuevaDescripcion != null && !nuevaDescripcion.isEmpty()) {
             producto.setDescripcion(nuevaDescripcion);
         }
+
+        producto.setDisponible(estaDisponible);
+
         repositorioProductos.save(producto);
         log.info("Producto modificado: id={}", productoId);
     }
