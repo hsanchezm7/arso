@@ -88,8 +88,6 @@ public class ConsumidorRabbitMq implements ServletContextListener {
                                     }
                                     break;
                                 default:
-                                    System.out.println(
-                                            "No debería entrar al default del switch tipo");
                                     return;
                             }
 

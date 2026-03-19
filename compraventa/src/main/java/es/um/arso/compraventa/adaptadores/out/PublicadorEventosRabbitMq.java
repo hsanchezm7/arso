@@ -3,7 +3,6 @@ package es.um.arso.compraventa.adaptadores.out;
 import es.um.arso.compraventa.config.RabbitMqConfig;
 import es.um.arso.compraventa.modelo.eventos.Evento;
 import es.um.arso.compraventa.puertos.out.PublicadorEventos;
-import es.um.arso.compraventa.servicio.ServicioCompraventa;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PublicadorEventosRabbitMq implements PublicadorEventos {
 
-    private static final Logger log = LoggerFactory.getLogger(ServicioCompraventa.class);
+    private static final Logger log = LoggerFactory.getLogger(PublicadorEventosRabbitMq.class);
 
     private RabbitTemplate rabbitTemplate;
 

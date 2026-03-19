@@ -3,7 +3,8 @@ package es.um.arso.repositorio;
 import es.um.arso.utils.EntityManagerHelper;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 
@@ -13,25 +14,16 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 
     @Override
     public String add(T entity) throws RepositorioException {
-
         EntityManager em = EntityManagerHelper.getEntityManager();
 
         try {
-
             em.getTransaction().begin();
-
             em.persist(entity);
-
             em.getTransaction().commit();
-
         } catch (Exception e) {
-
             throw new RepositorioException("Error al guardar la entidad", e);
-
         } finally {
-
             if (em.getTransaction().isActive()) {
-
                 em.getTransaction().rollback();
             }
 
@@ -47,29 +39,21 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
         EntityManager em = EntityManagerHelper.getEntityManager();
 
         try {
-
             em.getTransaction().begin();
 
             T instancia = em.find(getClase(), entity.getId());
-
             if (instancia == null) {
-
                 throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
             }
 
             entity = em.merge(entity);
 
             em.getTransaction().commit();
-
         } catch (RuntimeException e) {
-
             throw new RepositorioException(
                     "Error al actualizar la entidad con id " + entity.getId(), e);
-
         } finally {
-
             if (em.getTransaction().isActive()) {
-
                 em.getTransaction().rollback();
             }
 
@@ -83,114 +67,81 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
         EntityManager em = EntityManagerHelper.getEntityManager();
 
         try {
-
             em.getTransaction().begin();
 
             T instancia = em.find(getClase(), entity.getId());
-
             if (instancia == null) {
-
                 throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
             }
 
             em.remove(instancia);
 
             em.getTransaction().commit();
-
         } catch (RuntimeException e) {
-
             throw new RepositorioException(
                     "Error al borrar la entidad con id " + entity.getId(), e);
-
         } finally {
-
             if (em.getTransaction().isActive()) {
-
                 em.getTransaction().rollback();
             }
-
             EntityManagerHelper.closeEntityManager();
         }
     }
 
     @Override
     public T getById(String id) throws EntidadNoEncontrada, RepositorioException {
-
         try {
-
             EntityManager em = EntityManagerHelper.getEntityManager();
 
             T instancia = em.find(getClase(), id);
-
             if (instancia == null) {
-
                 throw new EntidadNoEncontrada(id + " no existe en el repositorio");
-
             } else {
-
                 em.refresh(instancia);
             }
 
             return instancia;
-
         } catch (RuntimeException e) {
-
             throw new RepositorioException("Error al recuperar la entidad con id " + id, e);
-
         } finally {
-
             EntityManagerHelper.closeEntityManager();
         }
     }
 
     @Override
     public List<T> getAll() throws RepositorioException {
-
         try {
-
             EntityManager em = EntityManagerHelper.getEntityManager();
 
             final String queryString = " SELECT t from " + getClase().getSimpleName() + " t ";
 
-            Query query = em.createQuery(queryString);
-
+            TypedQuery<T> query = em.createQuery(queryString, getClase());
             query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 
             return query.getResultList();
-
         } catch (RuntimeException e) {
-
             throw new RepositorioException(
                     "Error buscando todas las entidades de " + getClase().getSimpleName(), e);
-
         } finally {
-
             EntityManagerHelper.closeEntityManager();
         }
     }
 
     @Override
     public List<String> getIds() throws RepositorioException {
-
-        EntityManager em = EntityManagerHelper.getEntityManager();
-
         try {
+            EntityManager em = EntityManagerHelper.getEntityManager();
 
             final String queryString = " SELECT t.id from " + getClase().getSimpleName() + " t ";
 
-            Query query = em.createQuery(queryString);
-
+            TypedQuery<String> query = em.createQuery(queryString, String.class);
             query.setHint(QueryHints.REFRESH, HintValues.TRUE);
 
             return query.getResultList();
-
         } catch (RuntimeException e) {
-
             throw new RepositorioException(
                     "Error buscando todos los ids de " + getClase().getSimpleName(), e);
-
         } finally {
-
             EntityManagerHelper.closeEntityManager();
         }
     }

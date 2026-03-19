@@ -103,7 +103,7 @@ public abstract class RepositorioXML<T extends Identificable> implements Reposit
 
     @Override
     public List<T> getAll() throws RepositorioException {
-        LinkedList<T> resultado = new LinkedList<T>();
+        LinkedList<T> resultado = new LinkedList<>();
 
         for (String id : getIds()) {
             try {
