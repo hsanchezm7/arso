@@ -1,5 +1,6 @@
 package es.um.arso.usuarios.servicio;
 
+import es.um.arso.especificacion.Especificacion;
 import es.um.arso.repositorio.EntidadNoEncontrada;
 import es.um.arso.repositorio.FactoriaRepositorios;
 import es.um.arso.repositorio.Repositorio;
@@ -43,6 +44,31 @@ public class ServicioUsuarios implements IServicioUsuarios {
     }
 
     @Override
+    public String altaOauth(String nombre, String email, String githubId)
+            throws RepositorioException {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("email obligatorio");
+        }
+        if (githubId == null || githubId.isEmpty()) {
+            throw new IllegalArgumentException("githubId obligatorio");
+        }
+
+        // TODO: verificar usuario existente si existen github o email
+        Usuario existente = null;
+        if (existente != null) {
+            return existente.getId();
+        }
+
+        Usuario u = new Usuario(email, nombre);
+        u.setGithubId(githubId);
+        String id = repoUsuarios.add(u);
+
+        log.info("Usuario OAuth creado: id={} email={} githubId={}", id, email, githubId);
+
+        return id;
+    }
+
+    @Override
     public void modificar(String id, Usuario usuario)
             throws RepositorioException, EntidadNoEncontrada {
         Usuario u = repoUsuarios.getById(id);
@@ -69,6 +95,26 @@ public class ServicioUsuarios implements IServicioUsuarios {
     @Override
     public Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada {
         return repoUsuarios.getById(id);
+    }
+
+    @Override
+    public Usuario recuperarPorEmail(String email) throws RepositorioException {
+        Especificacion<Usuario> spec =
+                new Especificacion<>(usuario -> email.equals(usuario.getEmail()));
+
+        List<Usuario> resultados = repoUsuarios.getByEspecificacion(spec);
+
+        return resultados.isEmpty() ? null : resultados.get(0);
+    }
+
+    @Override
+    public Usuario recuperarPorGithubId(String githubId) throws RepositorioException {
+        Especificacion<Usuario> spec =
+                new Especificacion<>(usuario -> githubId.equals(usuario.getGithubId()));
+
+        List<Usuario> resultados = repoUsuarios.getByEspecificacion(spec);
+
+        return resultados.isEmpty() ? null : resultados.get(0);
     }
 
     @Override

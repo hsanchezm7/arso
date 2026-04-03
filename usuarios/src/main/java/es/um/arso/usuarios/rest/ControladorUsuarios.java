@@ -5,10 +5,13 @@ import es.um.arso.repositorio.RepositorioException;
 import es.um.arso.servicio.FactoriaServicios;
 import es.um.arso.usuarios.modelo.Usuario;
 import es.um.arso.usuarios.rest.Listado.ResumenExtendido;
+import es.um.arso.usuarios.rest.dto.UsuarioAuthDto;
 import es.um.arso.usuarios.rest.dto.UsuarioCreateDto;
 import es.um.arso.usuarios.rest.dto.UsuarioDto;
+import es.um.arso.usuarios.rest.dto.UsuarioGithubCreateDto;
 import es.um.arso.usuarios.rest.dto.UsuarioNombreDto;
 import es.um.arso.usuarios.rest.dto.UsuarioUpdateDto;
+import es.um.arso.usuarios.rest.dto.VerificarCredencialesDto;
 import es.um.arso.usuarios.servicio.IServicioUsuarios;
 import es.um.arso.usuarios.servicio.UsuarioResumen;
 import io.jsonwebtoken.Claims;
@@ -25,6 +28,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -58,6 +62,39 @@ public class ControladorUsuarios {
         return Response.created(nuevaURL).build();
     }
 
+    // POST /usuarios/oauth
+    @POST
+    @Path("/oauth")
+    @PermitAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response crearOauth(UsuarioGithubCreateDto dto)
+            throws RepositorioException, EntidadNoEncontrada {
+
+        if (dto == null || dto.getEmail() == null || dto.getGithubId() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        // TODO: copmletar TODO del servicio de alta, para ver si se el email ya está en uso y por
+        // tanto solo habría que actualizar el usuario con su nuevo githubId. También para comprobar
+        // si ya está registrado.
+        String id = servicio.altaOauth(dto.getNombre(), dto.getEmail(), dto.getGithubId());
+
+        Usuario usuario = servicio.recuperar(id);
+
+        String nombre = usuario.getNombre() != null ? usuario.getNombre() : "";
+        String apellidos = usuario.getApellidos() != null ? usuario.getApellidos() : "";
+        String nombreCompleto = (nombre + " " + apellidos).trim();
+        if (nombreCompleto.isEmpty()) {
+            nombreCompleto = usuario.getEmail();
+        }
+
+        String roles = usuario.isAdministrador() ? "ADMINISTRADOR" : "USUARIO";
+        UsuarioAuthDto dtoRespuesta = new UsuarioAuthDto(usuario.getId(), nombreCompleto, roles);
+
+        return Response.status(Response.Status.CREATED).entity(dtoRespuesta).build();
+    }
+
     // GET /usuarios/{id}
     @GET
     @Path("/{id}")
@@ -82,6 +119,68 @@ public class ControladorUsuarios {
         Usuario usuario = servicio.recuperar(id);
         UsuarioNombreDto dto = new UsuarioNombreDto(usuario.getId(), usuario.getNombre());
         return Response.status(Response.Status.OK).entity(dto).build();
+    }
+
+    // POST /usuarios/verificar
+    @POST
+    @Path("/verificar")
+    @PermitAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response verificarCredenciales(VerificarCredencialesDto dto)
+            throws RepositorioException {
+
+        if (dto == null || dto.getUsername() == null || dto.getPassword() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Solicitud inválida")
+                    .build();
+        }
+
+        Usuario usuario = servicio.autenticar(dto.getUsername(), dto.getPassword());
+        if (usuario == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("Credenciales inválidas")
+                    .build();
+        }
+
+        String nombre = usuario.getNombre() != null ? usuario.getNombre() : "";
+        String apellidos = usuario.getApellidos() != null ? usuario.getApellidos() : "";
+        String nombreCompleto = (nombre + " " + apellidos).trim();
+        if (nombreCompleto.isEmpty()) {
+            nombreCompleto = usuario.getEmail();
+        }
+
+        String roles = usuario.isAdministrador() ? "ADMINISTRADOR" : "USUARIO";
+        UsuarioAuthDto dtoRespuesta = new UsuarioAuthDto(usuario.getId(), nombreCompleto, roles);
+
+        return Response.status(Response.Status.OK).entity(dtoRespuesta).build();
+    }
+
+    // GET /usuarios/buscar?email=pepe@um.es&githubId=12345
+    @GET
+    @Path("/buscar")
+    @PermitAll
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response buscarUsuario(
+            @QueryParam("email") String email, @QueryParam("githubId") String githubId)
+            throws RepositorioException {
+
+        Usuario usuario = null;
+
+        if (githubId != null && !githubId.trim().isEmpty()) {
+            usuario = servicio.recuperarPorGithubId(githubId);
+        }
+
+        if (usuario == null && email != null && !email.trim().isEmpty()) {
+            usuario = servicio.recuperarPorEmail(email);
+        }
+
+        if (usuario != null) {
+            UsuarioDto dto = toUsuarioDTO(usuario);
+            return Response.status(Response.Status.OK).entity(dto).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     // PUT /usuarios/{id}

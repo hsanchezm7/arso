@@ -23,6 +23,7 @@ public class Usuario implements Identificable {
     private String clave;
     private LocalDate fechaNacimiento;
     private String telefono;
+    private String githubId;
 
     private boolean administrador = false;
 
@@ -30,6 +31,11 @@ public class Usuario implements Identificable {
     private int numeroVentas = 0;
 
     public Usuario() {}
+
+    public Usuario(String email, String nombre) {
+        this.email = email;
+        this.nombre = nombre;
+    }
 
     public Usuario(String email, String nombre, String apellidos) {
         this.email = email;
@@ -95,6 +101,14 @@ public class Usuario implements Identificable {
         this.telefono = telefono;
     }
 
+    public String getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(String githubId) {
+        this.githubId = githubId;
+    }
+
     public boolean isAdministrador() {
         return administrador;
     }
@@ -143,6 +157,8 @@ public class Usuario implements Identificable {
                 + fechaNacimiento
                 + ", telefono="
                 + telefono
+                + ", githubId="
+                + githubId
                 + ", administrador="
                 + administrador
                 + ", numeroCompras="

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class RepositorioUsuariosMemoria extends RepositorioMemoria<Usuario> {
 
-    /* Repositorio con datos de prueba */
+    /* repositorio con datos de prueba */
     public RepositorioUsuariosMemoria() {
         Usuario u = new Usuario("juan@um.es", "Juan", "Pérez");
         u.setFechaNacimiento(LocalDate.of(1990, 1, 1));

@@ -17,9 +17,15 @@ public interface IServicioUsuarios {
             String telefono)
             throws RepositorioException;
 
+    String altaOauth(String nombre, String email, String githubId) throws RepositorioException;
+
     void modificar(String id, Usuario usuario) throws RepositorioException, EntidadNoEncontrada;
 
     Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada;
+
+    Usuario recuperarPorEmail(String email) throws RepositorioException;
+
+    Usuario recuperarPorGithubId(String githubId) throws RepositorioException;
 
     List<UsuarioResumen> recuperarTodos() throws RepositorioException;
 
