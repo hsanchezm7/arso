@@ -5,16 +5,17 @@ import es.um.arso.utils.LocalDateAdapter;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.eclipse.persistence.annotations.UuidGenerator;
 
 @Entity
 @XmlRootElement(name = "usuario")
+@UuidGenerator(name = "uuid")
 public class Usuario implements Identificable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "uuid")
     private String id;
 
     private String email;
@@ -30,7 +31,8 @@ public class Usuario implements Identificable {
     private int numeroCompras = 0;
     private int numeroVentas = 0;
 
-    public Usuario() {}
+    public Usuario() {
+    }
 
     public Usuario(String email, String nombre) {
         this.email = email;

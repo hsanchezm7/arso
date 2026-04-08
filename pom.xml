@@ -11,6 +11,7 @@
     <module>productos</module>
     <module>usuarios</module>
     <module>compraventa</module>
+    <module>pasarela</module>
   </modules>
   <properties>
     <eclipselink.version>2.7.15</eclipselink.version>
@@ -21,17 +22,20 @@
     <jetty.version>10.0.20</jetty.version>
     <jjwt.version>0.9.1</jjwt.version>
     <junit.version>5.11.0</junit.version>
-    <maven.compiler.release>8</maven.compiler.release>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
     <mysql.version>8.0.33</mysql.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <retrofit.version>3.0.0</retrofit.version>
     <slf4j.version>1.7.36</slf4j.version>
     <spring-boot.version>2.6.1</spring-boot.version>
     <springdoc.version>1.5.10</springdoc.version>
     <rabbitmq.version>5.8.0</rabbitmq.version>
+    <zuul.version>2.2.10.RELEASE</zuul.version>
+
+    <maven.compiler.release>8</maven.compiler.release>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -135,6 +139,12 @@
         <artifactId>amqp-client</artifactId>
         <version>${rabbitmq.version}</version>
       </dependency>
+      <!-- Netflix Zuul -->
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+        <version>${zuul.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
@@ -150,10 +160,6 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <!-- JPA -->
-    <dependency>
-      <groupId>javax.persistence</groupId>
-      <artifactId>javax.persistence-api</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.eclipse.persistence</groupId>
       <artifactId>eclipselink</artifactId>

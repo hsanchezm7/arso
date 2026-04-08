@@ -33,30 +33,35 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Path("/usuarios")
 public class ControladorUsuarios {
 
+    private static final Logger log = LoggerFactory.getLogger(ControladorUsuarios.class);
+
     private IServicioUsuarios servicio = FactoriaServicios.getServicio(IServicioUsuarios.class);
 
-    @Context private UriInfo uriInfo;
+    @Context
+    private UriInfo uriInfo;
 
-    @Context private HttpServletRequest servletRequest;
+    @Context
+    private HttpServletRequest servletRequest;
 
     // POST /usuarios
     @POST
     @PermitAll
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response crear(UsuarioCreateDto dto) throws RepositorioException {
 
-        String id =
-                servicio.alta(
-                        dto.getNombre(),
-                        dto.getApellidos(),
-                        dto.getEmail(),
-                        dto.getClave(),
-                        dto.getFechaNacimiento(),
-                        dto.getTelefono());
+        String id = servicio.alta(
+                dto.getNombre(),
+                dto.getApellidos(),
+                dto.getEmail(),
+                dto.getClave(),
+                dto.getFechaNacimiento(),
+                dto.getTelefono());
 
         URI nuevaURL = uriInfo.getAbsolutePathBuilder().path(id).build();
         return Response.created(nuevaURL).build();
@@ -71,14 +76,22 @@ public class ControladorUsuarios {
     public Response crearOauth(UsuarioGithubCreateDto dto)
             throws RepositorioException, EntidadNoEncontrada {
 
+        log.info("POST /usuarios/oauth recibido githubId={}, emailPresent={}",
+                dto != null ? dto.getGithubId() : null,
+                dto != null && dto.getEmail() != null && !dto.getEmail().trim().isEmpty());
+
         if (dto == null || dto.getEmail() == null || dto.getGithubId() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        // TODO: copmletar TODO del servicio de alta, para ver si se el email ya está en uso y por
-        // tanto solo habría que actualizar el usuario con su nuevo githubId. También para comprobar
+        // TODO: copmletar TODO del servicio de alta, para ver si se el email ya está en
+        // uso y por
+        // tanto solo habría que actualizar el usuario con su nuevo githubId. También
+        // para comprobar
         // si ya está registrado.
         String id = servicio.altaOauth(dto.getNombre(), dto.getEmail(), dto.getGithubId());
+
+        log.info("Usuario OAuth creado en servicio: id={}", id);
 
         Usuario usuario = servicio.recuperar(id);
 
@@ -92,6 +105,8 @@ public class ControladorUsuarios {
         String roles = usuario.isAdministrador() ? "ADMINISTRADOR" : "USUARIO";
         UsuarioAuthDto dtoRespuesta = new UsuarioAuthDto(usuario.getId(), nombreCompleto, roles);
 
+        log.info("Respuesta OAuth preparada: id={} roles={}", usuario.getId(), roles);
+
         return Response.status(Response.Status.CREATED).entity(dtoRespuesta).build();
     }
 
@@ -99,7 +114,7 @@ public class ControladorUsuarios {
     @GET
     @Path("/{id}")
     @RolesAllowed("USUARIO")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getUsuario(@PathParam("id") String id)
             throws RepositorioException, EntidadNoEncontrada {
 
@@ -112,7 +127,7 @@ public class ControladorUsuarios {
     @GET
     @Path("/{id}/nombre")
     @PermitAll
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getNombreUsuario(@PathParam("id") String id)
             throws RepositorioException, EntidadNoEncontrada {
 
@@ -130,6 +145,10 @@ public class ControladorUsuarios {
     public Response verificarCredenciales(VerificarCredencialesDto dto)
             throws RepositorioException {
 
+        log.info("POST /usuarios/verificar recibido usernamePresent={}, passwordPresent={}",
+                dto != null && dto.getUsername() != null && !dto.getUsername().trim().isEmpty(),
+                dto != null && dto.getPassword() != null && !dto.getPassword().trim().isEmpty());
+
         if (dto == null || dto.getUsername() == null || dto.getPassword() == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Solicitud inválida")
@@ -138,10 +157,13 @@ public class ControladorUsuarios {
 
         Usuario usuario = servicio.autenticar(dto.getUsername(), dto.getPassword());
         if (usuario == null) {
+            log.info("Credenciales invalidas para username={}", dto.getUsername());
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Credenciales inválidas")
                     .build();
         }
+
+        log.info("Credenciales validas para id={}", usuario.getId());
 
         String nombre = usuario.getNombre() != null ? usuario.getNombre() : "";
         String apellidos = usuario.getApellidos() != null ? usuario.getApellidos() : "";
@@ -160,25 +182,32 @@ public class ControladorUsuarios {
     @GET
     @Path("/buscar")
     @PermitAll
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response buscarUsuario(
             @QueryParam("email") String email, @QueryParam("githubId") String githubId)
             throws RepositorioException {
 
+        log.info("GET /usuarios/buscar recibido githubId={}, emailPresent={}",
+                githubId, email != null && !email.trim().isEmpty());
+
         Usuario usuario = null;
 
         if (githubId != null && !githubId.trim().isEmpty()) {
+            log.info("Buscando usuario por githubId");
             usuario = servicio.recuperarPorGithubId(githubId);
         }
 
         if (usuario == null && email != null && !email.trim().isEmpty()) {
+            log.info("Buscando usuario por email");
             usuario = servicio.recuperarPorEmail(email);
         }
 
         if (usuario != null) {
+            log.info("Usuario encontrado id={}", usuario.getId());
             UsuarioDto dto = toUsuarioDTO(usuario);
             return Response.status(Response.Status.OK).entity(dto).build();
         } else {
+            log.info("Usuario no encontrado");
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
@@ -187,7 +216,7 @@ public class ControladorUsuarios {
     @PUT
     @Path("/{id}")
     @RolesAllowed("USUARIO")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response modificar(@PathParam("id") String id, UsuarioUpdateDto dto)
             throws RepositorioException, EntidadNoEncontrada {
 
@@ -213,7 +242,7 @@ public class ControladorUsuarios {
     // GET /usuarios
     @GET
     @RolesAllowed("USUARIO")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getListadoUsuarios() throws RepositorioException {
 
         List<UsuarioResumen> resultado = servicio.recuperarTodos();
