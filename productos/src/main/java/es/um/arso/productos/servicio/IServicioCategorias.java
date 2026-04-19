@@ -8,8 +8,7 @@ public interface IServicioCategorias {
 
     void cargarJerarquia(String rutaXml);
 
-    void modificarDescripcion(String categoriaId, String nuevaDescripcion)
-            throws EntidadNoEncontrada;
+    void modificarDescripcion(String categoriaId, String nuevaDescripcion) throws EntidadNoEncontrada;
 
     List<Categoria> getRaices();
 

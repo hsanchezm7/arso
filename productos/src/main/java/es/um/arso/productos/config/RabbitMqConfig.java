@@ -41,12 +41,18 @@ public class RabbitMqConfig {
 
     @Bean
     public Binding compraventaBinding(Queue queue, Exchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(COMPRAVENTA_BINDING_KEY).and(null);
+        return BindingBuilder.bind(queue)
+                .to(exchange)
+                .with(COMPRAVENTA_BINDING_KEY)
+                .and(null);
     }
 
     @Bean
     public Binding usuariosBinding(Queue queue, Exchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(USUARIOS_BINDING_KEY).and(null);
+        return BindingBuilder.bind(queue)
+                .to(exchange)
+                .with(USUARIOS_BINDING_KEY)
+                .and(null);
     }
 
     @Bean
@@ -58,8 +64,7 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public RabbitTemplate rabbitTemplate(
-            ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
 

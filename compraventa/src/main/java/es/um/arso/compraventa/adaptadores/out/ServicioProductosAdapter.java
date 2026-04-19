@@ -15,11 +15,10 @@ public class ServicioProductosAdapter implements IServicioProductosExterno {
     private ProductosRestClient client;
 
     public ServicioProductosAdapter(@Value("${servicios.productos.url}") String baseUrl) {
-        Retrofit retrofit =
-                new Retrofit.Builder()
-                        .baseUrl(baseUrl)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         this.client = retrofit.create(ProductosRestClient.class);
     }
@@ -29,8 +28,7 @@ public class ServicioProductosAdapter implements IServicioProductosExterno {
         Response<ProductoInfo> response = client.getProducto(idProducto).execute();
 
         if (!response.isSuccessful()) {
-            throw new RuntimeException(
-                    "Error al obtener producto: " + response.code() + " - " + response.message());
+            throw new RuntimeException("Error al obtener producto: " + response.code() + " - " + response.message());
         }
 
         return response.body();

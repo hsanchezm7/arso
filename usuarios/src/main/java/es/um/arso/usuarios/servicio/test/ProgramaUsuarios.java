@@ -19,14 +19,7 @@ public class ProgramaUsuarios {
             servicio = FactoriaServicios.getServicio(IServicioUsuarios.class);
 
             // Test 1: alta + modificación parcial (modificar sólo el nombre)
-            String id1 =
-                    servicio.alta(
-                            "Ana",
-                            "López",
-                            "ana@um.es",
-                            "secreta",
-                            LocalDate.of(1995, 5, 21),
-                            "600124226");
+            String id1 = servicio.alta("Ana", "López", "ana@um.es", "secreta", LocalDate.of(1995, 5, 21), "600124226");
 
             Usuario mod1 = new Usuario();
             mod1.setNombre("Ana María");
@@ -35,13 +28,7 @@ public class ProgramaUsuarios {
             // Test 2: alta + modificación de varios campos (apellidos, clave, fecha y
             // teléfono)
             String id2 =
-                    servicio.alta(
-                            "Luis",
-                            "Martín",
-                            "luis@example.com",
-                            "clave123",
-                            LocalDate.of(1990, 3, 10),
-                            null);
+                    servicio.alta("Luis", "Martín", "luis@example.com", "clave123", LocalDate.of(1990, 3, 10), null);
 
             Usuario mod2 = new Usuario();
             mod2.setApellidos("García");

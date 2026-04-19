@@ -19,12 +19,10 @@ public interface IServicioProductos {
             String vendedorId)
             throws EntidadNoEncontrada;
 
-    void asignarLugarRecogida(
-            String productoId, String descripcion, Double longitud, Double latitud)
+    void asignarLugarRecogida(String productoId, String descripcion, Double longitud, Double latitud)
             throws EntidadNoEncontrada;
 
-    void modificar(
-            String productoId, Double nuevoPrecio, String nuevaDescripcion, boolean estaDisponible)
+    void modificar(String productoId, Double nuevoPrecio, String nuevaDescripcion, boolean estaDisponible)
             throws EntidadNoEncontrada;
 
     void anadirVisualizacion(String productoId) throws EntidadNoEncontrada;
@@ -33,15 +31,10 @@ public interface IServicioProductos {
 
     List<ProductoResumen> getHistorialMes(int mes, int anio);
 
-    List<Producto> buscar(
-            String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo);
+    List<Producto> buscar(String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo);
 
     Page<ProductoResumen> getHistorialMesPaginado(int mes, int anio, Pageable paginacion);
 
     Page<ProductoResumen> buscarPaginado(
-            String categoriaId,
-            String texto,
-            EstadoProducto estadoMinimo,
-            Double precioMaximo,
-            Pageable paginacion);
+            String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo, Pageable paginacion);
 }

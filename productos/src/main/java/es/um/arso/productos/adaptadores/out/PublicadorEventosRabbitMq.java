@@ -18,8 +18,6 @@ public class PublicadorEventosRabbitMq implements PublicadorEventos {
 
     public void emitirEvento(Evento evento) {
         rabbitTemplate.convertAndSend(
-                RabbitMqConfig.EXCHANGE_NAME,
-                RabbitMqConfig.ROUTING_KEY_PREFIX + evento.getTipoEvento(),
-                evento);
+                RabbitMqConfig.EXCHANGE_NAME, RabbitMqConfig.ROUTING_KEY_PREFIX + evento.getTipoEvento(), evento);
     }
 }

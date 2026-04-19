@@ -50,7 +50,6 @@ public class LugarRecogidaDto {
         if (lugar == null) {
             return null;
         }
-        return new LugarRecogidaDto(
-                lugar.getDescripcion(), lugar.getLongitud(), lugar.getLatitud());
+        return new LugarRecogidaDto(lugar.getDescripcion(), lugar.getLongitud(), lugar.getLatitud());
     }
 }

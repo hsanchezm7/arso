@@ -42,13 +42,15 @@ public class PublicadorRabbitMq implements PublicadorEventos {
     @Override
     public void emitirEvento(Evento evento) throws IOException {
         try (Connection connection = factory.newConnection();
-                Channel channel = connection.createChannel();) {
+                Channel channel = connection.createChannel(); ) {
             String mensaje = this.gson.toJson(evento);
 
             channel.basicPublish(
                     EXCHANGE_NAME,
                     ROUTING_KEY_PREFIX + evento.getTipoEvento(),
-                    new AMQP.BasicProperties.Builder().contentType("application/json").build(),
+                    new AMQP.BasicProperties.Builder()
+                            .contentType("application/json")
+                            .build(),
                     mensaje.getBytes());
         } catch (Exception e) {
             throw new IOException("Error al enviar el evento", e);

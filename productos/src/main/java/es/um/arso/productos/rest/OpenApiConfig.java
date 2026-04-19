@@ -11,10 +11,9 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI openApi() {
         return new OpenAPI()
-                .info(
-                        new Info()
-                                .title("Servicio de Productos")
-                                .description("Gestión de productos")
-                                .version("1.0.0"));
+                .info(new Info()
+                        .title("Servicio de Productos")
+                        .description("Gestión de productos")
+                        .version("1.0.0"));
     }
 }

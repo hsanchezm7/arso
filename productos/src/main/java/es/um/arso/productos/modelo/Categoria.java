@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -29,8 +28,7 @@ public class Categoria {
     @ManyToOne
     private Categoria parent;
 
-    public Categoria() {
-    }
+    public Categoria() {}
 
     public Categoria(String nombre) {
         this.nombre = nombre;
@@ -96,13 +94,10 @@ public class Categoria {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Categoria))
-            return false;
+        if (this == o) return true;
+        if (!(o instanceof Categoria)) return false;
         Categoria other = (Categoria) o;
-        if (id == null || other.id == null)
-            return false;
+        if (id == null || other.id == null) return false;
         return id.equals(other.id);
     }
 

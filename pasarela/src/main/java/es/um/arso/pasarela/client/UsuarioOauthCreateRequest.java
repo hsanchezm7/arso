@@ -6,8 +6,7 @@ public class UsuarioOauthCreateRequest {
     private String email;
     private String githubId;
 
-    public UsuarioOauthCreateRequest() {
-    }
+    public UsuarioOauthCreateRequest() {}
 
     public UsuarioOauthCreateRequest(String nombre, String email, String githubId) {
         this.nombre = nombre;

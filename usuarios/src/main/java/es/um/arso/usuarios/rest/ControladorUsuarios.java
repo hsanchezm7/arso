@@ -52,7 +52,7 @@ public class ControladorUsuarios {
     // POST /usuarios
     @POST
     @PermitAll
-    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response crear(UsuarioCreateDto dto) throws RepositorioException {
 
         String id = servicio.alta(
@@ -73,10 +73,10 @@ public class ControladorUsuarios {
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response crearOauth(UsuarioGithubCreateDto dto)
-            throws RepositorioException, EntidadNoEncontrada {
+    public Response crearOauth(UsuarioGithubCreateDto dto) throws RepositorioException, EntidadNoEncontrada {
 
-        log.info("POST /usuarios/oauth recibido githubId={}, emailPresent={}",
+        log.info(
+                "POST /usuarios/oauth recibido githubId={}, emailPresent={}",
                 dto != null ? dto.getGithubId() : null,
                 dto != null && dto.getEmail() != null && !dto.getEmail().trim().isEmpty());
 
@@ -114,9 +114,8 @@ public class ControladorUsuarios {
     @GET
     @Path("/{id}")
     @RolesAllowed("USUARIO")
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public Response getUsuario(@PathParam("id") String id)
-            throws RepositorioException, EntidadNoEncontrada {
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response getUsuario(@PathParam("id") String id) throws RepositorioException, EntidadNoEncontrada {
 
         Usuario usuario = servicio.recuperar(id);
         UsuarioDto dto = toUsuarioDTO(usuario);
@@ -127,9 +126,8 @@ public class ControladorUsuarios {
     @GET
     @Path("/{id}/nombre")
     @PermitAll
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public Response getNombreUsuario(@PathParam("id") String id)
-            throws RepositorioException, EntidadNoEncontrada {
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response getNombreUsuario(@PathParam("id") String id) throws RepositorioException, EntidadNoEncontrada {
 
         Usuario usuario = servicio.recuperar(id);
         UsuarioNombreDto dto = new UsuarioNombreDto(usuario.getId(), usuario.getNombre());
@@ -142,12 +140,16 @@ public class ControladorUsuarios {
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response verificarCredenciales(VerificarCredencialesDto dto)
-            throws RepositorioException {
+    public Response verificarCredenciales(VerificarCredencialesDto dto) throws RepositorioException {
 
-        log.info("POST /usuarios/verificar recibido usernamePresent={}, passwordPresent={}",
-                dto != null && dto.getUsername() != null && !dto.getUsername().trim().isEmpty(),
-                dto != null && dto.getPassword() != null && !dto.getPassword().trim().isEmpty());
+        log.info(
+                "POST /usuarios/verificar recibido usernamePresent={}, passwordPresent={}",
+                dto != null
+                        && dto.getUsername() != null
+                        && !dto.getUsername().trim().isEmpty(),
+                dto != null
+                        && dto.getPassword() != null
+                        && !dto.getPassword().trim().isEmpty());
 
         if (dto == null || dto.getUsername() == null || dto.getPassword() == null) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -182,13 +184,14 @@ public class ControladorUsuarios {
     @GET
     @Path("/buscar")
     @PermitAll
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public Response buscarUsuario(
-            @QueryParam("email") String email, @QueryParam("githubId") String githubId)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response buscarUsuario(@QueryParam("email") String email, @QueryParam("githubId") String githubId)
             throws RepositorioException {
 
-        log.info("GET /usuarios/buscar recibido githubId={}, emailPresent={}",
-                githubId, email != null && !email.trim().isEmpty());
+        log.info(
+                "GET /usuarios/buscar recibido githubId={}, emailPresent={}",
+                githubId,
+                email != null && !email.trim().isEmpty());
 
         Usuario usuario = null;
 
@@ -216,7 +219,7 @@ public class ControladorUsuarios {
     @PUT
     @Path("/{id}")
     @RolesAllowed("USUARIO")
-    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response modificar(@PathParam("id") String id, UsuarioUpdateDto dto)
             throws RepositorioException, EntidadNoEncontrada {
 
@@ -242,7 +245,7 @@ public class ControladorUsuarios {
     // GET /usuarios
     @GET
     @RolesAllowed("USUARIO")
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response getListadoUsuarios() throws RepositorioException {
 
         List<UsuarioResumen> resultado = servicio.recuperarTodos();

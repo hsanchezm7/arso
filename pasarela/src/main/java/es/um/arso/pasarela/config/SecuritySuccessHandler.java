@@ -43,16 +43,15 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Authentication authentication)
+            HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
 
         log.info("OAuth2 login success handler invoked");
 
         Object principal = authentication.getPrincipal();
         if (!(principal instanceof DefaultOAuth2User)) {
-            log.warn("OAuth2 principal is not DefaultOAuth2User: {}",
+            log.warn(
+                    "OAuth2 principal is not DefaultOAuth2User: {}",
                     principal != null ? principal.getClass().getName() : "null");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
@@ -105,8 +104,8 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
         String name = attributeValue(usuario, "name");
         String email = attributeValue(usuario, "email");
 
-        log.info("OAuth2 attributes received: githubId={}, login={}, emailPresent={}",
-                githubId, login, !isBlank(email));
+        log.info(
+                "OAuth2 attributes received: githubId={}, login={}, emailPresent={}", githubId, login, !isBlank(email));
 
         if (isBlank(githubId)) {
             log.warn("OAuth2 user missing id attribute");
@@ -119,8 +118,8 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
         UsuarioBusquedaInfo existente = servicioUsuarios.buscarUsuario(githubId, email);
         if (existente != null && !isBlank(existente.getId())) {
             log.info("OAuth user found in usuarios service id={}", existente.getId());
-            String nombreLocal = buildNombreCompleto(
-                    existente.getNombre(), existente.getApellidos(), existente.getEmail());
+            String nombreLocal =
+                    buildNombreCompleto(existente.getNombre(), existente.getApellidos(), existente.getEmail());
             String nombreCompleto = firstNonBlank(nombreOAuth, nombreLocal, githubId);
 
             Map<String, Object> claims = new HashMap<>();
@@ -136,8 +135,10 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
         }
 
         String nombreCrear = firstNonBlank(nombreOAuth, email);
-        log.info("OAuth user not found; creating in usuarios service githubId={}, emailPresent={}",
-                githubId, !isBlank(email));
+        log.info(
+                "OAuth user not found; creating in usuarios service githubId={}, emailPresent={}",
+                githubId,
+                !isBlank(email));
         UsuarioAuthInfo creado = servicioUsuarios.crearUsuarioOauth(nombreCrear, email, githubId);
         if (creado == null || isBlank(creado.getId())) {
             log.warn("OAuth2 user creation failed");

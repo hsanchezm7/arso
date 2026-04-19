@@ -34,33 +34,32 @@ public class ControladorProductos {
 
     private IServicioProductos servicioProductos;
 
-    @Autowired private PagedResourcesAssembler<ProductoResumen> pagedResourcesAssembler;
+    @Autowired
+    private PagedResourcesAssembler<ProductoResumen> pagedResourcesAssembler;
 
-    @Autowired private ProductoResumenAssembler productoResumenAssembler;
+    @Autowired
+    private ProductoResumenAssembler productoResumenAssembler;
 
     public ControladorProductos(IServicioProductos servicioProductos) {
         this.servicioProductos = servicioProductos;
     }
 
     @PostMapping
-    public ResponseEntity<Void> crearProducto(@Valid @RequestBody NuevoProductoDto nuevoProducto)
-            throws Exception {
+    public ResponseEntity<Void> crearProducto(@Valid @RequestBody NuevoProductoDto nuevoProducto) throws Exception {
 
-        String id =
-                this.servicioProductos.crear(
-                        nuevoProducto.getTitulo(),
-                        nuevoProducto.getDescripcion(),
-                        nuevoProducto.getPrecio(),
-                        nuevoProducto.getEstado(),
-                        nuevoProducto.getCategoriaId(),
-                        nuevoProducto.isEnvioDisponible(),
-                        nuevoProducto.getVendedorId());
+        String id = this.servicioProductos.crear(
+                nuevoProducto.getTitulo(),
+                nuevoProducto.getDescripcion(),
+                nuevoProducto.getPrecio(),
+                nuevoProducto.getEstado(),
+                nuevoProducto.getCategoriaId(),
+                nuevoProducto.isEnvioDisponible(),
+                nuevoProducto.getVendedorId());
 
-        URI nuevaURL =
-                ServletUriComponentsBuilder.fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(id)
-                        .toUri();
+        URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id)
+                .toUri();
 
         return ResponseEntity.created(nuevaURL).build();
     }
@@ -72,31 +71,24 @@ public class ControladorProductos {
         ProductoDto productoDto = ProductoDto.fromEntity(producto);
 
         EntityModel<ProductoDto> model = EntityModel.of(productoDto);
-        model.add(
-                WebMvcLinkBuilder.linkTo(
-                                WebMvcLinkBuilder.methodOn(ControladorProductos.class)
-                                        .getProductoById(id))
-                        .withSelfRel());
+        model.add(WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(ControladorProductos.class).getProductoById(id))
+                .withSelfRel());
         return model;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> modificarProducto(
-            @PathVariable String id, @Valid @RequestBody ModificarProductoDto modificacion)
-            throws Exception {
+            @PathVariable String id, @Valid @RequestBody ModificarProductoDto modificacion) throws Exception {
 
         this.servicioProductos.modificar(
-                id,
-                modificacion.getPrecio(),
-                modificacion.getDescripcion(),
-                modificacion.isDisponibilidad());
+                id, modificacion.getPrecio(), modificacion.getDescripcion(), modificacion.isDisponibilidad());
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/recogida")
     public ResponseEntity<Void> asignarLugarRecogida(
-            @PathVariable String id, @Valid @RequestBody LugarRecogidaDto recogida)
-            throws Exception {
+            @PathVariable String id, @Valid @RequestBody LugarRecogidaDto recogida) throws Exception {
 
         this.servicioProductos.asignarLugarRecogida(
                 id, recogida.getDescripcion(), recogida.getLongitud(), recogida.getLatitud());
@@ -113,8 +105,7 @@ public class ControladorProductos {
     public PagedModel<EntityModel<ProductoResumen>> getHistorialMes(
             @PathVariable int mes, @PathVariable int anio, Pageable paginacion) throws Exception {
 
-        Page<ProductoResumen> resultado =
-                this.servicioProductos.getHistorialMesPaginado(mes, anio, paginacion);
+        Page<ProductoResumen> resultado = this.servicioProductos.getHistorialMesPaginado(mes, anio, paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, productoResumenAssembler);
     }
@@ -129,8 +120,7 @@ public class ControladorProductos {
             throws Exception {
 
         Page<ProductoResumen> resultado =
-                this.servicioProductos.buscarPaginado(
-                        categoriaId, texto, estadoMinimo, precioMaximo, paginacion);
+                this.servicioProductos.buscarPaginado(categoriaId, texto, estadoMinimo, precioMaximo, paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, productoResumenAssembler);
     }

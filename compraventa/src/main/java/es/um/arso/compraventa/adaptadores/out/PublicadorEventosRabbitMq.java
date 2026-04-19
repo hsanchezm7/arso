@@ -25,10 +25,6 @@ public class PublicadorEventosRabbitMq implements PublicadorEventos {
 
         rabbitTemplate.convertAndSend(RabbitMqConfig.EXCHANGE_NAME, routingKey, evento);
 
-        log.info(
-                "Evento {} enviado a exchange {}: id={}",
-                routingKey,
-                RabbitMqConfig.EXCHANGE_NAME,
-                evento.getId());
+        log.info("Evento {} enviado a exchange {}: id={}", routingKey, RabbitMqConfig.EXCHANGE_NAME, evento.getId());
     }
 }

@@ -31,10 +31,7 @@ public class UsuariosBootstrapListener implements ServletContextListener {
                 log.info("Admin user created id={}", id);
             } else {
                 log.info("Admin user exists id={}; ensuring admin credentials", existente.getId());
-                asegurarCredencialesAdmin(
-                        existente.getId(),
-                        existente.getNumeroCompras(),
-                        existente.getNumeroVentas());
+                asegurarCredencialesAdmin(existente.getId(), existente.getNumeroCompras(), existente.getNumeroVentas());
             }
         } catch (RepositorioException | EntidadNoEncontrada ex) {
             log.error("Failed to initialize admin user", ex);
@@ -42,8 +39,7 @@ public class UsuariosBootstrapListener implements ServletContextListener {
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-    }
+    public void contextDestroyed(ServletContextEvent sce) {}
 
     private void asegurarCredencialesAdmin(String id, int numeroCompras, int numeroVentas)
             throws RepositorioException, EntidadNoEncontrada {

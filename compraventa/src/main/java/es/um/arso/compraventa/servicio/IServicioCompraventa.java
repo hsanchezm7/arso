@@ -19,8 +19,7 @@ public interface IServicioCompraventa {
 
     Page<Compraventa> getVentasUsuarioPaginado(String idVendedor, Pageable pageable);
 
-    Page<Compraventa> getCompraventasEntreUsuariosPaginado(
-            String idComprador, String idVendedor, Pageable pageable);
+    Page<Compraventa> getCompraventasEntreUsuariosPaginado(String idComprador, String idVendedor, Pageable pageable);
 
     Compraventa getCompraventa(String id);
 }

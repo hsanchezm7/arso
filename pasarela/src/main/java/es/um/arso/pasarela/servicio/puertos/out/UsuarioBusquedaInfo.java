@@ -7,8 +7,7 @@ public class UsuarioBusquedaInfo {
     private String apellidos;
     private String email;
 
-    public UsuarioBusquedaInfo() {
-    }
+    public UsuarioBusquedaInfo() {}
 
     public String getId() {
         return id;

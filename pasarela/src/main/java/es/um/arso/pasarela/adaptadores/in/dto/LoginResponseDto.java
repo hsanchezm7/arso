@@ -6,9 +6,7 @@ public class LoginResponseDto {
     private String nombreCompleto;
     private String roles;
 
-    public LoginResponseDto() {
-
-    }
+    public LoginResponseDto() {}
 
     public LoginResponseDto(String identificadorUsuario, String nombreCompleto, String roles) {
         this.identificadorUsuario = identificadorUsuario;

@@ -31,8 +31,7 @@ public class Usuario implements Identificable {
     private int numeroCompras = 0;
     private int numeroVentas = 0;
 
-    public Usuario() {
-    }
+    public Usuario() {}
 
     public Usuario(String email, String nombre) {
         this.email = email;

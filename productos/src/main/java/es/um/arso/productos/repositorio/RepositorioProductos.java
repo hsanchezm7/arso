@@ -14,8 +14,6 @@ public interface RepositorioProductos extends CrudRepository<Producto, String> {
     @Query("SELECT p FROM Producto p WHERE p.id IN :ids")
     List<Producto> getByIds(@Param("ids") List<String> ids);
 
-    @Query(
-            "SELECT p FROM Producto p WHERE p.fechaPublicacion >= :ini AND p.fechaPublicacion < :fin")
-    List<Producto> getByPublicadosEntre(
-            @Param("ini") LocalDateTime ini, @Param("fin") LocalDateTime fin);
+    @Query("SELECT p FROM Producto p WHERE p.fechaPublicacion >= :ini AND p.fechaPublicacion < :fin")
+    List<Producto> getByPublicadosEntre(@Param("ini") LocalDateTime ini, @Param("fin") LocalDateTime fin);
 }

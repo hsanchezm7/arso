@@ -8,13 +8,7 @@ import java.util.List;
 
 public interface IServicioUsuarios {
 
-    String alta(
-            String nombre,
-            String apellidos,
-            String email,
-            String clave,
-            LocalDate fechaNacimiento,
-            String telefono)
+    String alta(String nombre, String apellidos, String email, String clave, LocalDate fechaNacimiento, String telefono)
             throws RepositorioException;
 
     String altaOauth(String nombre, String email, String githubId) throws RepositorioException;

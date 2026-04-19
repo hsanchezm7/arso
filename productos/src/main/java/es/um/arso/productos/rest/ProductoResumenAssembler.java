@@ -17,9 +17,7 @@ public class ProductoResumenAssembler
         try {
             return EntityModel.of(
                     productoResumen,
-                    linkTo(
-                                    methodOn(ControladorProductos.class)
-                                            .getProductoById(productoResumen.getId()))
+                    linkTo(methodOn(ControladorProductos.class).getProductoById(productoResumen.getId()))
                             .withSelfRel());
         } catch (Exception e) {
             return EntityModel.of(productoResumen);

@@ -26,17 +26,10 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
     @Override
     public String alta(
-            String nombre,
-            String apellidos,
-            String email,
-            String clave,
-            LocalDate fechaNacimiento,
-            String telefono)
+            String nombre, String apellidos, String email, String clave, LocalDate fechaNacimiento, String telefono)
             throws RepositorioException {
-        if (email == null || email.isEmpty())
-            throw new IllegalArgumentException("email obligatorio");
-        if (clave == null || clave.isEmpty())
-            throw new IllegalArgumentException("clave obligatoria");
+        if (email == null || email.isEmpty()) throw new IllegalArgumentException("email obligatorio");
+        if (clave == null || clave.isEmpty()) throw new IllegalArgumentException("clave obligatoria");
         Usuario u = new Usuario(email, nombre, apellidos);
         u.setClave(clave);
         u.setFechaNacimiento(fechaNacimiento);
@@ -51,8 +44,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
     }
 
     @Override
-    public String altaOauth(String nombre, String email, String githubId)
-            throws RepositorioException {
+    public String altaOauth(String nombre, String email, String githubId) throws RepositorioException {
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("email obligatorio");
         }
@@ -78,20 +70,14 @@ public class ServicioUsuarios implements IServicioUsuarios {
     }
 
     @Override
-    public void modificar(String id, Usuario usuario)
-            throws RepositorioException, EntidadNoEncontrada {
+    public void modificar(String id, Usuario usuario) throws RepositorioException, EntidadNoEncontrada {
         Usuario u = repoUsuarios.getById(id);
 
-        if (usuario.getNombre() != null && !usuario.getNombre().isEmpty())
-            u.setNombre(usuario.getNombre());
-        if (usuario.getApellidos() != null && !usuario.getApellidos().isEmpty())
-            u.setApellidos(usuario.getApellidos());
-        if (usuario.getClave() != null && !usuario.getClave().isEmpty())
-            u.setClave(usuario.getClave());
-        if (usuario.getFechaNacimiento() != null)
-            u.setFechaNacimiento(usuario.getFechaNacimiento());
-        if (usuario.getTelefono() != null)
-            u.setTelefono(usuario.getTelefono());
+        if (usuario.getNombre() != null && !usuario.getNombre().isEmpty()) u.setNombre(usuario.getNombre());
+        if (usuario.getApellidos() != null && !usuario.getApellidos().isEmpty()) u.setApellidos(usuario.getApellidos());
+        if (usuario.getClave() != null && !usuario.getClave().isEmpty()) u.setClave(usuario.getClave());
+        if (usuario.getFechaNacimiento() != null) u.setFechaNacimiento(usuario.getFechaNacimiento());
+        if (usuario.getTelefono() != null) u.setTelefono(usuario.getTelefono());
 
         u.setAdministrador(usuario.isAdministrador());
         u.setNumeroCompras(usuario.getNumeroCompras());
@@ -160,8 +146,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
         return null;
     }
 
-    private void emitirEventoUsuarioCreado(
-            String idUsuario, String email, String nombre, String apellidos) {
+    private void emitirEventoUsuarioCreado(String idUsuario, String email, String nombre, String apellidos) {
         EventoUsuarioCreado evento = new EventoUsuarioCreado(idUsuario, email, nombre, apellidos);
         try {
             if (publicadorEventos == null) {

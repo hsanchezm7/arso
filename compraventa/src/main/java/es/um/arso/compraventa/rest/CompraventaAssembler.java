@@ -9,17 +9,14 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CompraventaAssembler
-        implements RepresentationModelAssembler<Compraventa, EntityModel<Compraventa>> {
+public class CompraventaAssembler implements RepresentationModelAssembler<Compraventa, EntityModel<Compraventa>> {
 
     @Override
     public EntityModel<Compraventa> toModel(Compraventa compraventa) {
         try {
             return EntityModel.of(
                     compraventa,
-                    linkTo(
-                                    methodOn(ControladorCompraventas.class)
-                                            .getCompraventaById(compraventa.getId()))
+                    linkTo(methodOn(ControladorCompraventas.class).getCompraventaById(compraventa.getId()))
                             .withSelfRel());
         } catch (Exception e) {
             return EntityModel.of(compraventa);

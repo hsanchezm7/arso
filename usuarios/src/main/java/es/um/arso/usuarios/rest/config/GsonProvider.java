@@ -13,10 +13,9 @@ public class GsonProvider implements ContextResolver<Gson> {
     private final Gson gson;
 
     public GsonProvider() {
-        this.gson =
-                new GsonBuilder()
-                        .registerTypeAdapter(LocalDate.class, new LocalDateGsonAdapter())
-                        .create();
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateGsonAdapter())
+                .create();
     }
 
     @Override

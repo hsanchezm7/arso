@@ -1,8 +1,8 @@
 package es.um.arso.pasarela.adaptadores.out;
 
 import es.um.arso.pasarela.client.UsuarioOauthCreateRequest;
-import es.um.arso.pasarela.client.VerificarCredencialesRequest;
 import es.um.arso.pasarela.client.UsuariosRestClient;
+import es.um.arso.pasarela.client.VerificarCredencialesRequest;
 import es.um.arso.pasarela.servicio.excepciones.UsuariosClientException;
 import es.um.arso.pasarela.servicio.puertos.out.IServicioUsuariosExterno;
 import es.um.arso.pasarela.servicio.puertos.out.UsuarioAuthInfo;
@@ -73,10 +73,7 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
 
         if (!response.isSuccessful()) {
             throw new UsuariosClientException(
-                    "Error al verificar credenciales: "
-                            + response.code()
-                            + " - "
-                            + response.message());
+                    "Error al verificar credenciales: " + response.code() + " - " + response.message());
         }
 
         UsuarioAuthInfo body = response.body();
@@ -90,8 +87,10 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
     public UsuarioBusquedaInfo buscarUsuario(String githubId, String email) {
         Response<UsuarioBusquedaInfo> response;
         try {
-            log.info("Buscando usuario en servicio usuarios githubId={} emailPresent={}",
-                    githubId, email != null && !email.trim().isEmpty());
+            log.info(
+                    "Buscando usuario en servicio usuarios githubId={} emailPresent={}",
+                    githubId,
+                    email != null && !email.trim().isEmpty());
             response = client.buscarUsuario(githubId, email).execute();
         } catch (Exception e) {
             throw new UsuariosClientException("Error de comunicación con servicio usuarios", e);
@@ -104,10 +103,7 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
 
         if (!response.isSuccessful()) {
             throw new UsuariosClientException(
-                    "Error al buscar usuario: "
-                            + response.code()
-                            + " - "
-                            + response.message());
+                    "Error al buscar usuario: " + response.code() + " - " + response.message());
         }
 
         UsuarioBusquedaInfo usuario = response.body();
@@ -122,8 +118,10 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
         UsuarioOauthCreateRequest request = new UsuarioOauthCreateRequest(nombre, email, githubId);
         Response<UsuarioAuthInfo> response;
         try {
-            log.info("Creando usuario OAuth en servicio usuarios githubId={} emailPresent={}",
-                    githubId, email != null && !email.trim().isEmpty());
+            log.info(
+                    "Creando usuario OAuth en servicio usuarios githubId={} emailPresent={}",
+                    githubId,
+                    email != null && !email.trim().isEmpty());
             response = client.crearUsuarioOauth(request).execute();
         } catch (Exception e) {
             throw new UsuariosClientException("Error de comunicación con servicio usuarios", e);
@@ -131,10 +129,7 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
 
         if (!response.isSuccessful()) {
             throw new UsuariosClientException(
-                    "Error al crear usuario OAuth: "
-                            + response.code()
-                            + " - "
-                            + response.message());
+                    "Error al crear usuario OAuth: " + response.code() + " - " + response.message());
         }
 
         UsuarioAuthInfo body = response.body();

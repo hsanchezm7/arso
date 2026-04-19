@@ -10,8 +10,7 @@ public class EventoCompraventaCreada extends Evento {
 
     public EventoCompraventaCreada() {}
 
-    public EventoCompraventaCreada(
-            String id, String idProducto, String idVendedor, String idComprador) {
+    public EventoCompraventaCreada(String id, String idProducto, String idVendedor, String idComprador) {
         super(id, TIPO_EVENTO);
         this.idProducto = idProducto;
         this.idVendedor = idVendedor;

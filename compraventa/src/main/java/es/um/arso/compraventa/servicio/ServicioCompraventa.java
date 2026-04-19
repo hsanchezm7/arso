@@ -21,13 +21,17 @@ public class ServicioCompraventa implements IServicioCompraventa {
 
     private static final Logger log = LoggerFactory.getLogger(ServicioCompraventa.class);
 
-    @Autowired private RepositorioCompraventas repositorioCompraventas;
+    @Autowired
+    private RepositorioCompraventas repositorioCompraventas;
 
-    @Autowired private IServicioProductosExterno servicioProductosExterno;
+    @Autowired
+    private IServicioProductosExterno servicioProductosExterno;
 
-    @Autowired private IServicioUsuariosExterno servicioUsuariosExterno;
+    @Autowired
+    private IServicioUsuariosExterno servicioUsuariosExterno;
 
-    @Autowired private PublicadorEventos publicadorEventos;
+    @Autowired
+    private PublicadorEventos publicadorEventos;
 
     @Override
     public String realizarCompraventa(String idProducto, String idComprador) throws Exception {
@@ -58,16 +62,15 @@ public class ServicioCompraventa implements IServicioCompraventa {
         String recogidaString =
                 producto.getRecogida() != null ? producto.getRecogida().toString() : null;
 
-        Compraventa compraventa =
-                new Compraventa(
-                        idProducto,
-                        producto.getTitulo(),
-                        producto.getPrecio(),
-                        recogidaString,
-                        idVendedor,
-                        vendedor.getNombre(),
-                        idComprador,
-                        comprador.getNombre());
+        Compraventa compraventa = new Compraventa(
+                idProducto,
+                producto.getTitulo(),
+                producto.getPrecio(),
+                recogidaString,
+                idVendedor,
+                vendedor.getNombre(),
+                idComprador,
+                comprador.getNombre());
 
         compraventa = repositorioCompraventas.save(compraventa);
 
@@ -75,8 +78,7 @@ public class ServicioCompraventa implements IServicioCompraventa {
 
         // TODO: como idProducto es la entidad afectada, se podría eliminar
         // el campo idProducto de la clase Java.
-        EventoCompraventaCreada evento =
-                new EventoCompraventaCreada(idProducto, idProducto, idVendedor, idComprador);
+        EventoCompraventaCreada evento = new EventoCompraventaCreada(idProducto, idProducto, idVendedor, idComprador);
 
         publicadorEventos.emitirEvento(evento);
 
@@ -111,8 +113,7 @@ public class ServicioCompraventa implements IServicioCompraventa {
     @Override
     public Page<Compraventa> getCompraventasEntreUsuariosPaginado(
             String idComprador, String idVendedor, Pageable pageable) {
-        return repositorioCompraventas.findByIdCompradorAndIdVendedor(
-                idComprador, idVendedor, pageable);
+        return repositorioCompraventas.findByIdCompradorAndIdVendedor(idComprador, idVendedor, pageable);
     }
 
     @Override

@@ -237,9 +237,7 @@
           <version>2.43.0</version>
           <configuration>
             <java>
-              <googleJavaFormat>
-                <style>AOSP</style>
-              </googleJavaFormat>
+              <palantirJavaFormat/>
               <importOrder/>
               <removeUnusedImports/>
               <toggleOffOn/>

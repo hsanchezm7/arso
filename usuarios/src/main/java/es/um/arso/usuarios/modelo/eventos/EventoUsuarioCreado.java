@@ -9,8 +9,7 @@ public class EventoUsuarioCreado extends Evento {
     private String nombre;
     private String apellidos;
 
-    public EventoUsuarioCreado() {
-    }
+    public EventoUsuarioCreado() {}
 
     public EventoUsuarioCreado(String idUsuario, String email, String nombre, String apellidos) {
         super(idUsuario, TIPO_EVENTO);

@@ -6,8 +6,7 @@ public class UsuarioAuthInfo {
     private String nombreCompleto;
     private String roles;
 
-    public UsuarioAuthInfo() {
-    }
+    public UsuarioAuthInfo() {}
 
     public String getId() {
         return id;

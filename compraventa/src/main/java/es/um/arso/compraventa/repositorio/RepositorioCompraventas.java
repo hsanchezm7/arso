@@ -12,8 +12,7 @@ public interface RepositorioCompraventas extends MongoRepository<Compraventa, St
 
     Page<Compraventa> findByIdVendedor(String idVendedor, Pageable pageable);
 
-    Page<Compraventa> findByIdCompradorAndIdVendedor(
-            String idComprador, String idVendedor, Pageable pageable);
+    Page<Compraventa> findByIdCompradorAndIdVendedor(String idComprador, String idVendedor, Pageable pageable);
 
     List<Compraventa> findByIdComprador(String idComprador);
 

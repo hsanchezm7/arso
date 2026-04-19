@@ -1,7 +1,7 @@
 package es.um.arso.pasarela.servicio.puertos.out;
 
 public class UsuarioInfo {
-    
+
     private String id;
     private String nombre;
 

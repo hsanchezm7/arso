@@ -15,8 +15,7 @@ public class Usuario {
     private String nombre;
     private String apellidos;
 
-    public Usuario() {
-    }
+    public Usuario() {}
 
     public Usuario(String email, String nombre, String apellidos) {
         this.email = email;

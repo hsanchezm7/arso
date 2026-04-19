@@ -30,7 +30,8 @@ public class Producto {
     private int visualizaciones = 0;
     private boolean envioDisponible;
 
-    @Embedded private LugarRecogida recogida;
+    @Embedded
+    private LugarRecogida recogida;
 
     @ManyToOne
     @JoinColumn(name = "categoria_fk")

@@ -36,10 +36,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
         if (esRutaAuth(request.getRequestURI())) {
             filterChain.doFilter(request, response);
@@ -64,8 +62,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             if (subject != null) {
                 List<SimpleGrantedAuthority> authorities = parseRoles(claims.get("roles", String.class));
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(subject,
-                        null, authorities);
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(subject, null, authorities);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 log.info("JWT valido para subject={}", subject);
@@ -85,9 +83,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (uri == null) {
             return false;
         }
-        return uri.startsWith("/auth/")
-                || uri.startsWith("/oauth2/")
-                || uri.startsWith("/login/oauth2");
+        return uri.startsWith("/auth/") || uri.startsWith("/oauth2/") || uri.startsWith("/login/oauth2");
     }
 
     private String extraerCookie(HttpServletRequest request) {

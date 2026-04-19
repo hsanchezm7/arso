@@ -40,8 +40,11 @@ public class ConsumidorRabbitMq implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
 
         try {
-            log.info("Inicializando consumir RabbitMQ queue={} exchange={} binding={}",
-                    QUEUE_NAME, EXCHANGE_NAME, BINDING_KEY);
+            log.info(
+                    "Inicializando consumir RabbitMQ queue={} exchange={} binding={}",
+                    QUEUE_NAME,
+                    EXCHANGE_NAME,
+                    BINDING_KEY);
             ConnectionFactory factory = new ConnectionFactory();
             factory.setUri(RABBITMQ_URI);
 
@@ -59,51 +62,44 @@ public class ConsumidorRabbitMq implements ServletContextListener {
             channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, BINDING_KEY);
 
             boolean autoAck = false;
-            channel.basicConsume(
-                    QUEUE_NAME,
-                    autoAck,
-                    "usuarios-consumer",
-                    new DefaultConsumer(channel) {
-                        @Override
-                        public void handleDelivery(
-                                String consumerTag,
-                                Envelope envelope,
-                                AMQP.BasicProperties properties,
-                                byte[] body)
-                                throws IOException {
+            channel.basicConsume(QUEUE_NAME, autoAck, "usuarios-consumer", new DefaultConsumer(channel) {
+                @Override
+                public void handleDelivery(
+                        String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
+                        throws IOException {
 
-                            long deliveryTag = envelope.getDeliveryTag();
+                    long deliveryTag = envelope.getDeliveryTag();
 
-                            String contenido = new String(body);
+                    String contenido = new String(body);
 
-                            JsonObject objeto = JsonParser.parseString(contenido).getAsJsonObject();
+                    JsonObject objeto = JsonParser.parseString(contenido).getAsJsonObject();
 
-                            String tipo = objeto.get("tipoEvento").getAsString();
+                    String tipo = objeto.get("tipoEvento").getAsString();
 
-                            switch (tipo) {
-                                case "compraventa-creada":
-                                    log.info("Evento recibido: compraventa-creada");
-                                    Gson gson = new Gson();
-                                    EventoCompraventaCreada evento = gson.fromJson(objeto,
-                                            EventoCompraventaCreada.class);
-                                    try {
-                                        manejadorEventos.compraventaCreada(
-                                                evento.getIdVendedor(), evento.getIdComprador());
-                                        log.info("Evento procesado vendedor={} comprador={}",
-                                                evento.getIdVendedor(), evento.getIdComprador());
-                                    } catch (Exception e) {
-                                        log.error("Error procesando evento compraventa-creada", e);
-                                        throw new RuntimeException(e);
-                                    }
-                                    break;
-                                default:
-                                    log.info("Evento ignorado tipo={}", tipo);
-                                    return;
+                    switch (tipo) {
+                        case "compraventa-creada":
+                            log.info("Evento recibido: compraventa-creada");
+                            Gson gson = new Gson();
+                            EventoCompraventaCreada evento = gson.fromJson(objeto, EventoCompraventaCreada.class);
+                            try {
+                                manejadorEventos.compraventaCreada(evento.getIdVendedor(), evento.getIdComprador());
+                                log.info(
+                                        "Evento procesado vendedor={} comprador={}",
+                                        evento.getIdVendedor(),
+                                        evento.getIdComprador());
+                            } catch (Exception e) {
+                                log.error("Error procesando evento compraventa-creada", e);
+                                throw new RuntimeException(e);
                             }
+                            break;
+                        default:
+                            log.info("Evento ignorado tipo={}", tipo);
+                            return;
+                    }
 
-                            channel.basicAck(deliveryTag, false);
-                        }
-                    });
+                    channel.basicAck(deliveryTag, false);
+                }
+            });
 
             log.info("Consumidor RabbitMQ esperando mensajes...");
         } catch (Exception e) {
@@ -117,11 +113,9 @@ public class ConsumidorRabbitMq implements ServletContextListener {
 
         try {
             log.info("Cerrando consumidor RabbitMQ");
-            if (this.channel != null)
-                this.channel.close();
+            if (this.channel != null) this.channel.close();
 
-            if (this.connection != null)
-                this.connection.close();
+            if (this.connection != null) this.connection.close();
         } catch (Exception e) {
             log.error("Error cerrando consumidor RabbitMQ", e);
             throw new RuntimeException(e);

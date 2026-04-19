@@ -15,11 +15,10 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
     private UsuariosRestClient client;
 
     public ServicioUsuariosAdapter(@Value("${servicios.usuarios.url}") String baseUrl) {
-        Retrofit retrofit =
-                new Retrofit.Builder()
-                        .baseUrl(baseUrl)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         this.client = retrofit.create(UsuariosRestClient.class);
     }
@@ -29,8 +28,7 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
         Response<UsuarioInfo> response = client.getUsuario(idUsuario).execute();
 
         if (!response.isSuccessful()) {
-            throw new RuntimeException(
-                    "Error al obtener usuario: " + response.code() + " - " + response.message());
+            throw new RuntimeException("Error al obtener usuario: " + response.code() + " - " + response.message());
         }
 
         return response.body();

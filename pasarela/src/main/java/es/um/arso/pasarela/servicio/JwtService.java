@@ -18,9 +18,7 @@ public class JwtService {
     private final String secret;
     private final int expirationSeconds;
 
-    public JwtService(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expirationSeconds}") int expirationSeconds) {
+    public JwtService(@Value("${jwt.secret}") String secret, @Value("${jwt.expirationSeconds}") int expirationSeconds) {
         if (secret == null || secret.trim().isEmpty()) {
             throw new IllegalArgumentException("jwt.secret obligatorio");
         }
@@ -31,8 +29,7 @@ public class JwtService {
     public String generateToken(String subject, String roles) {
         Date caducidad = Date.from(Instant.now().plusSeconds(expirationSeconds));
 
-        log.info("JWT generado para id={} roles={} expiraEnSegundos={}",
-                subject, roles, expirationSeconds);
+        log.info("JWT generado para id={} roles={} expiraEnSegundos={}", subject, roles, expirationSeconds);
 
         return Jwts.builder()
                 .setSubject(subject)

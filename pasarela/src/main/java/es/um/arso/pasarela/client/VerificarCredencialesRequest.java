@@ -5,8 +5,7 @@ public class VerificarCredencialesRequest {
     private String username;
     private String password;
 
-    public VerificarCredencialesRequest() {
-    } 
+    public VerificarCredencialesRequest() {}
 
     public VerificarCredencialesRequest(String username, String password) {
         this.username = username;

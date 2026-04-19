@@ -88,10 +88,7 @@ public class ProductoInfo {
         @Override
         public String toString() {
             if (descripcion == null) return null;
-            return descripcion
-                    + (longitud != null && latitud != null
-                            ? " (" + latitud + ", " + longitud + ")"
-                            : "");
+            return descripcion + (longitud != null && latitud != null ? " (" + latitud + ", " + longitud + ")" : "");
         }
     }
 }

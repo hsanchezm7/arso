@@ -19,8 +19,7 @@ public class ConsumidorEventos {
     private final IManejadorEventos manejadorEventos;
     private final ObjectMapper objectMapper;
 
-    public ConsumidorEventos(
-            @Autowired ManejadorEventos manejadorEventos, ObjectMapper objectMapper) {
+    public ConsumidorEventos(@Autowired ManejadorEventos manejadorEventos, ObjectMapper objectMapper) {
         this.manejadorEventos = manejadorEventos;
         this.objectMapper = objectMapper;
     }
@@ -38,8 +37,8 @@ public class ConsumidorEventos {
             String tipoEvento = raiz.path("tipoEvento").asText("");
 
             if ("compraventa-creada".equals(tipoEvento)) {
-                EventoCompraventaCreada eventoCompraventa = objectMapper.treeToValue(raiz,
-                        EventoCompraventaCreada.class);
+                EventoCompraventaCreada eventoCompraventa =
+                        objectMapper.treeToValue(raiz, EventoCompraventaCreada.class);
 
                 manejadorEventos.compraventaCreada(eventoCompraventa.getIdProducto());
             } else if ("usuario-creado".equals(tipoEvento)) {

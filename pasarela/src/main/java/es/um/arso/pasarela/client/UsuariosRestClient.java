@@ -7,8 +7,8 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.Path;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface UsuariosRestClient {
@@ -22,8 +22,7 @@ public interface UsuariosRestClient {
 
     @Headers("Accept: application/json")
     @GET("api/usuarios/buscar")
-    Call<UsuarioBusquedaInfo> buscarUsuario(
-            @Query("githubId") String githubId, @Query("email") String email);
+    Call<UsuarioBusquedaInfo> buscarUsuario(@Query("githubId") String githubId, @Query("email") String email);
 
     @Headers({"Accept: application/json", "Content-Type: application/json"})
     @POST("api/usuarios/oauth")

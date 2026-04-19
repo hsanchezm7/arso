@@ -33,10 +33,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(
-            @RequestBody LoginRequestDto request, HttpServletResponse response) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request, HttpServletResponse response) {
 
-        log.info("POST /auth/login recibido usernamePresent={}",
+        log.info(
+                "POST /auth/login recibido usernamePresent={}",
                 request != null
                         && request.getUsername() != null
                         && !request.getUsername().trim().isEmpty());
@@ -52,8 +52,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        log.info("POST /auth/login correcto id={} roles={}",
-                usuario.getId(), usuario.getRoles());
+        log.info("POST /auth/login correcto id={} roles={}", usuario.getId(), usuario.getRoles());
 
         String token = jwtService.generateToken(usuario.getId(), usuario.getRoles());
         jwtCookieUtils.addJwtCookie(response, token);
@@ -70,7 +69,7 @@ public class AuthController {
     public ResponseEntity<Void> logout(HttpServletResponse response) {
         log.info("POST /auth/logout recibido");
         jwtCookieUtils.clearJwtCookie(response);
-        
+
         return ResponseEntity.noContent().build();
     }
 }

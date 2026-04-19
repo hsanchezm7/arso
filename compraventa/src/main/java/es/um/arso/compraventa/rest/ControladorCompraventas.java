@@ -42,66 +42,55 @@ public class ControladorCompraventas {
     }
 
     @PostMapping
-    public ResponseEntity<Void> realizarCompraventa(@Valid @RequestBody NuevaCompraventaDto nueva)
-            throws Exception {
+    public ResponseEntity<Void> realizarCompraventa(@Valid @RequestBody NuevaCompraventaDto nueva) throws Exception {
 
-        String id =
-                this.servicioCompraventa.realizarCompraventa(
-                        nueva.getIdProducto(), nueva.getIdComprador());
+        String id = this.servicioCompraventa.realizarCompraventa(nueva.getIdProducto(), nueva.getIdComprador());
 
-        URI nuevaURL =
-                ServletUriComponentsBuilder.fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(id)
-                        .toUri();
+        URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id)
+                .toUri();
 
         return ResponseEntity.created(nuevaURL).build();
     }
 
     @GetMapping("/{id}")
-    public EntityModel<CompraventaDto> getCompraventaById(@PathVariable String id)
-            throws Exception {
+    public EntityModel<CompraventaDto> getCompraventaById(@PathVariable String id) throws Exception {
 
         Compraventa compraventa = this.servicioCompraventa.getCompraventa(id);
         CompraventaDto compraventaDto = CompraventaDto.fromEntity(compraventa);
 
         EntityModel<CompraventaDto> model = EntityModel.of(compraventaDto);
-        model.add(
-                WebMvcLinkBuilder.linkTo(
-                                WebMvcLinkBuilder.methodOn(ControladorCompraventas.class)
-                                        .getCompraventaById(id))
-                        .withSelfRel());
+        model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControladorCompraventas.class)
+                        .getCompraventaById(id))
+                .withSelfRel());
         return model;
     }
 
     @GetMapping("/compras/{idComprador}")
-    public PagedModel<EntityModel<Compraventa>> getComprasUsuario(
-            @PathVariable String idComprador, Pageable paginacion) throws Exception {
+    public PagedModel<EntityModel<Compraventa>> getComprasUsuario(@PathVariable String idComprador, Pageable paginacion)
+            throws Exception {
 
-        Page<Compraventa> resultado =
-                this.servicioCompraventa.getComprasUsuarioPaginado(idComprador, paginacion);
+        Page<Compraventa> resultado = this.servicioCompraventa.getComprasUsuarioPaginado(idComprador, paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, compraventaAssembler);
     }
 
     @GetMapping("/ventas/{idVendedor}")
-    public PagedModel<EntityModel<Compraventa>> getVentasUsuario(
-            @PathVariable String idVendedor, Pageable paginacion) throws Exception {
+    public PagedModel<EntityModel<Compraventa>> getVentasUsuario(@PathVariable String idVendedor, Pageable paginacion)
+            throws Exception {
 
-        Page<Compraventa> resultado =
-                this.servicioCompraventa.getVentasUsuarioPaginado(idVendedor, paginacion);
+        Page<Compraventa> resultado = this.servicioCompraventa.getVentasUsuarioPaginado(idVendedor, paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, compraventaAssembler);
     }
 
     @GetMapping
     public PagedModel<EntityModel<Compraventa>> getCompraventasEntreUsuarios(
-            @RequestParam String idComprador, @RequestParam String idVendedor, Pageable paginacion)
-            throws Exception {
+            @RequestParam String idComprador, @RequestParam String idVendedor, Pageable paginacion) throws Exception {
 
         Page<Compraventa> resultado =
-                this.servicioCompraventa.getCompraventasEntreUsuariosPaginado(
-                        idComprador, idVendedor, paginacion);
+                this.servicioCompraventa.getCompraventasEntreUsuariosPaginado(idComprador, idVendedor, paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, compraventaAssembler);
     }

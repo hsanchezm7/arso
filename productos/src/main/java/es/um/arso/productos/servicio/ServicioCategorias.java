@@ -21,7 +21,8 @@ public class ServicioCategorias implements IServicioCategorias {
 
     private static final Logger log = LoggerFactory.getLogger(ServicioCategorias.class);
 
-    @Autowired private RepositorioCategorias repositorioCategorias;
+    @Autowired
+    private RepositorioCategorias repositorioCategorias;
 
     @Override
     public void cargarJerarquia(String rutaXml) {
@@ -31,9 +32,9 @@ public class ServicioCategorias implements IServicioCategorias {
             CategoriaXML raizXml = (CategoriaXML) u.unmarshal(new File(rutaXml));
 
             // Evitar duplicar raíz: comprobación por nombre
-            boolean existe =
-                    StreamSupport.stream(repositorioCategorias.findAll().spliterator(), false)
-                            .anyMatch(c -> c.getNombre().equalsIgnoreCase(raizXml.getNombre()));
+            boolean existe = StreamSupport.stream(
+                            repositorioCategorias.findAll().spliterator(), false)
+                    .anyMatch(c -> c.getNombre().equalsIgnoreCase(raizXml.getNombre()));
             if (existe) return;
 
             Categoria raiz = convertir(raizXml);
@@ -46,8 +47,7 @@ public class ServicioCategorias implements IServicioCategorias {
     /** Carga todas las jerarquías de categorías desde los ficheros .xml de un directorio. */
     public void cargarTodas(String directorio) {
         File dir = new File(directorio);
-        if (!dir.exists() || !dir.isDirectory())
-            throw new RuntimeException("Directorio no válido: " + directorio);
+        if (!dir.exists() || !dir.isDirectory()) throw new RuntimeException("Directorio no válido: " + directorio);
         File[] archivos =
                 dir.listFiles(f -> f.isFile() && f.getName().toLowerCase().endsWith(".xml"));
         if (archivos == null) return;
@@ -73,12 +73,10 @@ public class ServicioCategorias implements IServicioCategorias {
     }
 
     @Override
-    public void modificarDescripcion(String categoriaId, String nuevaDescripcion)
-            throws EntidadNoEncontrada {
-        Categoria c =
-                repositorioCategorias
-                        .findById(categoriaId)
-                        .orElseThrow(() -> new EntidadNoEncontrada(categoriaId + " no existe"));
+    public void modificarDescripcion(String categoriaId, String nuevaDescripcion) throws EntidadNoEncontrada {
+        Categoria c = repositorioCategorias
+                .findById(categoriaId)
+                .orElseThrow(() -> new EntidadNoEncontrada(categoriaId + " no existe"));
         c.setDescripcion(nuevaDescripcion);
         repositorioCategorias.save(c);
     }
@@ -92,10 +90,9 @@ public class ServicioCategorias implements IServicioCategorias {
     @Override
     @Transactional(readOnly = true)
     public List<Categoria> getDescendientes(String categoriaId) throws EntidadNoEncontrada {
-        Categoria c =
-                repositorioCategorias
-                        .findById(categoriaId)
-                        .orElseThrow(() -> new EntidadNoEncontrada(categoriaId + " no existe"));
+        Categoria c = repositorioCategorias
+                .findById(categoriaId)
+                .orElseThrow(() -> new EntidadNoEncontrada(categoriaId + " no existe"));
         return c.getDescendientes();
     }
 }
