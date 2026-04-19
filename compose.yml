@@ -28,11 +28,14 @@ services:
     image: rabbitmq:management
     container_name: rabbitmq
     ports:
-      - "5672:5672"   
+      - "5672:5672"
       - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: arso
       RABBITMQ_DEFAULT_PASS: arso
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_management load_definitions \"/etc/rabbitmq/definitions.json\""
+    volumes:
+      - ./definitions.json:/etc/rabbitmq/definitions.json:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
@@ -81,8 +84,12 @@ services:
     environment:
       JAVA_OPTIONS: "-Djetty.http.port=8081"
     depends_on:
+      rabbitmq:
+        condition: service_healthy
       mysql:
         condition: service_healthy
+      productos:
+        condition: service_started
     restart: unless-stopped
 
   productos:
@@ -93,7 +100,10 @@ services:
     ports:
       - "8082:8082"
     depends_on:
-      - usuarios
+      mysql:
+          condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     restart: unless-stopped
 
   compraventa:
@@ -103,6 +113,11 @@ services:
     container_name: compraventa
     ports:
       - "8083:8083"
+    depends_on:
+      mongo:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     restart: unless-stopped
     
 volumes:

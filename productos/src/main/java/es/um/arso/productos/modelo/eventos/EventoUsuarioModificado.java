@@ -1,0 +1,53 @@
+package es.um.arso.productos.modelo.eventos;
+
+public class EventoUsuarioModificado extends Evento {
+
+    public static final String TIPO_EVENTO = "usuario-modificado";
+
+    private String idUsuario;
+    private String email;
+    private String nombre;
+    private String apellidos;
+
+    public EventoUsuarioModificado() {}
+
+    public EventoUsuarioModificado(String idUsuario, String email, String nombre, String apellidos) {
+        super(idUsuario, TIPO_EVENTO);
+        this.idUsuario = idUsuario;
+        this.email = email;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+}

@@ -8,6 +8,7 @@ import es.um.arso.repositorio.RepositorioException;
 import es.um.arso.usuarios.adaptadores.out.PublicadorRabbitMq;
 import es.um.arso.usuarios.modelo.Usuario;
 import es.um.arso.usuarios.modelo.eventos.EventoUsuarioCreado;
+import es.um.arso.usuarios.modelo.eventos.EventoUsuarioModificado;
 import es.um.arso.usuarios.puertos.out.PublicadorEventos;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -86,6 +87,8 @@ public class ServicioUsuarios implements IServicioUsuarios {
         repoUsuarios.update(u);
 
         log.info("Usuario modificado: id={}", id);
+
+        emitirEventoUsuarioModificado(u.getId(), u.getEmail(), u.getNombre(), u.getApellidos());
     }
 
     @Override
@@ -153,9 +156,20 @@ public class ServicioUsuarios implements IServicioUsuarios {
                 publicadorEventos = new PublicadorRabbitMq();
             }
             publicadorEventos.emitirEvento(evento);
-            log.info("Evento usuario-creado enviado: id={}", idUsuario);
         } catch (IOException | RuntimeException e) {
             log.error("Error enviando evento usuario-creado id={}", idUsuario, e);
+        }
+    }
+
+    private void emitirEventoUsuarioModificado(String idUsuario, String email, String nombre, String apellidos) {
+        EventoUsuarioModificado evento = new EventoUsuarioModificado(idUsuario, email, nombre, apellidos);
+        try {
+            if (publicadorEventos == null) {
+                publicadorEventos = new PublicadorRabbitMq();
+            }
+            publicadorEventos.emitirEvento(evento);
+        } catch (IOException | RuntimeException e) {
+            log.error("Error enviando evento usuario-modificado id={}", idUsuario, e);
         }
     }
 }

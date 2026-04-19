@@ -8,8 +8,12 @@ import com.rabbitmq.client.ConnectionFactory;
 import es.um.arso.usuarios.modelo.eventos.Evento;
 import es.um.arso.usuarios.puertos.out.PublicadorEventos;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PublicadorRabbitMq implements PublicadorEventos {
+
+    private static final Logger log = LoggerFactory.getLogger(PublicadorRabbitMq.class);
 
     public static final String RABBITMQ_URI = "amqp://arso:arso@rabbitmq:5672";
 
@@ -45,13 +49,22 @@ public class PublicadorRabbitMq implements PublicadorEventos {
                 Channel channel = connection.createChannel(); ) {
             String mensaje = this.gson.toJson(evento);
 
+            String routingKey = ROUTING_KEY_PREFIX + evento.getTipoEvento();
+
             channel.basicPublish(
                     EXCHANGE_NAME,
-                    ROUTING_KEY_PREFIX + evento.getTipoEvento(),
+                    routingKey,
                     new AMQP.BasicProperties.Builder()
                             .contentType("application/json")
                             .build(),
                     mensaje.getBytes());
+
+            log.info(
+                    "Evento enviado tipo={} routingKey={} exchange={} id={}",
+                    evento.getTipoEvento(),
+                    routingKey,
+                    EXCHANGE_NAME,
+                    evento.getId());
         } catch (Exception e) {
             throw new IOException("Error al enviar el evento", e);
         }

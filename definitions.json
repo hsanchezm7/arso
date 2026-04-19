@@ -1,0 +1,89 @@
+{
+  "vhosts": [
+    { "name": "/" }
+  ],
+  "users": [
+    {
+      "name": "arso",
+      "password": "arso",
+      "tags": "administrator"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "arso",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "arso.bus",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "arso.productos.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "arso.compraventa.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "arso.usuarios.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "arso.bus",
+      "vhost": "/",
+      "destination": "arso.productos.queue",
+      "destination_type": "queue",
+      "routing_key": "arso.compraventa.#",
+      "arguments": {}
+    },
+    {
+      "source": "arso.bus",
+      "vhost": "/",
+      "destination": "arso.productos.queue",
+      "destination_type": "queue",
+      "routing_key": "arso.usuarios.#",
+      "arguments": {}
+    },
+    {
+      "source": "arso.bus",
+      "vhost": "/",
+      "destination": "arso.compraventa.queue",
+      "destination_type": "queue",
+      "routing_key": "arso.usuarios.#",
+      "arguments": {}
+    },
+    {
+      "source": "arso.bus",
+      "vhost": "/",
+      "destination": "arso.usuarios.queue",
+      "destination_type": "queue",
+      "routing_key": "arso.compraventa.#",
+      "arguments": {}
+    }
+  ]
+}

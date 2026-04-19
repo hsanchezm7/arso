@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.um.arso.productos.config.RabbitMqConfig;
 import es.um.arso.productos.modelo.eventos.EventoCompraventaCreada;
 import es.um.arso.productos.modelo.eventos.EventoUsuarioCreado;
+import es.um.arso.productos.modelo.eventos.EventoUsuarioModificado;
 import es.um.arso.productos.puertos.in.IManejadorEventos;
 import es.um.arso.productos.puertos.in.ManejadorEventos;
 import java.nio.charset.StandardCharsets;
@@ -45,6 +46,14 @@ public class ConsumidorEventos {
                 EventoUsuarioCreado eventoUsuario = objectMapper.treeToValue(raiz, EventoUsuarioCreado.class);
 
                 manejadorEventos.usuarioCreado(
+                        eventoUsuario.getIdUsuario(),
+                        eventoUsuario.getEmail(),
+                        eventoUsuario.getNombre(),
+                        eventoUsuario.getApellidos());
+            } else if ("usuario-modificado".equals(tipoEvento)) {
+                EventoUsuarioModificado eventoUsuario = objectMapper.treeToValue(raiz, EventoUsuarioModificado.class);
+
+                manejadorEventos.usuarioModificado(
                         eventoUsuario.getIdUsuario(),
                         eventoUsuario.getEmail(),
                         eventoUsuario.getNombre(),

@@ -1,7 +1,5 @@
 package es.um.arso.usuarios.adaptadores.in;
 
-import es.um.arso.repositorio.EntidadNoEncontrada;
-import es.um.arso.repositorio.RepositorioException;
 import es.um.arso.servicio.FactoriaServicios;
 import es.um.arso.usuarios.modelo.Usuario;
 import es.um.arso.usuarios.servicio.IServicioUsuarios;
@@ -27,27 +25,15 @@ public class UsuariosBootstrapListener implements ServletContextListener {
             if (existente == null) {
                 log.info("Admin user not found; creating default admin");
                 String id = servicio.alta("Admin", "Admin", ADMIN_EMAIL, ADMIN_PASSWORD, null, null);
-                asegurarCredencialesAdmin(id, 0, 0);
                 log.info("Admin user created id={}", id);
             } else {
-                log.info("Admin user exists id={}; ensuring admin credentials", existente.getId());
-                asegurarCredencialesAdmin(existente.getId(), existente.getNumeroCompras(), existente.getNumeroVentas());
+                log.info("Admin user exists id={}", existente.getId());
             }
-        } catch (RepositorioException | EntidadNoEncontrada ex) {
-            log.error("Failed to initialize admin user", ex);
+        } catch (Exception e) {
+            log.error("Failed to initialize admin user", e);
         }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {}
-
-    private void asegurarCredencialesAdmin(String id, int numeroCompras, int numeroVentas)
-            throws RepositorioException, EntidadNoEncontrada {
-        Usuario cambios = new Usuario();
-        cambios.setAdministrador(true);
-        cambios.setClave(ADMIN_PASSWORD);
-        cambios.setNumeroCompras(numeroCompras);
-        cambios.setNumeroVentas(numeroVentas);
-        servicio.modificar(id, cambios);
-    }
 }

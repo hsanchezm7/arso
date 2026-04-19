@@ -3,7 +3,6 @@ package es.um.arso.productos.servicio;
 import es.um.arso.productos.modelo.Usuario;
 import es.um.arso.productos.repositorio.RepositorioUsuarios;
 import es.um.arso.repositorio.EntidadNoEncontrada;
-import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +27,12 @@ public class ServicioUsuarios implements IServicioUsuarios {
     }
 
     @Override
-    public void modificar(
-            String id, String nombre, String apellidos, String clave, LocalDate fechaNacimiento, String telefono)
-            throws EntidadNoEncontrada {
-
+    public void modificar(String id, String nombre, String apellidos, String email) throws EntidadNoEncontrada {
         Usuario usuario =
                 repositorioUsuarios.findById(id).orElseThrow(() -> new EntidadNoEncontrada(id + " no existe"));
-        if (nombre != null) usuario.setNombre(nombre);
-        if (apellidos != null) usuario.setApellidos(apellidos);
+        if (nombre != null && !nombre.isEmpty()) usuario.setNombre(nombre);
+        if (apellidos != null && !apellidos.isEmpty()) usuario.setApellidos(apellidos);
+        if (email != null && !email.isEmpty()) usuario.setEmail(email);
         repositorioUsuarios.save(usuario);
         log.info("Usuario modificado: id={}", id);
     }
