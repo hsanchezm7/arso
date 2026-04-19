@@ -1,35 +1,31 @@
-package es.um.arso.productos.modelo;
+package es.um.arso.usuarios.modelo.eventos;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+public class EventoUsuarioCreado extends Evento {
 
-@Entity
-public class Usuario {
+    public static final String TIPO_EVENTO = "usuario-creado";
 
-    @Id
-    private String id;
-
+    private String idUsuario;
     private String email;
     private String nombre;
     private String apellidos;
 
-    public Usuario() {
+    public EventoUsuarioCreado() {
     }
 
-    public Usuario(String email, String nombre, String apellidos) {
+    public EventoUsuarioCreado(String idUsuario, String email, String nombre, String apellidos) {
+        super(idUsuario, TIPO_EVENTO);
+        this.idUsuario = idUsuario;
         this.email = email;
         this.nombre = nombre;
         this.apellidos = apellidos;
     }
 
-    public String getId() {
-        return id;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getEmail() {
@@ -54,13 +50,5 @@ public class Usuario {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
-    }
-
-    @PrePersist
-    @PreUpdate
-    private void validarId() {
-        if (id == null || id.trim().isEmpty()) {
-            throw new IllegalStateException("id obligatorio");
-        }
     }
 }

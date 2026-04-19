@@ -5,14 +5,7 @@ import es.um.arso.repositorio.EntidadNoEncontrada;
 import java.time.LocalDate;
 
 public interface IServicioUsuarios {
-
-    String alta(
-            String nombre,
-            String apellidos,
-            String email,
-            String clave,
-            LocalDate fechaNacimiento,
-            String telefono);
+    void altaConId(String id, String nombre, String apellidos, String email);
 
     void modificar(
             String id,

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.um.arso.productos.config.RabbitMqConfig;
 import es.um.arso.productos.modelo.eventos.EventoCompraventaCreada;
+import es.um.arso.productos.modelo.eventos.EventoUsuarioCreado;
 import es.um.arso.productos.puertos.in.IManejadorEventos;
 import es.um.arso.productos.puertos.in.ManejadorEventos;
 import java.nio.charset.StandardCharsets;
@@ -37,10 +38,18 @@ public class ConsumidorEventos {
             String tipoEvento = raiz.path("tipoEvento").asText("");
 
             if ("compraventa-creada".equals(tipoEvento)) {
-                EventoCompraventaCreada eventoCompraventa =
-                        objectMapper.treeToValue(raiz, EventoCompraventaCreada.class);
+                EventoCompraventaCreada eventoCompraventa = objectMapper.treeToValue(raiz,
+                        EventoCompraventaCreada.class);
 
                 manejadorEventos.compraventaCreada(eventoCompraventa.getIdProducto());
+            } else if ("usuario-creado".equals(tipoEvento)) {
+                EventoUsuarioCreado eventoUsuario = objectMapper.treeToValue(raiz, EventoUsuarioCreado.class);
+
+                manejadorEventos.usuarioCreado(
+                        eventoUsuario.getIdUsuario(),
+                        eventoUsuario.getEmail(),
+                        eventoUsuario.getNombre(),
+                        eventoUsuario.getApellidos());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

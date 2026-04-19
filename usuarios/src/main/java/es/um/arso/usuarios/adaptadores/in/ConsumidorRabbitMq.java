@@ -25,9 +25,9 @@ public class ConsumidorRabbitMq implements ServletContextListener {
 
     private static final Logger log = LoggerFactory.getLogger(ConsumidorRabbitMq.class);
 
-    public static final String RABBITMQ_URI = "amqp://guest:guest@localhost:5672";
+    public static final String RABBITMQ_URI = "amqp://arso:arso@rabbitmq:5672";
     public static final String EXCHANGE_NAME = "arso.bus";
-    public static final String QUEUE_NAME = "arso.bus.usuarios.queue";
+    public static final String QUEUE_NAME = "arso.usuarios.queue";
     public static final String BINDING_KEY = "arso.compraventa.#";
 
     // inyección del puerto de entrada

@@ -5,7 +5,11 @@ import es.um.arso.repositorio.EntidadNoEncontrada;
 import es.um.arso.repositorio.FactoriaRepositorios;
 import es.um.arso.repositorio.Repositorio;
 import es.um.arso.repositorio.RepositorioException;
+import es.um.arso.usuarios.adaptadores.out.PublicadorRabbitMq;
 import es.um.arso.usuarios.modelo.Usuario;
+import es.um.arso.usuarios.modelo.eventos.EventoUsuarioCreado;
+import es.um.arso.usuarios.puertos.out.PublicadorEventos;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +20,9 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
     private static final Logger log = LoggerFactory.getLogger(ServicioUsuarios.class);
 
-    private Repositorio<Usuario, String> repoUsuarios =
-            FactoriaRepositorios.getRepositorio(Usuario.class);
+    private Repositorio<Usuario, String> repoUsuarios = FactoriaRepositorios.getRepositorio(Usuario.class);
+
+    private PublicadorEventos publicadorEventos;
 
     @Override
     public String alta(
@@ -39,6 +44,8 @@ public class ServicioUsuarios implements IServicioUsuarios {
         String id = repoUsuarios.add(u);
 
         log.info("Usuario creado: id={} email={}", id, email);
+
+        emitirEventoUsuarioCreado(id, email, nombre, apellidos);
 
         return id;
     }
@@ -65,6 +72,8 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
         log.info("Usuario OAuth creado: id={} email={} githubId={}", id, email, githubId);
 
+        emitirEventoUsuarioCreado(id, email, nombre, null);
+
         return id;
     }
 
@@ -81,7 +90,8 @@ public class ServicioUsuarios implements IServicioUsuarios {
             u.setClave(usuario.getClave());
         if (usuario.getFechaNacimiento() != null)
             u.setFechaNacimiento(usuario.getFechaNacimiento());
-        if (usuario.getTelefono() != null) u.setTelefono(usuario.getTelefono());
+        if (usuario.getTelefono() != null)
+            u.setTelefono(usuario.getTelefono());
 
         u.setAdministrador(usuario.isAdministrador());
         u.setNumeroCompras(usuario.getNumeroCompras());
@@ -99,8 +109,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
     @Override
     public Usuario recuperarPorEmail(String email) throws RepositorioException {
-        Especificacion<Usuario> spec =
-                new Especificacion<>(usuario -> email.equals(usuario.getEmail()));
+        Especificacion<Usuario> spec = new Especificacion<>(usuario -> email.equals(usuario.getEmail()));
 
         List<Usuario> resultados = repoUsuarios.getByEspecificacion(spec);
 
@@ -109,8 +118,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
     @Override
     public Usuario recuperarPorGithubId(String githubId) throws RepositorioException {
-        Especificacion<Usuario> spec =
-                new Especificacion<>(usuario -> githubId.equals(usuario.getGithubId()));
+        Especificacion<Usuario> spec = new Especificacion<>(usuario -> githubId.equals(usuario.getGithubId()));
 
         List<Usuario> resultados = repoUsuarios.getByEspecificacion(spec);
 
@@ -150,5 +158,19 @@ public class ServicioUsuarios implements IServicioUsuarios {
         }
 
         return null;
+    }
+
+    private void emitirEventoUsuarioCreado(
+            String idUsuario, String email, String nombre, String apellidos) {
+        EventoUsuarioCreado evento = new EventoUsuarioCreado(idUsuario, email, nombre, apellidos);
+        try {
+            if (publicadorEventos == null) {
+                publicadorEventos = new PublicadorRabbitMq();
+            }
+            publicadorEventos.emitirEvento(evento);
+            log.info("Evento usuario-creado enviado: id={}", idUsuario);
+        } catch (IOException | RuntimeException e) {
+            log.error("Error enviando evento usuario-creado id={}", idUsuario, e);
+        }
     }
 }

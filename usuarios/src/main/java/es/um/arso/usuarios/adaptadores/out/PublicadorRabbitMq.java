@@ -11,11 +11,12 @@ import java.io.IOException;
 
 public class PublicadorRabbitMq implements PublicadorEventos {
 
-    public static final String RABBITMQ_URI = "amqp://guest:guest@localhost:5672";
+    public static final String RABBITMQ_URI = "amqp://arso:arso@rabbitmq:5672";
 
     public static final String EXCHANGE_NAME = "arso.bus";
-    public static final String QUEUE_NAME = "arso.bus.usuarios.queue";
-    public static final String BINDING_KEY = "arso.bus.usuarios.#";
+    public static final String QUEUE_NAME = "arso.usuarios.queue";
+    public static final String BINDING_KEY = "arso.usuarios.#";
+    public static final String ROUTING_KEY_PREFIX = "arso.usuarios.";
 
     private final ConnectionFactory factory;
     private final Gson gson;
@@ -41,12 +42,12 @@ public class PublicadorRabbitMq implements PublicadorEventos {
     @Override
     public void emitirEvento(Evento evento) throws IOException {
         try (Connection connection = factory.newConnection();
-                Channel channel = connection.createChannel(); ) {
+                Channel channel = connection.createChannel();) {
             String mensaje = this.gson.toJson(evento);
 
             channel.basicPublish(
                     EXCHANGE_NAME,
-                    "arso.bus.usuarios." + evento.getTipoEvento(),
+                    ROUTING_KEY_PREFIX + evento.getTipoEvento(),
                     new AMQP.BasicProperties.Builder().contentType("application/json").build(),
                     mensaje.getBytes());
         } catch (Exception e) {

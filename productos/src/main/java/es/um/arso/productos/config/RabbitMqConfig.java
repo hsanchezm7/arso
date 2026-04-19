@@ -23,7 +23,7 @@ public class RabbitMqConfig {
     public static final String EXCHANGE_NAME = "arso.bus";
     public static final String QUEUE_NAME = "arso.productos.queue";
 
-    public static final String ROUTING_KEY_PREFIX = "arso.productos";
+    public static final String ROUTING_KEY_PREFIX = "arso.productos.";
 
     // binding keys
     public static final String COMPRAVENTA_BINDING_KEY = "arso.compraventa.#";
@@ -44,16 +44,10 @@ public class RabbitMqConfig {
         return BindingBuilder.bind(queue).to(exchange).with(COMPRAVENTA_BINDING_KEY).and(null);
     }
 
-    /*
-       @Bean
-       public Binding usuariosBinding(Queue queue, Exchange exchange) {
-           return BindingBuilder
-               .bind(queue)
-               .to(exchange)
-               .with(USUARIOS_BINDING_KEY)
-               .and(null);
-       }
-    */
+    @Bean
+    public Binding usuariosBinding(Queue queue, Exchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(USUARIOS_BINDING_KEY).and(null);
+    }
 
     @Bean
     public MessageConverter jsonMessageConverter() {
