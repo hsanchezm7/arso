@@ -33,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request, HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto request, HttpServletResponse response) {
 
         log.info(
                 "POST /auth/login recibido usernamePresent={}",
@@ -49,7 +49,7 @@ public class AuthController {
         UsuarioAuthInfo usuario = authService.autenticar(request.getUsername(), request.getPassword());
         if (usuario == null) {
             log.info("POST /auth/login credenciales invalidas username={}", request.getUsername());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
 
         log.info("POST /auth/login correcto id={} roles={}", usuario.getId(), usuario.getRoles());

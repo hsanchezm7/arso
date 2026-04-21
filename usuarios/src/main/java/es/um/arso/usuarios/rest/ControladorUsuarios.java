@@ -52,8 +52,13 @@ public class ControladorUsuarios {
     // POST /usuarios
     @POST
     @PermitAll
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response crear(UsuarioCreateDto dto) throws RepositorioException {
+
+        log.info(
+                "POST /usuarios recibido emailPresent={}, telefonoPresent={}",
+                dto != null && dto.getEmail() != null && !dto.getEmail().trim().isEmpty(),
+                dto != null && dto.getTelefono() != null && !dto.getTelefono().trim().isEmpty());
 
         String id = servicio.alta(
                 dto.getNombre(),
@@ -114,8 +119,10 @@ public class ControladorUsuarios {
     @GET
     @Path("/{id}")
     @RolesAllowed("USUARIO")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getUsuario(@PathParam("id") String id) throws RepositorioException, EntidadNoEncontrada {
+
+        log.info("GET /usuarios/{} recibido", id);
 
         Usuario usuario = servicio.recuperar(id);
         UsuarioDto dto = toUsuarioDTO(usuario);
@@ -126,8 +133,10 @@ public class ControladorUsuarios {
     @GET
     @Path("/{id}/nombre")
     @PermitAll
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getNombreUsuario(@PathParam("id") String id) throws RepositorioException, EntidadNoEncontrada {
+
+        log.info("GET /usuarios/{}/nombre recibido", id);
 
         Usuario usuario = servicio.recuperar(id);
         UsuarioNombreDto dto = new UsuarioNombreDto(usuario.getId(), usuario.getNombre());
@@ -141,7 +150,6 @@ public class ControladorUsuarios {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response verificarCredenciales(VerificarCredencialesDto dto) throws RepositorioException {
-
         log.info(
                 "POST /usuarios/verificar recibido usernamePresent={}, passwordPresent={}",
                 dto != null
@@ -184,7 +192,7 @@ public class ControladorUsuarios {
     @GET
     @Path("/buscar")
     @PermitAll
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response buscarUsuario(@QueryParam("email") String email, @QueryParam("githubId") String githubId)
             throws RepositorioException {
 
@@ -219,14 +227,31 @@ public class ControladorUsuarios {
     @PUT
     @Path("/{id}")
     @RolesAllowed("USUARIO")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response modificar(@PathParam("id") String id, UsuarioUpdateDto dto)
             throws RepositorioException, EntidadNoEncontrada {
 
+        log.info("PUT /usuarios/{} recibido bodyPresent={}", id, dto != null);
+
         Claims claims = (Claims) servletRequest.getAttribute("claims");
-        if (claims == null || claims.getSubject() == null || !id.equals(claims.getSubject())) {
+        String subject = claims != null ? claims.getSubject() : null;
+        log.info(
+                "PUT /usuarios/{} claimsPresent={}, subjectPresent={}",
+                id,
+                claims != null,
+                subject != null);
+
+        if (claims == null || subject == null) {
             return Response.status(Response.Status.FORBIDDEN)
-                    .entity("solo puede modificar sus propios datos")
+                    .entity("Solo puede modificar sus propios datos")
+                    .build();
+        }
+
+        log.info("PUT /usuarios/{} subject={}, subjectMatchId={}", id, subject, subject.equals(id));
+
+        if (!subject.equals(id)) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("Solo puede modificar sus propios datos")
                     .build();
         }
 
@@ -245,8 +270,10 @@ public class ControladorUsuarios {
     // GET /usuarios
     @GET
     @RolesAllowed("USUARIO")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getListadoUsuarios() throws RepositorioException {
+
+        log.info("GET /usuarios recibido");
 
         List<UsuarioResumen> resultado = servicio.recuperarTodos();
 

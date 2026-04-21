@@ -12,8 +12,8 @@ public class OpenApiConfig {
     public OpenAPI openApi() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Servicio de Compraventas")
-                        .description("Gestión de compraventas")
-                        .version("1.0.0"));
+                        .title("API del servicio Compraventa")
+                        .description("Documentación sobre los endpoints del microservicio de compraventa.")
+                        .version("1.0"));
     }
 }

@@ -8,6 +8,9 @@ import es.um.arso.productos.rest.dto.NuevoProductoDto;
 import es.um.arso.productos.rest.dto.ProductoDto;
 import es.um.arso.productos.servicio.IServicioProductos;
 import es.um.arso.productos.servicio.ProductoResumen;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 import java.net.URI;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,8 @@ public class ControladorProductos {
     }
 
     @PostMapping
+    @Operation(summary = "Crear producto", description = "Crea un nuevo producto.")
+    @ApiResponse(responseCode = "201", description = "Producto creado exitosamente. URL en la cabecera Location.")
     public ResponseEntity<Void> crearProducto(@Valid @RequestBody NuevoProductoDto nuevoProducto) throws Exception {
 
         String id = this.servicioProductos.crear(
@@ -65,6 +70,7 @@ public class ControladorProductos {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener producto", description = "Obtiene un producto por su id.")
     public EntityModel<ProductoDto> getProductoById(@PathVariable String id) throws Exception {
 
         Producto producto = this.servicioProductos.getProducto(id);
@@ -74,10 +80,13 @@ public class ControladorProductos {
         model.add(WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(ControladorProductos.class).getProductoById(id))
                 .withSelfRel());
+
         return model;
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Modificar producto", description = "Modifica un producto existente.")
+    @ApiResponse(responseCode = "204", description = "Producto modificado exitosamente.")
     public ResponseEntity<Void> modificarProducto(
             @PathVariable String id, @Valid @RequestBody ModificarProductoDto modificacion) throws Exception {
 
@@ -87,6 +96,8 @@ public class ControladorProductos {
     }
 
     @PutMapping("/{id}/recogida")
+    @Operation(summary = "Asignar recogida", description = "Establece o actualiza el lugar de recogida de un producto.")
+    @ApiResponse(responseCode = "204", description = "Lugar de recogida actualizado exitosamente.")
     public ResponseEntity<Void> asignarLugarRecogida(
             @PathVariable String id, @Valid @RequestBody LugarRecogidaDto recogida) throws Exception {
 
@@ -96,12 +107,15 @@ public class ControladorProductos {
     }
 
     @PostMapping("/{id}/visualizaciones")
+    @ApiResponse(responseCode = "204", description = "Incremento de visualizaciones exitoso.")
+    @Operation(summary = "Añadir visualización", description = "Incrementa el contador de visualizaciones de un producto específico.")
     public ResponseEntity<Void> anadirVisualizacion(@PathVariable String id) throws Exception {
         this.servicioProductos.anadirVisualizacion(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/historial/{mes}/{anio}")
+    @Operation(summary = "Historial del mes", description = "Obtiene un listado paginado con el resumen de los productos correspondientes a un mes y año concretos/")
     public PagedModel<EntityModel<ProductoResumen>> getHistorialMes(
             @PathVariable int mes, @PathVariable int anio, Pageable paginacion) throws Exception {
 
@@ -111,6 +125,7 @@ public class ControladorProductos {
     }
 
     @GetMapping
+    @Operation(summary = "Buscar productos", description = "Realiza una búsqueda paginada de productos a la venta. Admite filtros/")
     public PagedModel<EntityModel<ProductoResumen>> buscarProductos(
             @RequestParam(required = false) String categoriaId,
             @RequestParam(required = false) String texto,

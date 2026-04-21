@@ -12,8 +12,8 @@ public class OpenApiConfig {
     public OpenAPI openApi() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Servicio de Productos")
-                        .description("Gestión de productos")
-                        .version("1.0.0"));
+                        .title("API del servicio Productos")
+                        .description("Documentación sobre los endpoints del microservicio de productos.")
+                        .version("1.0"));
     }
 }
