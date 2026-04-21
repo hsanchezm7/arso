@@ -14,7 +14,7 @@ public class ModificarProductoDto {
     private String descripcion;
 
     @Schema(description = "Indica si el producto sigue disponible para su venta.", example = "true")
-    private boolean disponibilidad;
+    private Boolean disponibilidad;
 
     public ModificarProductoDto() {}
 

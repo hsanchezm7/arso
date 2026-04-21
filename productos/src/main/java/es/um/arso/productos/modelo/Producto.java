@@ -41,7 +41,7 @@ public class Producto {
     @JoinColumn(name = "vendedor_fk")
     private Usuario vendedor;
 
-    private boolean disponible;
+    private boolean disponible = true;
 
     public Producto() {}
 
