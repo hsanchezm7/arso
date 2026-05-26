@@ -1,4 +1,4 @@
-package es.um.arso.compraventa.servicio.excepciones;
+package es.um.arso.compraventa.servicio.exception;
 
 @SuppressWarnings("serial")
 public class ServicioExternoException extends RuntimeException {

@@ -1,7 +1,8 @@
-package es.um.arso.compraventa.rest.excepciones;
+package es.um.arso.compraventa.rest.exception;
 
 import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
-import es.um.arso.compraventa.servicio.excepciones.ServicioExternoException;
+import es.um.arso.compraventa.servicio.exception.ServicioExternoException;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;

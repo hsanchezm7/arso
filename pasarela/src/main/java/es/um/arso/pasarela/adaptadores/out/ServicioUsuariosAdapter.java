@@ -3,7 +3,7 @@ package es.um.arso.pasarela.adaptadores.out;
 import es.um.arso.pasarela.client.UsuarioOauthCreateRequest;
 import es.um.arso.pasarela.client.UsuariosRestClient;
 import es.um.arso.pasarela.client.VerificarCredencialesRequest;
-import es.um.arso.pasarela.servicio.excepciones.UsuariosClientException;
+import es.um.arso.pasarela.servicio.exception.UsuariosClientException;
 import es.um.arso.pasarela.servicio.puertos.out.IServicioUsuariosExterno;
 import es.um.arso.pasarela.servicio.puertos.out.UsuarioAuthInfo;
 import es.um.arso.pasarela.servicio.puertos.out.UsuarioBusquedaInfo;

@@ -2,9 +2,10 @@ package es.um.arso.compraventa.adaptadores.out;
 
 import es.um.arso.compraventa.client.UsuariosRestClient;
 import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
+import es.um.arso.compraventa.servicio.exception.ServicioExternoException;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioUsuariosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.UsuarioInfo;
-import es.um.arso.compraventa.servicio.excepciones.ServicioExternoException;
+
 import java.io.IOException;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;

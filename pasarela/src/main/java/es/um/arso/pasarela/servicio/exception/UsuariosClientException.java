@@ -1,4 +1,4 @@
-package es.um.arso.pasarela.servicio.excepciones;
+package es.um.arso.pasarela.servicio.exception;
 
 public class UsuariosClientException extends RuntimeException {
 
