@@ -32,10 +32,6 @@ public class NuevoProductoDto {
     @Schema(description = "Indica si el vendedor está dispuesto a enviar el producto.", example = "true")
     private boolean envioDisponible;
 
-    @NotNull(message = "El vendedor es obligatorio")
-    @Schema(description = "Identificador único del usuario que pone a la venta el producto.")
-    private String vendedorId;
-
     public NuevoProductoDto() {}
 
     public String getTitulo() {
@@ -84,13 +80,5 @@ public class NuevoProductoDto {
 
     public void setEnvioDisponible(boolean envioDisponible) {
         this.envioDisponible = envioDisponible;
-    }
-
-    public String getVendedorId() {
-        return vendedorId;
-    }
-
-    public void setVendedorId(String vendedorId) {
-        this.vendedorId = vendedorId;
     }
 }

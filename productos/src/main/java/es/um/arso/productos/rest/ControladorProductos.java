@@ -12,10 +12,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import java.net.URI;
+import java.security.Principal;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -23,6 +23,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,32 +40,37 @@ public class ControladorProductos {
 
     private static final Logger log = LoggerFactory.getLogger(ControladorProductos.class);
 
-    private IServicioProductos servicioProductos;
+    private final IServicioProductos servicioProductos;
 
-    @Autowired
-    private PagedResourcesAssembler<ProductoResumen> pagedResourcesAssembler;
+    private final PagedResourcesAssembler<ProductoResumen> pagedResourcesAssembler;
 
-    @Autowired
-    private ProductoResumenAssembler productoResumenAssembler;
+    private final ProductoResumenAssembler productoResumenAssembler;
 
-    public ControladorProductos(IServicioProductos servicioProductos) {
+    public ControladorProductos(
+            IServicioProductos servicioProductos,
+            PagedResourcesAssembler<ProductoResumen> pagedResourcesAssembler,
+            ProductoResumenAssembler productoResumenAssembler) {
         this.servicioProductos = servicioProductos;
+        this.pagedResourcesAssembler = pagedResourcesAssembler;
+        this.productoResumenAssembler = productoResumenAssembler;
     }
 
     @PostMapping
+        @PreAuthorize("hasAuthority('USUARIO')")
     @Operation(summary = "Crear producto", description = "Crea un nuevo producto.")
     @ApiResponse(responseCode = "201", description = "Producto creado exitosamente. URL en la cabecera Location.")
-    public ResponseEntity<Void> crearProducto(@Valid @RequestBody NuevoProductoDto nuevoProducto) throws Exception {
+    public ResponseEntity<Void> crearProducto(@Valid @RequestBody NuevoProductoDto nuevoProducto, Principal principal)
+            throws Exception {
 
         log.info(
-                "POST /productos titulo={}, descripcion={}, precio={}, estado={}, categoriaId={}, envioDisponible={}, vendedorId={}",
+                                "POST /productos titulo={}, descripcion={}, precio={}, estado={}, categoriaId={}, envioDisponible={}, vendedorId={}",
                 nuevoProducto.getTitulo(),
                 nuevoProducto.getDescripcion(),
                 nuevoProducto.getPrecio(),
                 nuevoProducto.getEstado(),
                 nuevoProducto.getCategoriaId(),
                 nuevoProducto.isEnvioDisponible(),
-                nuevoProducto.getVendedorId());
+                principal != null ? principal.getName() : null);
 
         String id = this.servicioProductos.crear(
                 nuevoProducto.getTitulo(),
@@ -73,7 +79,7 @@ public class ControladorProductos {
                 nuevoProducto.getEstado(),
                 nuevoProducto.getCategoriaId(),
                 nuevoProducto.isEnvioDisponible(),
-                nuevoProducto.getVendedorId());
+                principal != null ? principal.getName() : null);
 
         URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -101,10 +107,12 @@ public class ControladorProductos {
     }
 
     @PutMapping("/{id}")
+        @PreAuthorize("hasAuthority('USUARIO')")
     @Operation(summary = "Modificar producto", description = "Modifica un producto existente.")
     @ApiResponse(responseCode = "204", description = "Producto modificado exitosamente.")
     public ResponseEntity<Void> modificarProducto(
-            @PathVariable String id, @Valid @RequestBody ModificarProductoDto modificacion) throws Exception {
+            @PathVariable String id, @Valid @RequestBody ModificarProductoDto modificacion, Principal principal)
+            throws Exception {
 
         log.info(
                 "PUT /productos/{} precio={}, descripcion={}, disponibilidad={}",
@@ -114,15 +122,21 @@ public class ControladorProductos {
                 modificacion.isDisponibilidad());
 
         this.servicioProductos.modificar(
-                id, modificacion.getPrecio(), modificacion.getDescripcion(), modificacion.isDisponibilidad());
+                id,
+                modificacion.getPrecio(),
+                modificacion.getDescripcion(),
+                modificacion.isDisponibilidad(),
+                principal != null ? principal.getName() : null);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/recogida")
+        @PreAuthorize("hasAuthority('USUARIO')")
     @Operation(summary = "Asignar recogida", description = "Establece o actualiza el lugar de recogida de un producto.")
     @ApiResponse(responseCode = "204", description = "Lugar de recogida actualizado exitosamente.")
     public ResponseEntity<Void> asignarLugarRecogida(
-            @PathVariable String id, @Valid @RequestBody LugarRecogidaDto recogida) throws Exception {
+            @PathVariable String id, @Valid @RequestBody LugarRecogidaDto recogida, Principal principal)
+            throws Exception {
 
         log.info(
                 "PUT /productos/{}/recogida descripcion={}, longitud={}, latitud={}",
@@ -132,7 +146,11 @@ public class ControladorProductos {
                 recogida.getLatitud());
 
         this.servicioProductos.asignarLugarRecogida(
-                id, recogida.getDescripcion(), recogida.getLongitud(), recogida.getLatitud());
+                id,
+                recogida.getDescripcion(),
+                recogida.getLongitud(),
+                recogida.getLatitud(),
+                principal != null ? principal.getName() : null);
         return ResponseEntity.noContent().build();
     }
 

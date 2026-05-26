@@ -37,6 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Path("/usuarios")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ControladorUsuarios {
 
     private static final Logger log = LoggerFactory.getLogger(ControladorUsuarios.class);
@@ -52,13 +54,12 @@ public class ControladorUsuarios {
     // POST /usuarios
     @POST
     @PermitAll
-    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response crear(UsuarioCreateDto dto) throws RepositorioException {
 
         log.info(
-                "POST /usuarios recibido emailPresent={}, telefonoPresent={}",
-                dto != null && dto.getEmail() != null && !dto.getEmail().trim().isEmpty(),
-                dto != null && dto.getTelefono() != null && !dto.getTelefono().trim().isEmpty());
+            "POST /usuarios recibido email={}, telefono={}",
+            dto.getEmail(),
+            dto.getTelefono());
 
         String id = servicio.alta(
                 dto.getNombre(),
@@ -76,14 +77,12 @@ public class ControladorUsuarios {
     @POST
     @Path("/oauth")
     @PermitAll
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response crearOauth(UsuarioGithubCreateDto dto) throws RepositorioException, EntidadNoEncontrada {
 
         log.info(
-                "POST /usuarios/oauth recibido githubId={}, emailPresent={}",
-                dto != null ? dto.getGithubId() : null,
-                dto != null && dto.getEmail() != null && !dto.getEmail().trim().isEmpty());
+            "POST /usuarios/oauth recibido githubId={}, email={}",
+            dto.getGithubId(),
+            dto.getEmail());
 
         if (dto == null || dto.getEmail() == null || dto.getGithubId() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -107,7 +106,7 @@ public class ControladorUsuarios {
             nombreCompleto = usuario.getEmail();
         }
 
-        String roles = usuario.isAdministrador() ? "ADMINISTRADOR" : "USUARIO";
+        String roles = usuario.isAdministrador() ? "USUARIO,ADMINISTRADOR" : "USUARIO";
         UsuarioAuthDto dtoRespuesta = new UsuarioAuthDto(usuario.getId(), nombreCompleto, roles);
 
         log.info("Respuesta OAuth preparada: id={} roles={}", usuario.getId(), roles);
@@ -119,7 +118,6 @@ public class ControladorUsuarios {
     @GET
     @Path("/{id}")
     @RolesAllowed("USUARIO")
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getUsuario(@PathParam("id") String id) throws RepositorioException, EntidadNoEncontrada {
 
         log.info("GET /usuarios/{} recibido", id);
@@ -133,7 +131,6 @@ public class ControladorUsuarios {
     @GET
     @Path("/{id}/nombre")
     @PermitAll
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getNombreUsuario(@PathParam("id") String id) throws RepositorioException, EntidadNoEncontrada {
 
         log.info("GET /usuarios/{}/nombre recibido", id);
@@ -147,17 +144,11 @@ public class ControladorUsuarios {
     @POST
     @Path("/verificar")
     @PermitAll
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response verificarCredenciales(VerificarCredencialesDto dto) throws RepositorioException {
         log.info(
-                "POST /usuarios/verificar recibido usernamePresent={}, passwordPresent={}",
-                dto != null
-                        && dto.getUsername() != null
-                        && !dto.getUsername().trim().isEmpty(),
-                dto != null
-                        && dto.getPassword() != null
-                        && !dto.getPassword().trim().isEmpty());
+            "POST /usuarios/verificar recibido username={}, password={}",
+            dto.getUsername(),
+            dto.getPassword());
 
         if (dto == null || dto.getUsername() == null || dto.getPassword() == null) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -182,7 +173,7 @@ public class ControladorUsuarios {
             nombreCompleto = usuario.getEmail();
         }
 
-        String roles = usuario.isAdministrador() ? "ADMINISTRADOR" : "USUARIO";
+        String roles = usuario.isAdministrador() ? "USUARIO,ADMINISTRADOR" : "USUARIO";
         UsuarioAuthDto dtoRespuesta = new UsuarioAuthDto(usuario.getId(), nombreCompleto, roles);
 
         return Response.status(Response.Status.OK).entity(dtoRespuesta).build();
@@ -192,14 +183,13 @@ public class ControladorUsuarios {
     @GET
     @Path("/buscar")
     @PermitAll
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response buscarUsuario(@QueryParam("email") String email, @QueryParam("githubId") String githubId)
             throws RepositorioException {
 
         log.info(
-                "GET /usuarios/buscar recibido githubId={}, emailPresent={}",
-                githubId,
-                email != null && !email.trim().isEmpty());
+            "GET /usuarios/buscar recibido githubId={}, email={}",
+            githubId,
+            email);
 
         Usuario usuario = null;
 
@@ -227,19 +217,18 @@ public class ControladorUsuarios {
     @PUT
     @Path("/{id}")
     @RolesAllowed("USUARIO")
-    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response modificar(@PathParam("id") String id, UsuarioUpdateDto dto)
             throws RepositorioException, EntidadNoEncontrada {
 
-        log.info("PUT /usuarios/{} recibido bodyPresent={}", id, dto != null);
+        log.info("PUT /usuarios/{} recibido body={}", id, dto);
 
         Claims claims = (Claims) servletRequest.getAttribute("claims");
         String subject = claims != null ? claims.getSubject() : null;
         log.info(
-                "PUT /usuarios/{} claimsPresent={}, subjectPresent={}",
-                id,
-                claims != null,
-                subject != null);
+            "PUT /usuarios/{} claims={}, subject={}",
+            id,
+            claims,
+            subject);
 
         if (claims == null || subject == null) {
             return Response.status(Response.Status.FORBIDDEN)
@@ -270,7 +259,6 @@ public class ControladorUsuarios {
     // GET /usuarios
     @GET
     @RolesAllowed("USUARIO")
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response getListadoUsuarios() throws RepositorioException {
 
         log.info("GET /usuarios recibido");
@@ -305,6 +293,7 @@ public class ControladorUsuarios {
         dto.setEmail(u.getEmail());
         dto.setFechaNacimiento(u.getFechaNacimiento());
         dto.setTelefono(u.getTelefono());
+        dto.setRoles(u.isAdministrador() ? "USUARIO,ADMINISTRADOR" : "USUARIO");
 
         return dto;
     }

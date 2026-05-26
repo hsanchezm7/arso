@@ -3,11 +3,6 @@ package es.um.arso.compraventa.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Exchange;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -21,42 +16,13 @@ public class RabbitMqConfig {
 
     // TODO: Mover valores a archivo de config
     public static final String EXCHANGE_NAME = "arso.bus";
-    public static final String QUEUE_NAME = "arso.compraventa.queue";
-
     public static final String ROUTING_KEY_PREFIX = "arso.compraventa.";
-
-    // binding keys
-    public static final String USUARIOS_BINDING_KEY = "arso.usuarios.#";
-    public static final String PRODUCTOS_BINDING_KEY = "arso.productos.#";
 
     @Bean
     public TopicExchange exchange() {
         return new TopicExchange(EXCHANGE_NAME);
     }
 
-    @Bean
-    public Queue queue() {
-        return QueueBuilder.durable(QUEUE_NAME).build();
-    }
-
-    @Bean
-    public Binding usuariosBinding(Queue queue, Exchange exchange) {
-        return BindingBuilder.bind(queue)
-                .to(exchange)
-                .with(USUARIOS_BINDING_KEY)
-                .and(null);
-    }
-
-    /*
-       @Bean
-       public Binding productosBinding(Queue queue, Exchange exchange) {
-           return BindingBuilder
-               .bind(queue)
-               .to(exchange)
-               .with(PRODUCTOS_BINDING_KEY)
-               .and(null);
-       }
-    */
     @Bean
     public MessageConverter jsonMessageConverter() {
         ObjectMapper objectMapper = new ObjectMapper();

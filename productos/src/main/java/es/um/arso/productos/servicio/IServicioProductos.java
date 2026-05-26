@@ -19,13 +19,21 @@ public interface IServicioProductos {
             String vendedorId)
             throws EntidadNoEncontrada;
 
-    void asignarLugarRecogida(String productoId, String descripcion, Double longitud, Double latitud)
+    void asignarLugarRecogida(
+            String productoId, String descripcion, Double longitud, Double latitud, String vendedorId)
             throws EntidadNoEncontrada;
 
-    void modificar(String productoId, Double nuevoPrecio, String nuevaDescripcion, boolean estaDisponible)
+    void modificar(
+            String productoId,
+            Double nuevoPrecio,
+            String nuevaDescripcion,
+            boolean estaDisponible,
+            String vendedorId)
             throws EntidadNoEncontrada;
 
     void anadirVisualizacion(String productoId) throws EntidadNoEncontrada;
+
+        void marcarNoDisponible(String productoId) throws EntidadNoEncontrada;
 
     Producto getProducto(String id) throws EntidadNoEncontrada;
 

@@ -31,6 +31,12 @@ public class ServicioUsuarios implements IServicioUsuarios {
             throws RepositorioException {
         if (email == null || email.isEmpty()) throw new IllegalArgumentException("email obligatorio");
         if (clave == null || clave.isEmpty()) throw new IllegalArgumentException("clave obligatoria");
+        
+        Usuario usuarioExistente = recuperarPorEmail(email);    // email único
+        if (usuarioExistente != null) {
+            throw new IllegalArgumentException("El email " + email + " ya está en uso");
+        }
+        
         Usuario u = new Usuario(email, nombre, apellidos);
         u.setClave(clave);
         u.setFechaNacimiento(fechaNacimiento);
@@ -53,9 +59,24 @@ public class ServicioUsuarios implements IServicioUsuarios {
             throw new IllegalArgumentException("githubId obligatorio");
         }
 
-        // TODO: verificar usuario existente si existen github o email
-        Usuario existente = null;
+        Usuario existenteGithub = recuperarPorGithubId(githubId);   // verificar usuario existente por githubId
+        if (existenteGithub != null) {
+            log.info("Usuario OAuth ya existe: id={} githubId={}", existenteGithub.getId(), githubId);
+            return existenteGithub.getId();
+        }
+        
+        Usuario existente = recuperarPorEmail(email);       // verificar usuario existente por email
         if (existente != null) {
+            if (existente.getGithubId() != null && !existente.getGithubId().isEmpty()) {
+                throw new IllegalArgumentException("El email " + email + " ya está vinculado a otro githubId");
+            }
+            existente.setGithubId(githubId);
+            try {
+                repoUsuarios.update(existente);
+            } catch (EntidadNoEncontrada e) {
+                throw new RepositorioException("Error al vincular githubId al usuario " + email, e);
+            }
+            log.info("Usuario OAuth vinculado: id={} email={} githubId={}", existente.getId(), email, githubId);
             return existente.getId();
         }
 

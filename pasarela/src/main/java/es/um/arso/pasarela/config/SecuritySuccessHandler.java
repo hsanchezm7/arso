@@ -118,15 +118,16 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
         UsuarioBusquedaInfo existente = servicioUsuarios.buscarUsuario(githubId, email);
         if (existente != null && !isBlank(existente.getId())) {
             log.info("OAuth user found in usuarios service id={}", existente.getId());
-            String nombreLocal =
+                String nombreLocal =
                     buildNombreCompleto(existente.getNombre(), existente.getApellidos(), existente.getEmail());
-            String nombreCompleto = firstNonBlank(nombreOAuth, nombreLocal, githubId);
+                String nombreCompleto = firstNonBlank(nombreOAuth, nombreLocal, githubId);
+            String roles = existente.getRoles();
 
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("id", existente.getId());
-            claims.put("roles", "USUARIO");
-            claims.put("nombreCompleto", nombreCompleto);
-            return claims;
+                Map<String, Object> claims = new HashMap<>();
+                claims.put("id", existente.getId());
+            claims.put("roles", roles);
+                claims.put("nombreCompleto", nombreCompleto);
+                return claims;
         }
 
         if (isBlank(email)) {
@@ -156,6 +157,8 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
         claims.put("nombreCompleto", nombreCompleto);
         return claims;
     }
+
+    
 
     private String attributeValue(DefaultOAuth2User usuario, String key) {
         Object value = usuario.getAttribute(key);

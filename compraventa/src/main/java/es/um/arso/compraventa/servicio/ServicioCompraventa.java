@@ -54,6 +54,9 @@ public class ServicioCompraventa implements IServicioCompraventa {
         }
 
         String idVendedor = producto.getIdVendedor();
+        if (idVendedor.equals(idComprador)) {
+            throw new IllegalArgumentException("No se puede comprar un producto propio");
+        }
         UsuarioInfo vendedor = servicioUsuariosExterno.getUsuario(idVendedor);
         if (vendedor == null) {
             throw new RuntimeException("Vendedor no encontrado: " + idVendedor);
@@ -78,7 +81,7 @@ public class ServicioCompraventa implements IServicioCompraventa {
 
         // TODO: como idProducto es la entidad afectada, se podría eliminar
         // el campo idProducto de la clase Java.
-        EventoCompraventaCreada evento = new EventoCompraventaCreada(idProducto, idProducto, idVendedor, idComprador);
+        EventoCompraventaCreada evento = new EventoCompraventaCreada(idProducto, idProducto, idComprador);
 
         publicadorEventos.emitirEvento(evento);
 
@@ -101,19 +104,22 @@ public class ServicioCompraventa implements IServicioCompraventa {
     }
 
     @Override
-    public Page<Compraventa> getComprasUsuarioPaginado(String idComprador, Pageable pageable) {
-        return repositorioCompraventas.findByIdComprador(idComprador, pageable);
+    public Page<CompraventaResumen> getComprasUsuarioPaginado(String idComprador, Pageable pageable) {
+        Page<Compraventa> compraventas = repositorioCompraventas.findByIdComprador(idComprador, pageable);
+        return compraventas.map(this::toCompraventaResumen);
     }
 
     @Override
-    public Page<Compraventa> getVentasUsuarioPaginado(String idVendedor, Pageable pageable) {
-        return repositorioCompraventas.findByIdVendedor(idVendedor, pageable);
+    public Page<CompraventaResumen> getVentasUsuarioPaginado(String idVendedor, Pageable pageable) {
+        Page<Compraventa> compraventas = repositorioCompraventas.findByIdVendedor(idVendedor, pageable);
+        return compraventas.map(this::toCompraventaResumen);
     }
 
     @Override
-    public Page<Compraventa> getCompraventasEntreUsuariosPaginado(
+    public Page<CompraventaResumen> getCompraventasEntreUsuariosPaginado(
             String idComprador, String idVendedor, Pageable pageable) {
-        return repositorioCompraventas.findByIdCompradorAndIdVendedor(idComprador, idVendedor, pageable);
+        Page<Compraventa> compraventas = repositorioCompraventas.findByIdCompradorAndIdVendedor(idComprador, idVendedor, pageable);
+        return compraventas.map(this::toCompraventaResumen);
     }
 
     @Override
@@ -121,5 +127,19 @@ public class ServicioCompraventa implements IServicioCompraventa {
         return repositorioCompraventas
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("Compraventa no encontrada: " + id));
+    }
+
+    private CompraventaResumen toCompraventaResumen(Compraventa compraventa) {
+        CompraventaResumen resumen = new CompraventaResumen();
+        resumen.setId(compraventa.getId());
+        resumen.setIdProducto(compraventa.getIdProducto());
+        resumen.setTitulo(compraventa.getTitulo());
+        resumen.setPrecio(compraventa.getPrecio());
+        resumen.setIdVendedor(compraventa.getIdVendedor());
+        resumen.setNombreVendedor(compraventa.getNombreVendedor());
+        resumen.setIdComprador(compraventa.getIdComprador());
+        resumen.setNombreComprador(compraventa.getNombreComprador());
+        resumen.setFecha(compraventa.getFecha());
+        return resumen;
     }
 }

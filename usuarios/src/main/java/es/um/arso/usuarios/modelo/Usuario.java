@@ -3,6 +3,8 @@ package es.um.arso.usuarios.modelo;
 import es.um.arso.repositorio.Identificable;
 import es.um.arso.utils.LocalDateAdapter;
 import java.time.LocalDate;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +20,7 @@ public class Usuario implements Identificable {
     @GeneratedValue(generator = "uuid")
     private String id;
 
+    @Column(unique = true)
     private String email;
     private String nombre;
     private String apellidos;

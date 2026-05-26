@@ -5,17 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.um.arso.productos.config.DataInitializer;
 import es.um.arso.productos.config.RabbitMqConfig;
-import es.um.arso.productos.modelo.Usuario;
 import es.um.arso.productos.modelo.eventos.EventoCompraventaCreada;
 import es.um.arso.productos.modelo.eventos.EventoUsuarioCreado;
 import es.um.arso.productos.modelo.eventos.EventoUsuarioModificado;
 import es.um.arso.productos.puertos.in.IManejadorEventos;
 import es.um.arso.productos.puertos.in.ManejadorEventos;
-import es.um.arso.productos.repositorio.RepositorioUsuarios;
-import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,10 +37,9 @@ public class ConsumidorEventos {
     // TODO: valorar implementar RabbitHandlers para no tener que usar ifs ni switch
     // ni desearilizacion con objectmapper
     // La anotación RabbitListener pasaría a nivel de clase junto a Component.
-    @RabbitListener(queues = RabbitMqConfig.QUEUE_NAME)
-    public void handleEvento(Message message) {
-        String contenido = new String(message.getBody(), StandardCharsets.UTF_8);
-        System.out.println("Mensaje recibido: " + contenido);
+    @RabbitListener(queues = RabbitMqConfig.QUEUE_NAME, containerFactory = "rabbitListenerContainerFactory")
+    public void handleEvento(String contenido) {
+        log.info("Mensaje recibido: {}", contenido);
 
         try {
             JsonNode raiz = objectMapper.readTree(contenido);
@@ -64,8 +59,8 @@ public class ConsumidorEventos {
                         eventoUsuario.getNombre(),
                         eventoUsuario.getApellidos());
 
-                // Si es el usuario admin, inicializar datos
-                if ("admin".equals(eventoUsuario.getEmail())) {
+                // si es el usuario admin, inicializar datos
+                if ("admin@arso.es".equals(eventoUsuario.getEmail())) {
                     log.info("Usuario admin creado. Inicializando datos de prueba.");
                     dataInitializer.initializeData(eventoUsuario.getIdUsuario());
                 }

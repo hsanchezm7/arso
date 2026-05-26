@@ -10,6 +10,7 @@ public class UsuarioDto {
     private String email;
     private LocalDate fechaNacimiento;
     private String telefono;
+    private String roles;
 
     public UsuarioDto() {}
 
@@ -59,5 +60,13 @@ public class UsuarioDto {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 }

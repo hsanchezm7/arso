@@ -52,12 +52,16 @@ public class ServicioProductos implements IServicioProductos {
         if (precio == null || precio < 0) throw new IllegalArgumentException("precio no válido");
         if (estado == null) throw new IllegalArgumentException("estado obligatorio");
 
+        if (vendedorId == null || vendedorId.isEmpty()) {
+            throw new IllegalArgumentException("Usuario no autenticado");
+        }
+
         Categoria categoria = repositorioCategorias
                 .findById(categoriaId)
                 .orElseThrow(() -> new EntidadNoEncontrada("Categoria " + categoriaId + " no encontrada"));
         Usuario vendedor = repositorioUsuarios
-                .findById(vendedorId)
-                .orElseThrow(() -> new EntidadNoEncontrada("Vendedor " + vendedorId + " no encontrado"));
+            .findById(vendedorId)
+            .orElseThrow(() -> new EntidadNoEncontrada("Vendedor " + vendedorId + " no encontrado"));
 
         Producto producto = new Producto(titulo, descripcion, precio, estado, categoria, envioDisponible, vendedor);
         producto = repositorioProductos.save(producto);
@@ -66,22 +70,30 @@ public class ServicioProductos implements IServicioProductos {
     }
 
     @Override
-    public void asignarLugarRecogida(String productoId, String descripcion, Double longitud, Double latitud)
+    public void asignarLugarRecogida(
+            String productoId, String descripcion, Double longitud, Double latitud, String vendedorId)
             throws EntidadNoEncontrada {
         Producto producto = repositorioProductos
                 .findById(productoId)
                 .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
+        validarPropietario(producto, vendedorId);
         producto.asignarLugarRecogida(descripcion, longitud, latitud);
         repositorioProductos.save(producto);
         log.info("Lugar recogida asignado producto={}", productoId);
     }
 
     @Override
-    public void modificar(String productoId, Double nuevoPrecio, String nuevaDescripcion, boolean estaDisponible)
+    public void modificar(
+            String productoId,
+            Double nuevoPrecio,
+            String nuevaDescripcion,
+            boolean estaDisponible,
+            String vendedorId)
             throws EntidadNoEncontrada {
         Producto producto = repositorioProductos
                 .findById(productoId)
                 .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
+        validarPropietario(producto, vendedorId);
         if (nuevoPrecio != null) {
             if (nuevoPrecio < 0) throw new IllegalArgumentException("precio no válido");
             producto.setPrecio(nuevoPrecio);
@@ -104,6 +116,16 @@ public class ServicioProductos implements IServicioProductos {
         producto.incrementarVisualizaciones();
         repositorioProductos.save(producto);
         log.info("Visualizacion añadida producto={}", productoId);
+    }
+
+    @Override
+    public void marcarNoDisponible(String productoId) throws EntidadNoEncontrada {
+        Producto producto = repositorioProductos
+                .findById(productoId)
+                .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
+        producto.setDisponible(false);
+        repositorioProductos.save(producto);
+        log.info("Producto marcado no disponible id={}", productoId);
     }
 
     @Override
@@ -201,5 +223,14 @@ public class ServicioProductos implements IServicioProductos {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(resumenes, paginacion, productos.size());
+    }
+
+    private void validarPropietario(Producto producto, String vendedorId) {
+        if (vendedorId == null || vendedorId.isEmpty()) {
+            throw new IllegalArgumentException("Usuario no autenticado");
+        }
+        if (producto.getVendedor() == null || !vendedorId.equals(producto.getVendedor().getId())) {
+            throw new SecurityException("Solo el propietario puede modificar este producto");
+        }
     }
 }
