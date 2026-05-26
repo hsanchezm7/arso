@@ -46,6 +46,10 @@ public class ServicioCompraventa implements IServicioCompraventa {
 
         ProductoInfo producto = servicioProductosExterno.getProducto(idProducto);
 
+        // comprobar disponibilidad del producto
+        if (!producto.isDisponible())
+            throw new IllegalArgumentException("El producto no está disponible");
+
         UsuarioInfo comprador = servicioUsuariosExterno.getUsuario(idComprador);
 
         String idVendedor = producto.getIdVendedor();

@@ -31,6 +31,9 @@ public class ProductoDto {
     @Schema(description = "Indica si el envío está disponible")
     private boolean envioDisponible;
 
+    @Schema(description = "Indica si el producto está disponible")
+    private boolean disponible;
+
     @Schema(description = "Lugar de recogida")
     private LugarRecogidaDto recogida;
 
@@ -112,6 +115,14 @@ public class ProductoDto {
         this.envioDisponible = envioDisponible;
     }
 
+    public boolean isDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
     public LugarRecogidaDto getRecogida() {
         return recogida;
     }
@@ -165,6 +176,7 @@ public class ProductoDto {
                         : null);
         dto.setVisualizaciones(producto.getVisualizaciones());
         dto.setEnvioDisponible(producto.isEnvioDisponible());
+        dto.setDisponible(producto.isDisponible());
 
         if (producto.getRecogida() != null) {
             dto.setRecogida(LugarRecogidaDto.fromEntity(producto.getRecogida()));
