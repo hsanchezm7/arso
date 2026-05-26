@@ -13,6 +13,7 @@ import es.um.arso.servicio.FactoriaServicios;
 import es.um.arso.usuarios.modelo.eventos.EventoCompraventaCreada;
 import es.um.arso.usuarios.puertos.in.IManejadorEventos;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -30,7 +31,10 @@ public class ConsumidorRabbitMq implements ServletContextListener {
     public static final String QUEUE_NAME = "arso.usuarios.queue";
     public static final String BINDING_KEY = "arso.compraventa.#";
 
-    // inyección del puerto de entrada
+    private static final String EVENTO_COMPRAVENTA_CREADA = EventoCompraventaCreada.TIPO_EVENTO;
+
+    private final Gson gson = new Gson();
+
     private final IManejadorEventos manejadorEventos = FactoriaServicios.getServicio(IManejadorEventos.class);
 
     private Connection connection;
@@ -38,10 +42,9 @@ public class ConsumidorRabbitMq implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-
         try {
             log.info(
-                    "Inicializando consumir RabbitMQ queue={} exchange={} binding={}",
+                    "Inicializando consumidor RabbitMQ queue={} exchange={} binding={}",
                     QUEUE_NAME,
                     EXCHANGE_NAME,
                     BINDING_KEY);
@@ -69,35 +72,43 @@ public class ConsumidorRabbitMq implements ServletContextListener {
                         throws IOException {
 
                     long deliveryTag = envelope.getDeliveryTag();
+                    String contenido = new String(body, StandardCharsets.UTF_8);
 
-                    String contenido = new String(body);
+                    log.info(
+                            "Mensaje recibido routingKey={} exchange={} redelivered={} deliveryTag={} payload={}",
+                            envelope.getRoutingKey(),
+                            envelope.getExchange(),
+                            envelope.isRedeliver(),
+                            deliveryTag,
+                            contenido);
 
-                    JsonObject objeto = JsonParser.parseString(contenido).getAsJsonObject();
+                    try {
+                        JsonObject objeto = JsonParser.parseString(contenido).getAsJsonObject();
+                        String tipoEvento = objeto.get("tipoEvento").getAsString();
 
-                    String tipo = objeto.get("tipoEvento").getAsString();
-
-                    switch (tipo) {
-                        case "compraventa-creada":
-                            log.info("Evento recibido: compraventa-creada");
-                            Gson gson = new Gson();
+                        if (EVENTO_COMPRAVENTA_CREADA.equals(tipoEvento)) {
                             EventoCompraventaCreada evento = gson.fromJson(objeto, EventoCompraventaCreada.class);
-                            try {
-                                manejadorEventos.compraventaCreada(evento.getIdVendedor(), evento.getIdComprador());
-                                log.info(
-                                        "Evento procesado vendedor={} comprador={}",
-                                        evento.getIdVendedor(),
-                                        evento.getIdComprador());
-                            } catch (Exception e) {
-                                log.error("Error procesando evento compraventa-creada", e);
-                                throw new RuntimeException(e);
-                            }
-                            break;
-                        default:
-                            log.info("Evento ignorado tipo={}", tipo);
-                            return;
-                    }
 
-                    channel.basicAck(deliveryTag, false);
+                            manejadorEventos.compraventaCreada(evento.getIdVendedor(), evento.getIdComprador());
+
+                            log.info(
+                                    "Evento procesado tipo={} vendedor={} comprador={}",
+                                    tipoEvento,
+                                    evento.getIdVendedor(),
+                                    evento.getIdComprador());
+                        } else {
+                            log.info("Evento ignorado tipo={} payload={}", tipoEvento, contenido);
+                        }
+
+                        channel.basicAck(deliveryTag, false);
+                    } catch (Exception e) {
+                        log.error(
+                                "Error procesando mensaje deliveryTag={} payload={}",
+                                deliveryTag,
+                                contenido,
+                                e);
+                        channel.basicNack(deliveryTag, false, false);
+                    }
                 }
             });
 
@@ -114,11 +125,11 @@ public class ConsumidorRabbitMq implements ServletContextListener {
         try {
             log.info("Cerrando consumidor RabbitMQ");
             if (this.channel != null) this.channel.close();
-
             if (this.connection != null) this.connection.close();
         } catch (Exception e) {
             log.error("Error cerrando consumidor RabbitMQ", e);
             throw new RuntimeException(e);
         }
     }
+
 }

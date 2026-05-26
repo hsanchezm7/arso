@@ -1,6 +1,7 @@
 package es.um.arso.compraventa.servicio;
 
 import es.um.arso.compraventa.modelo.Compraventa;
+import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,5 +22,5 @@ public interface IServicioCompraventa {
 
     Page<CompraventaResumen> getCompraventasEntreUsuariosPaginado(String idComprador, String idVendedor, Pageable pageable);
 
-    Compraventa getCompraventa(String id);
+    Compraventa getCompraventa(String id) throws EntidadNoEncontrada;
 }

@@ -1,6 +1,7 @@
 package es.um.arso.compraventa.servicio;
 
 import es.um.arso.compraventa.modelo.Compraventa;
+import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
 import es.um.arso.compraventa.modelo.eventos.EventoCompraventaCreada;
 import es.um.arso.compraventa.puertos.out.PublicadorEventos;
 import es.um.arso.compraventa.repositorio.RepositorioCompraventas;
@@ -44,23 +45,15 @@ public class ServicioCompraventa implements IServicioCompraventa {
         }
 
         ProductoInfo producto = servicioProductosExterno.getProducto(idProducto);
-        if (producto == null) {
-            throw new RuntimeException("Producto no encontrado: " + idProducto);
-        }
 
         UsuarioInfo comprador = servicioUsuariosExterno.getUsuario(idComprador);
-        if (comprador == null) {
-            throw new RuntimeException("Comprador no encontrado: " + idComprador);
-        }
 
         String idVendedor = producto.getIdVendedor();
         if (idVendedor.equals(idComprador)) {
             throw new IllegalArgumentException("No se puede comprar un producto propio");
         }
+
         UsuarioInfo vendedor = servicioUsuariosExterno.getUsuario(idVendedor);
-        if (vendedor == null) {
-            throw new RuntimeException("Vendedor no encontrado: " + idVendedor);
-        }
 
         String recogidaString =
                 producto.getRecogida() != null ? producto.getRecogida().toString() : null;
@@ -81,7 +74,7 @@ public class ServicioCompraventa implements IServicioCompraventa {
 
         // TODO: como idProducto es la entidad afectada, se podría eliminar
         // el campo idProducto de la clase Java.
-        EventoCompraventaCreada evento = new EventoCompraventaCreada(idProducto, idProducto, idComprador);
+        EventoCompraventaCreada evento = new EventoCompraventaCreada(idProducto, idProducto, idVendedor, idComprador);
 
         publicadorEventos.emitirEvento(evento);
 
@@ -123,10 +116,10 @@ public class ServicioCompraventa implements IServicioCompraventa {
     }
 
     @Override
-    public Compraventa getCompraventa(String id) {
+    public Compraventa getCompraventa(String id) throws EntidadNoEncontrada {
         return repositorioCompraventas
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Compraventa no encontrada: " + id));
+                .orElseThrow(() -> new EntidadNoEncontrada("Compraventa no encontrada: " + id));
     }
 
     private CompraventaResumen toCompraventaResumen(Compraventa compraventa) {

@@ -1,36 +1,46 @@
 package es.um.arso.compraventa.adaptadores.out;
 
 import es.um.arso.compraventa.client.ProductosRestClient;
+import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioProductosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.ProductoInfo;
-import org.springframework.beans.factory.annotation.Value;
+import es.um.arso.compraventa.servicio.excepciones.ServicioExternoException;
+import java.io.IOException;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @Service
 public class ServicioProductosAdapter implements IServicioProductosExterno {
 
-    private ProductosRestClient client;
+    private final ProductosRestClient client;
 
-    public ServicioProductosAdapter(@Value("${servicios.productos.url}") String baseUrl) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        this.client = retrofit.create(ProductosRestClient.class);
+    public ServicioProductosAdapter(ProductosRestClient client) {
+        this.client = client;
     }
 
     @Override
-    public ProductoInfo getProducto(String idProducto) throws Exception {
-        Response<ProductoInfo> response = client.getProducto(idProducto).execute();
+    public ProductoInfo getProducto(String idProducto) throws EntidadNoEncontrada, ServicioExternoException {
+        try {
+            Response<ProductoInfo> response = client.getProducto(idProducto).execute();
 
-        if (!response.isSuccessful()) {
-            throw new RuntimeException("Error al obtener producto: " + response.code() + " - " + response.message());
+            if (!response.isSuccessful())
+                handleError(response);
+            
+            return response.body();
+        } catch (IOException e) {
+            throw new ServicioExternoException("Error al comunicar con el servicio de productos: " + e.getMessage(), e);
         }
+    }
 
-        return response.body();
+    private void handleError(Response<?> response) throws EntidadNoEncontrada, ServicioExternoException {
+        int code = response.code();
+
+        switch (code) {
+            case 404:
+                throw new EntidadNoEncontrada("Producto no existe"); 
+            default:
+                throw new ServicioExternoException(
+                        "Error con el servicio de productos. HTTP " + code + " - " + response.message());
+        }
     }
 }

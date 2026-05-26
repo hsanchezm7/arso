@@ -1,36 +1,46 @@
 package es.um.arso.compraventa.adaptadores.out;
 
 import es.um.arso.compraventa.client.UsuariosRestClient;
+import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioUsuariosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.UsuarioInfo;
-import org.springframework.beans.factory.annotation.Value;
+import es.um.arso.compraventa.servicio.excepciones.ServicioExternoException;
+import java.io.IOException;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @Service
 public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
 
-    private UsuariosRestClient client;
+    private final UsuariosRestClient client;
 
-    public ServicioUsuariosAdapter(@Value("${servicios.usuarios.url}") String baseUrl) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        this.client = retrofit.create(UsuariosRestClient.class);
+    public ServicioUsuariosAdapter(UsuariosRestClient client) {
+        this.client = client;
     }
 
     @Override
-    public UsuarioInfo getUsuario(String idUsuario) throws Exception {
-        Response<UsuarioInfo> response = client.getUsuario(idUsuario).execute();
+    public UsuarioInfo getUsuario(String idUsuario) throws EntidadNoEncontrada, ServicioExternoException {
+        try {
+            Response<UsuarioInfo> response = client.getUsuario(idUsuario).execute();
 
-        if (!response.isSuccessful()) {
-            throw new RuntimeException("Error al obtener usuario: " + response.code() + " - " + response.message());
+            if (!response.isSuccessful())
+                handleError(response);
+            
+            return response.body();
+        } catch (IOException e) {
+            throw new ServicioExternoException("Error al comunicar con el servicio de usuarios: " + e.getMessage(), e);
         }
+    }
 
-        return response.body();
+    private void handleError(Response<UsuarioInfo> response) throws EntidadNoEncontrada, ServicioExternoException {
+        int code = response.code();
+
+        switch (code) {
+            case 404:
+                throw new EntidadNoEncontrada("Usuario no existe"); 
+            default:
+                throw new ServicioExternoException(
+                        "Error con el servicio de usuarios. HTTP " + code + " - " + response.message());
+        }
     }
 }
