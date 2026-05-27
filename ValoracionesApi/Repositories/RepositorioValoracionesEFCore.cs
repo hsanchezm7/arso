@@ -34,6 +34,21 @@ public class RepositorioValoracionesEFCore : IRepositorio<Valoracion, int>
         return _dbSet.ToListAsync();
     }
 
+    public async Task<List<Valoracion>> GetByUsuarioValoradoYRolAsync(string idUsuario, string rolUsuario)
+    {
+        return await _dbSet.AsNoTracking()
+            .Where(e => e.IdUsuarioValorado == idUsuario
+                && e.RolUsuarioValorado == rolUsuario)
+            .ToListAsync();
+    }
+
+    public async Task<bool> ExistsByCompraventaAndEvaluadorAsync(string idCompraventa, string idUsuarioEvaluador)
+    {
+        return await _dbSet.AsNoTracking()
+            .AnyAsync(e => e.IdCompraventa == idCompraventa
+                && e.IdUsuarioEvaluador == idUsuarioEvaluador);
+    }
+
     public async Task<Valoracion?> GetByIdAsync(int id)
     {
         return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);

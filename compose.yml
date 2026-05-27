@@ -36,6 +36,7 @@ services:
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_management load_definitions \"/etc/rabbitmq/definitions.json\""
     volumes:
       - ./definitions.json:/etc/rabbitmq/definitions.json:ro
+      - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
@@ -119,7 +120,20 @@ services:
       rabbitmq:
         condition: service_healthy
     restart: unless-stopped
+
+  valoraciones:
+    build:
+      context: ./ValoracionesApi
+      dockerfile: Dockerfile
+    container_name: valoraciones
+    ports:
+      - "8084:8084"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
     
 volumes:
     mongo_data:
+    rabbitmq_data:
     mysql_data:

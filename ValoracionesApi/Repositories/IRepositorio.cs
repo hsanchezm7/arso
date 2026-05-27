@@ -7,4 +7,6 @@ public interface IRepositorio<T, K>
     Task<T?> GetByIdAsync(K id);
     Task<List<T>> GetAllAsync();
     Task<List<K>> GetIdsAsync();
+    Task<List<T>> GetByUsuarioValoradoYRolAsync(string idUsuario, string rolUsuario);
+    Task<bool> ExistsByCompraventaAndEvaluadorAsync(string idCompraventa, string idUsuarioEvaluador);
 }

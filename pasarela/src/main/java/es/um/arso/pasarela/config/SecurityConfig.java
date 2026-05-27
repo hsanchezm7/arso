@@ -62,6 +62,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // /compraventa requiere autenticación
                 .antMatchers("/compraventa/**")
                 .permitAll()
+                // /valoraciones es público
+                .antMatchers("/valoraciones/**")
+                .permitAll()
                 // Todo lo demás permitido
                 .anyRequest()
                 .permitAll()

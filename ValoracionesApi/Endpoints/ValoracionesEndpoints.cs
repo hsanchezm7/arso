@@ -1,5 +1,7 @@
-using ValoracionesApi.Models;
+using ValoracionesApi.Common;
+using ValoracionesApi.Dtos;
 using ValoracionesApi.Services;
+using ValoracionesApi.Endpoints.Filters;
 
 namespace ValoracionesApi.Endpoints;
 
@@ -9,8 +11,10 @@ public static class ValoracionesEndpoints
     {
         var group = app.MapGroup("/api/valoraciones");
 
-        group.MapGet("/{id}", GetById).WithName("GetValoracion");
-        group.MapPost("/", Create);
+        group.MapGet("/{id:int}", GetById).WithName("GetValoracion");
+        group.MapGet("/vendedor/{vendedorId:int}", GetByVendedor);
+        group.MapGet("/comprador/{compradorId:int}", GetByComprador);
+        group.MapPost("/", Create).AddEndpointFilter<ValidationFilter<ValoracionCreateDto>>();
     }
 
     private static async Task<IResult> GetById(int id, IServicioValoraciones servicio)
@@ -21,11 +25,38 @@ public static class ValoracionesEndpoints
     }
 
 
-    private static async Task<IResult> Create(Valoracion valoracion,
+    private static async Task<IResult> Create(ValoracionCreateDto valoracion,
     IServicioValoraciones servicio)
     {
-        var id = await servicio.CreateAsync(valoracion);
+        var res = await servicio.CreateAsync(valoracion);
+        if (!res.Success)
+        {
+            return res.Tipo switch
+            {
+                ResultadoTipo.Conflict => Results.Conflict(res.Message),
+                ResultadoTipo.NotFound => Results.NotFound(res.Message),
+                _ => Results.BadRequest(res.Message)
+            };
+        }
 
-        return Results.CreatedAtRoute("GetValoracion", new { id }, valoracion);
+        var creada = res.Entidad;
+        if (creada == null)
+            return Results.Problem("Error al crear la valoración.");
+
+        return Results.CreatedAtRoute("GetValoracion", new { id = creada.Id }, creada);
+    }
+
+    private static async Task<IResult> GetByVendedor(string vendedorId, IServicioValoraciones servicio)
+    {
+        var valoraciones = await servicio.GetByVendedorAsync(vendedorId);
+
+        return Results.Ok(valoraciones);
+    }
+
+    private static async Task<IResult> GetByComprador(string compradorId, IServicioValoraciones servicio)
+    {
+        var valoraciones = await servicio.GetByCompradorAsync(compradorId);
+
+        return Results.Ok(valoraciones);
     }
 }
