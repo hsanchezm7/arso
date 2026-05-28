@@ -1,7 +1,7 @@
 package es.um.arso.productos.rest.dto;
 
-import javax.validation.constraints.Positive;
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.Positive;
 
 @Schema(description = "DTO con la información necesaria para modificar un producto existente.")
 public class ModificarProductoDto {
@@ -10,7 +10,9 @@ public class ModificarProductoDto {
     @Schema(description = "Nuevo precio de venta del producto.", example = "45.95")
     private Double precio;
 
-    @Schema(description = "Nueva descripción del producto.", example = "Rebajo el precio por venta urgente. Consola PlayStation Portable modelo 1004.")
+    @Schema(
+            description = "Nueva descripción del producto.",
+            example = "Rebajo el precio por venta urgente. Consola PlayStation Portable modelo 1004.")
     private String descripcion;
 
     @Schema(description = "Indica si el producto sigue disponible para su venta.", example = "true")

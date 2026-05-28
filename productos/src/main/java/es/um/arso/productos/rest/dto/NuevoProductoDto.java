@@ -2,7 +2,6 @@ package es.um.arso.productos.rest.dto;
 
 import es.um.arso.productos.modelo.EstadoProducto;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -13,7 +12,9 @@ public class NuevoProductoDto {
     @Schema(description = "Nombre del producto.", example = "PSP 1004 Japan (Fat)")
     private String titulo;
 
-    @Schema(description = "Descripción breve del producto.", example = "Consola PlayStation Portable modelo 1004 importada de Japón. Incluye cargador original.")
+    @Schema(
+            description = "Descripción breve del producto.",
+            example = "Consola PlayStation Portable modelo 1004 importada de Japón. Incluye cargador original.")
     private String descripcion;
 
     @NotNull(message = "El precio es obligatorio")

@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 
-using ValoracionesApi.Endpoints;
 using ValoracionesApi.Clients.Compraventas;
+using ValoracionesApi.Endpoints;
+using ValoracionesApi.Events;
+using ValoracionesApi.Events.Producers;
+using ValoracionesApi.Middleware;
 using ValoracionesApi.Models;
 using ValoracionesApi.Repositories;
 using ValoracionesApi.Services;
-
-using BookleApi.Middleware;
+using ValoracionesApi.Services.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,8 @@ builder.Services.AddDbContext<ValoracionesDbContext>(options =>
 
 builder.Services.AddScoped<IRepositorio<Valoracion, int>, RepositorioValoracionesEFCore>();
 builder.Services.AddScoped<IServicioValoraciones, ServicioValoraciones>();
+builder.Services.AddScoped<IServicioGenericoRabbitMq<Evento>, ServicioGenericoRabbitMq<Evento>>();
+builder.Services.AddScoped<EventoProducer>();
 
 var compraventasBaseUrl = builder.Configuration["Compraventas:BaseUrl"];
 if (string.IsNullOrWhiteSpace(compraventasBaseUrl))

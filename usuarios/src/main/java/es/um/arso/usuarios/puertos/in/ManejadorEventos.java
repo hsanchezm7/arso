@@ -21,4 +21,17 @@ public class ManejadorEventos implements IManejadorEventos {
         comprador.incrementarNumeroCompras();
         this.servicio.modificar(idComprador, comprador);
     }
+
+    @Override
+    public void valoracionCreada(String idUsuarioValorado, String rolUsuarioValorado, int puntuacion)
+            throws RepositorioException, EntidadNoEncontrada {
+        if (!rolUsuarioValorado.equals("comprador") && !rolUsuarioValorado.equals("vendedor"))
+            throw new IllegalArgumentException("El usuario valorado debe tener rol comprador o vendedor");
+
+        Usuario valorado;
+        valorado = this.servicio.recuperar(idUsuarioValorado);
+        valorado.valorar(puntuacion, rolUsuarioValorado);
+
+        this.servicio.modificar(idUsuarioValorado, valorado);
+    }
 }

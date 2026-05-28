@@ -2,7 +2,6 @@ package es.um.arso.productos.adaptadores.in;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import es.um.arso.productos.config.DataInitializer;
 import es.um.arso.productos.config.RabbitMqConfig;
 import es.um.arso.productos.modelo.eventos.EventoCompraventaCreada;
@@ -26,9 +25,7 @@ public class ConsumidorEventos {
     private final DataInitializer dataInitializer;
 
     public ConsumidorEventos(
-            @Autowired ManejadorEventos manejadorEventos,
-            ObjectMapper objectMapper,
-            DataInitializer dataInitializer) {
+            @Autowired ManejadorEventos manejadorEventos, ObjectMapper objectMapper, DataInitializer dataInitializer) {
         this.manejadorEventos = manejadorEventos;
         this.objectMapper = objectMapper;
         this.dataInitializer = dataInitializer;
@@ -46,8 +43,8 @@ public class ConsumidorEventos {
             String tipoEvento = raiz.path("tipoEvento").asText("");
 
             if ("compraventa-creada".equals(tipoEvento)) {
-                EventoCompraventaCreada eventoCompraventa = objectMapper.treeToValue(raiz,
-                        EventoCompraventaCreada.class);
+                EventoCompraventaCreada eventoCompraventa =
+                        objectMapper.treeToValue(raiz, EventoCompraventaCreada.class);
 
                 manejadorEventos.compraventaCreada(eventoCompraventa.getIdProducto());
             } else if ("usuario-creado".equals(tipoEvento)) {

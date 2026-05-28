@@ -42,7 +42,9 @@ public class DataInitializer {
             return;
         }
 
-        log.info("Inicializando base de datos con datos de prueba para admin id={}, email={}", admin.getId(),
+        log.info(
+                "Inicializando base de datos con datos de prueba para admin id={}, email={}",
+                admin.getId(),
                 admin.getEmail());
 
         // Crear categorías
@@ -64,28 +66,63 @@ public class DataInitializer {
         log.info("Categorías creadas: Electrónica, Libros, Ropa");
 
         // Crear productos para Electrónica
-        crearProducto("Smartphone X", "Teléfono inteligente de última generación", 599.99,
-                EstadoProducto.BUEN_ESTADO, electronica, true, admin);
-        crearProducto("Laptop Pro", "Portátil de alto rendimiento", 1299.99,
-                EstadoProducto.ACEPTABLE, electronica, false, admin);
-        crearProducto("Auriculares Bluetooth", "Auriculares inalámbricos premium", 199.99,
-                EstadoProducto.COMO_NUEVO, electronica, true, admin);
+        crearProducto(
+                "Smartphone X",
+                "Teléfono inteligente de última generación",
+                599.99,
+                EstadoProducto.BUEN_ESTADO,
+                electronica,
+                true,
+                admin);
+        crearProducto(
+                "Laptop Pro",
+                "Portátil de alto rendimiento",
+                1299.99,
+                EstadoProducto.ACEPTABLE,
+                electronica,
+                false,
+                admin);
+        crearProducto(
+                "Auriculares Bluetooth",
+                "Auriculares inalámbricos premium",
+                199.99,
+                EstadoProducto.COMO_NUEVO,
+                electronica,
+                true,
+                admin);
 
         // Crear productos para Libros
-        crearProducto("Clean Code", "Manual de programación limpia", 49.99,
-                EstadoProducto.NUEVO, libros, true, admin);
-        crearProducto("El Quijote", "Obra maestra de la literatura española", 25.99,
-                EstadoProducto.PARA_PIEZAS_O_REPARAR, libros, true, admin);
-        crearProducto("1984", "Novela de ciencia ficción distópica", 15.99,
-                EstadoProducto.COMO_NUEVO, libros, true, admin);
+        crearProducto("Clean Code", "Manual de programación limpia", 49.99, EstadoProducto.NUEVO, libros, true, admin);
+        crearProducto(
+                "El Quijote",
+                "Obra maestra de la literatura española",
+                25.99,
+                EstadoProducto.PARA_PIEZAS_O_REPARAR,
+                libros,
+                true,
+                admin);
+        crearProducto(
+                "1984", "Novela de ciencia ficción distópica", 15.99, EstadoProducto.COMO_NUEVO, libros, true, admin);
 
         // Crear productos para Ropa
-        crearProducto("Camiseta Básica", "Camiseta de algodón 100%", 19.99,
-                EstadoProducto.PARA_PIEZAS_O_REPARAR, ropa, true, admin);
-        crearProducto("Pantalón Vaquero", "Pantalón vaquero azul oscuro", 59.99,
-                EstadoProducto.COMO_NUEVO, ropa, false, admin);
-        crearProducto("Sudadera Deportiva", "Sudadera gris de poliéster", 49.99,
-                EstadoProducto.NUEVO, ropa, true, admin);
+        crearProducto(
+                "Camiseta Básica",
+                "Camiseta de algodón 100%",
+                19.99,
+                EstadoProducto.PARA_PIEZAS_O_REPARAR,
+                ropa,
+                true,
+                admin);
+        crearProducto(
+                "Pantalón Vaquero",
+                "Pantalón vaquero azul oscuro",
+                59.99,
+                EstadoProducto.COMO_NUEVO,
+                ropa,
+                false,
+                admin);
+        crearProducto(
+                "Sudadera Deportiva", "Sudadera gris de poliéster", 49.99, EstadoProducto.NUEVO, ropa, true, admin);
 
         log.info("9 productos creados (3 por categoría). Inicialización completada.");
     }

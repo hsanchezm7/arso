@@ -15,7 +15,7 @@ public class Valoracion
 
     [Range(1, 5, ErrorMessage = "El rango de la puntuación debe estar entre 1 y 5")]
     public int Puntuacion { get; set; } = 5;
-    
+
     [MaxLength(500)]
     public string? Comentario { get; set; }
 }

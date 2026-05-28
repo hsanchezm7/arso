@@ -33,7 +33,6 @@ public class EventoCompraventaCreada extends Evento {
         this.idVendedor = idVendedor;
     }
 
-
     public String getIdComprador() {
         return idComprador;
     }

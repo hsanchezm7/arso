@@ -11,6 +11,7 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import es.um.arso.servicio.FactoriaServicios;
 import es.um.arso.usuarios.modelo.eventos.EventoCompraventaCreada;
+import es.um.arso.usuarios.modelo.eventos.EventoValoracionCreada;
 import es.um.arso.usuarios.puertos.in.IManejadorEventos;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -30,8 +31,10 @@ public class ConsumidorRabbitMq implements ServletContextListener {
     public static final String EXCHANGE_NAME = "arso.bus";
     public static final String QUEUE_NAME = "arso.usuarios.queue";
     public static final String BINDING_KEY = "arso.compraventa.#";
+    public static final String BINDING_KEY_VALORACIONES = "arso.valoraciones.#";
 
     private static final String EVENTO_COMPRAVENTA_CREADA = EventoCompraventaCreada.TIPO_EVENTO;
+    private static final String EVENTO_VALORACION_CREADA = EventoValoracionCreada.TIPO_EVENTO;
 
     private final Gson gson = new Gson();
 
@@ -63,6 +66,7 @@ public class ConsumidorRabbitMq implements ServletContextListener {
             Map<String, Object> properties = null; // sin propiedades
             channel.queueDeclare(QUEUE_NAME, durable, exclusive, autodelete, properties);
             channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, BINDING_KEY);
+            channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, BINDING_KEY_VALORACIONES);
 
             boolean autoAck = false;
             channel.basicConsume(QUEUE_NAME, autoAck, "usuarios-consumer", new DefaultConsumer(channel) {
@@ -96,17 +100,28 @@ public class ConsumidorRabbitMq implements ServletContextListener {
                                     tipoEvento,
                                     evento.getIdVendedor(),
                                     evento.getIdComprador());
+                        } else if (EVENTO_VALORACION_CREADA.equals(tipoEvento)) {
+                            EventoValoracionCreada evento = gson.fromJson(objeto, EventoValoracionCreada.class);
+
+                            manejadorEventos.valoracionCreada(
+                                    evento.getIdUsuarioValorado(),
+                                    evento.getRolUsuarioValorado(),
+                                    evento.getPuntuacion());
+
+                            log.info(
+                                    "Evento procesado tipo={} valorador={} valorado={} rol={} puntuacion={}",
+                                    tipoEvento,
+                                    evento.getIdUsuarioEvaluador(),
+                                    evento.getIdUsuarioValorado(),
+                                    evento.getRolUsuarioValorado(),
+                                    evento.getPuntuacion());
                         } else {
                             log.info("Evento ignorado tipo={} payload={}", tipoEvento, contenido);
                         }
 
                         channel.basicAck(deliveryTag, false);
                     } catch (Exception e) {
-                        log.error(
-                                "Error procesando mensaje deliveryTag={} payload={}",
-                                deliveryTag,
-                                contenido,
-                                e);
+                        log.error("Error procesando mensaje deliveryTag={} payload={}", deliveryTag, contenido, e);
                         channel.basicNack(deliveryTag, false, false);
                     }
                 }
@@ -131,5 +146,4 @@ public class ConsumidorRabbitMq implements ServletContextListener {
             throw new RuntimeException(e);
         }
     }
-
 }

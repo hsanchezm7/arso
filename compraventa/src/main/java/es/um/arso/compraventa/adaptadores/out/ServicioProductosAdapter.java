@@ -5,7 +5,6 @@ import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
 import es.um.arso.compraventa.servicio.exception.ServicioExternoException;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioProductosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.ProductoInfo;
-
 import java.io.IOException;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
@@ -24,9 +23,8 @@ public class ServicioProductosAdapter implements IServicioProductosExterno {
         try {
             Response<ProductoInfo> response = client.getProducto(idProducto).execute();
 
-            if (!response.isSuccessful())
-                handleError(response);
-            
+            if (!response.isSuccessful()) handleError(response);
+
             return response.body();
         } catch (IOException e) {
             throw new ServicioExternoException("Error al comunicar con el servicio de productos: " + e.getMessage(), e);
@@ -38,7 +36,7 @@ public class ServicioProductosAdapter implements IServicioProductosExterno {
 
         switch (code) {
             case 404:
-                throw new EntidadNoEncontrada("Producto no existe"); 
+                throw new EntidadNoEncontrada("Producto no existe");
             default:
                 throw new ServicioExternoException(
                         "Error con el servicio de productos. HTTP " + code + " - " + response.message());

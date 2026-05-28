@@ -3,7 +3,6 @@ package es.um.arso.usuarios.modelo;
 import es.um.arso.repositorio.Identificable;
 import es.um.arso.utils.LocalDateAdapter;
 import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +21,7 @@ public class Usuario implements Identificable {
 
     @Column(unique = true)
     private String email;
+
     private String nombre;
     private String apellidos;
     private String clave;
@@ -31,8 +31,15 @@ public class Usuario implements Identificable {
 
     private boolean administrador = false;
 
-    private int numeroCompras = 0;
-    private int numeroVentas = 0;
+    private int nCompras = 0;
+    private int nVentas = 0;
+
+    // valoraciones recibidas, no emitidas
+    private int nValoracionesAsComprador = 0;
+    private int nValoracionesAsVendedor = 0;
+
+    private double puntuacionAsComprador = 0.0;
+    private double puntuacionAsVendedor = 0.0;
 
     public Usuario() {}
 
@@ -122,27 +129,69 @@ public class Usuario implements Identificable {
     }
 
     public int getNumeroCompras() {
-        return numeroCompras;
+        return nCompras;
     }
 
     public void setNumeroCompras(int numeroCompras) {
-        this.numeroCompras = numeroCompras;
+        this.nCompras = numeroCompras;
     }
 
     public void incrementarNumeroCompras() {
-        this.numeroCompras++;
+        this.nCompras++;
     }
 
     public int getNumeroVentas() {
-        return numeroVentas;
+        return nVentas;
     }
 
     public void setNumeroVentas(int numeroVentas) {
-        this.numeroVentas = numeroVentas;
+        this.nVentas = numeroVentas;
     }
 
     public void incrementarNumeroVentas() {
-        this.numeroVentas++;
+        this.nVentas++;
+    }
+
+    public int getNumeroValoracionesAsComprador() {
+        return nValoracionesAsComprador;
+    }
+
+    public void setNumeroValoracionesAsComprador(int nValoracionesAsComprador) {
+        this.nValoracionesAsComprador = nValoracionesAsComprador;
+    }
+
+    public int getNumeroValoracionesAsVendedor() {
+        return nValoracionesAsVendedor;
+    }
+
+    public void setNumeroValoracionesAsVendedor(int nValoracionesAsVendedor) {
+        this.nValoracionesAsVendedor = nValoracionesAsVendedor;
+    }
+
+    public double getPuntuacionAsComprador() {
+        return puntuacionAsComprador;
+    }
+
+    public void setPuntuacionAsComprador(double puntuacionAsComprador) {
+        this.puntuacionAsComprador = puntuacionAsComprador;
+    }
+
+    public double getPuntuacionAsVendedor() {
+        return puntuacionAsVendedor;
+    }
+
+    public void setPuntuacionAsVendedor(double puntuacionAsVendedor) {
+        this.puntuacionAsVendedor = puntuacionAsVendedor;
+    }
+
+    /* incrementar el número de puntaciones y actualizar puntuación */
+    public void valorar(int puntuacion, String as) {
+        if (as.equals("comprador"))
+            this.puntuacionAsComprador = ((this.puntuacionAsComprador * this.puntuacionAsComprador) + puntuacion)
+                    / ++this.nValoracionesAsComprador;
+        else if (as.equals("vendedor"))
+            this.puntuacionAsVendedor = ((this.puntuacionAsVendedor * this.puntuacionAsVendedor) + puntuacion)
+                    / ++this.nValoracionesAsVendedor;
     }
 
     @Override
@@ -166,9 +215,9 @@ public class Usuario implements Identificable {
                 + ", administrador="
                 + administrador
                 + ", numeroCompras="
-                + numeroCompras
+                + nCompras
                 + ", numeroVentas="
-                + numeroVentas
+                + nVentas
                 + "]";
     }
 }

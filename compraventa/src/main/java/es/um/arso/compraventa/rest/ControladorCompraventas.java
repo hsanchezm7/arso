@@ -51,20 +51,19 @@ public class ControladorCompraventas {
     }
 
     @PostMapping
-    @Operation(summary = "Realizar compraventa", description = "Registra una nueva compraventa entre un comprador y un vendedor.")
-    @ApiResponse(responseCode = "201", description = "Compraventa registrada exitosamente. URL en la cabecera Location.")
+    @Operation(
+            summary = "Realizar compraventa",
+            description = "Registra una nueva compraventa entre un comprador y un vendedor.")
+    @ApiResponse(
+            responseCode = "201",
+            description = "Compraventa registrada exitosamente. URL en la cabecera Location.")
     @PreAuthorize("hasAuthority('USUARIO')")
-    public ResponseEntity<Void> realizarCompraventa(
-            @Valid @RequestBody NuevaCompraventaDto nueva, Principal principal) throws Exception {
+    public ResponseEntity<Void> realizarCompraventa(@Valid @RequestBody NuevaCompraventaDto nueva, Principal principal)
+            throws Exception {
 
-        log.info(
-            "POST /compraventas idProducto={}, idComprador={}",
-            nueva.getIdProducto(),
-            principal.getName());
+        log.info("POST /compraventas idProducto={}, idComprador={}", nueva.getIdProducto(), principal.getName());
 
-        String id = this.servicioCompraventa.realizarCompraventa(
-            nueva.getIdProducto(),
-            principal.getName());
+        String id = this.servicioCompraventa.realizarCompraventa(nueva.getIdProducto(), principal.getName());
 
         URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -91,23 +90,28 @@ public class ControladorCompraventas {
     }
 
     @GetMapping("/compras/{idComprador}")
-    @Operation(summary = "Obtener compras de usuario", description = "Obtiene un listado paginado de las compras realizadas por un usuario.")
+    @Operation(
+            summary = "Obtener compras de usuario",
+            description = "Obtiene un listado paginado de las compras realizadas por un usuario.")
     @PreAuthorize("hasAuthority('USUARIO') and #idComprador == authentication.name")
-    public PagedModel<EntityModel<CompraventaResumen>> getComprasUsuario(@PathVariable String idComprador, Pageable paginacion)
-            throws Exception {
+    public PagedModel<EntityModel<CompraventaResumen>> getComprasUsuario(
+            @PathVariable String idComprador, Pageable paginacion) throws Exception {
 
         log.info("GET /compraventas/compras/{}", idComprador);
 
-        Page<CompraventaResumen> resultado = this.servicioCompraventa.getComprasUsuarioPaginado(idComprador, paginacion);
+        Page<CompraventaResumen> resultado =
+                this.servicioCompraventa.getComprasUsuarioPaginado(idComprador, paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, compraventaResumenAssembler);
     }
 
     @GetMapping("/ventas/{idVendedor}")
-    @Operation(summary = "Obtener ventas de usuario", description = "Obtiene un listado paginado de las ventas realizadas por un usuario.")
+    @Operation(
+            summary = "Obtener ventas de usuario",
+            description = "Obtiene un listado paginado de las ventas realizadas por un usuario.")
     @PreAuthorize("hasAuthority('USUARIO') and #idVendedor == authentication.name")
-    public PagedModel<EntityModel<CompraventaResumen>> getVentasUsuario(@PathVariable String idVendedor, Pageable paginacion)
-            throws Exception {
+    public PagedModel<EntityModel<CompraventaResumen>> getVentasUsuario(
+            @PathVariable String idVendedor, Pageable paginacion) throws Exception {
 
         log.info("GET /compraventas/ventas/{}", idVendedor);
 
@@ -117,7 +121,9 @@ public class ControladorCompraventas {
     }
 
     @GetMapping
-    @Operation(summary = "Buscar compraventas", description = "Obtiene un listado paginado de compraventas entre dos usuarios específicos.")
+    @Operation(
+            summary = "Buscar compraventas",
+            description = "Obtiene un listado paginado de compraventas entre dos usuarios específicos.")
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
     public PagedModel<EntityModel<CompraventaResumen>> getCompraventasEntreUsuarios(
             @RequestParam String idComprador, @RequestParam String idVendedor, Pageable paginacion) throws Exception {

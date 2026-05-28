@@ -40,10 +40,9 @@ public class JwtTokenFilter implements ContainerRequestFilter {
         // TODO: definir rutas públicas? Redundante? Ya comprobamos PermitAll
         String token = extractTokenFromCookies();
         if (token == null || token.trim().isEmpty()) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.UNAUTHORIZED)
-                            .entity("No se adjunta el token en la cookie")
-                            .build());
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("No se adjunta el token en la cookie")
+                    .build());
             return;
         }
 
@@ -54,7 +53,10 @@ public class JwtTokenFilter implements ContainerRequestFilter {
             if (resourceInfo != null
                     && resourceInfo.getResourceMethod() != null
                     && resourceInfo.getResourceMethod().isAnnotationPresent(RolesAllowed.class)) {
-                String[] allowedRoles = resourceInfo.getResourceMethod().getAnnotation(RolesAllowed.class).value();
+                String[] allowedRoles = resourceInfo
+                        .getResourceMethod()
+                        .getAnnotation(RolesAllowed.class)
+                        .value();
                 String rolesClaim = claims.get("roles", String.class);
                 if (rolesClaim == null || rolesClaim.trim().isEmpty()) {
                     requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
@@ -67,15 +69,15 @@ public class JwtTokenFilter implements ContainerRequestFilter {
 
                 if (roles.stream()
                         .noneMatch(userRole -> Arrays.asList(allowedRoles).contains(userRole))) {
-                    requestContext.abortWith(
-                            Response.status(Response.Status.FORBIDDEN)
-                                    .entity("no tiene rol de acceso")
-                                    .build());
+                    requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+                            .entity("no tiene rol de acceso")
+                            .build());
                 }
             }
         } catch (Exception e) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build());
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(e.getMessage())
+                    .build());
         }
     }
 

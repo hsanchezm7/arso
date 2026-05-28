@@ -29,8 +29,6 @@ public class UsuariosBootstrapListener implements ServletContextListener {
                 log.info("Admin creado id={}", id);
                 Usuario admin = new Usuario();
                 admin.setAdministrador(true);
-                admin.setNumeroCompras(0);
-                admin.setNumeroVentas(0);
                 servicio.modificar(id, admin);
                 log.info("Admin marcado como administrador id={}", id);
             } else {
@@ -49,7 +47,4 @@ public class UsuariosBootstrapListener implements ServletContextListener {
             log.error("Failed to initialize admin user", e);
         }
     }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {}
 }

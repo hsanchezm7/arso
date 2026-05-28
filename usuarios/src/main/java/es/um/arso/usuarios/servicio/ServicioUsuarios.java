@@ -31,12 +31,12 @@ public class ServicioUsuarios implements IServicioUsuarios {
             throws RepositorioException {
         if (email == null || email.isEmpty()) throw new IllegalArgumentException("email obligatorio");
         if (clave == null || clave.isEmpty()) throw new IllegalArgumentException("clave obligatoria");
-        
-        Usuario usuarioExistente = recuperarPorEmail(email);    // email único
+
+        Usuario usuarioExistente = recuperarPorEmail(email); // email único
         if (usuarioExistente != null) {
             throw new IllegalArgumentException("El email " + email + " ya está en uso");
         }
-        
+
         Usuario u = new Usuario(email, nombre, apellidos);
         u.setClave(clave);
         u.setFechaNacimiento(fechaNacimiento);
@@ -59,13 +59,13 @@ public class ServicioUsuarios implements IServicioUsuarios {
             throw new IllegalArgumentException("githubId obligatorio");
         }
 
-        Usuario existenteGithub = recuperarPorGithubId(githubId);   // verificar usuario existente por githubId
+        Usuario existenteGithub = recuperarPorGithubId(githubId); // verificar usuario existente por githubId
         if (existenteGithub != null) {
             log.info("Usuario OAuth ya existe: id={} githubId={}", existenteGithub.getId(), githubId);
             return existenteGithub.getId();
         }
-        
-        Usuario existente = recuperarPorEmail(email);       // verificar usuario existente por email
+
+        Usuario existente = recuperarPorEmail(email); // verificar usuario existente por email
         if (existente != null) {
             if (existente.getGithubId() != null && !existente.getGithubId().isEmpty()) {
                 throw new IllegalArgumentException("El email " + email + " ya está vinculado a otro githubId");
@@ -104,6 +104,10 @@ public class ServicioUsuarios implements IServicioUsuarios {
         u.setAdministrador(usuario.isAdministrador());
         u.setNumeroCompras(usuario.getNumeroCompras());
         u.setNumeroVentas(usuario.getNumeroVentas());
+        u.setNumeroValoracionesAsComprador(usuario.getNumeroValoracionesAsComprador());
+        u.setNumeroValoracionesAsVendedor(usuario.getNumeroValoracionesAsVendedor());
+        u.setPuntuacionAsComprador(usuario.getPuntuacionAsComprador());
+        u.setPuntuacionAsVendedor(usuario.getPuntuacionAsVendedor());
 
         repoUsuarios.update(u);
 

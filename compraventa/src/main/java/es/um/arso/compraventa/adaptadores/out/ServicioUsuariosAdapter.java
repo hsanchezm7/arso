@@ -5,7 +5,6 @@ import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
 import es.um.arso.compraventa.servicio.exception.ServicioExternoException;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioUsuariosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.UsuarioInfo;
-
 import java.io.IOException;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
@@ -24,9 +23,8 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
         try {
             Response<UsuarioInfo> response = client.getUsuario(idUsuario).execute();
 
-            if (!response.isSuccessful())
-                handleError(response);
-            
+            if (!response.isSuccessful()) handleError(response);
+
             return response.body();
         } catch (IOException e) {
             throw new ServicioExternoException("Error al comunicar con el servicio de usuarios: " + e.getMessage(), e);
@@ -38,7 +36,7 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
 
         switch (code) {
             case 404:
-                throw new EntidadNoEncontrada("Usuario no existe"); 
+                throw new EntidadNoEncontrada("Usuario no existe");
             default:
                 throw new ServicioExternoException(
                         "Error con el servicio de usuarios. HTTP " + code + " - " + response.message());

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+
 using ValoracionesApi.Common;
 namespace ValoracionesApi.Dtos;
 
@@ -8,7 +9,7 @@ public class ValoracionCreateDto
     public string IdCompraventa { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "El rol del evaluador es obligatorio")]
-    [RegularExpression(RolesEvaluador.Patron, ErrorMessage = "RolEvaluador debe ser "+ RolesEvaluador.RolComprador + " o " + RolesEvaluador.RolVendedor)]
+    [RegularExpression(RolesEvaluador.Patron, ErrorMessage = "RolEvaluador debe ser " + RolesEvaluador.RolComprador + " o " + RolesEvaluador.RolVendedor)]
     public string RolEvaluador { get; set; } = string.Empty;
 
     [Range(1, 5, ErrorMessage = "El rango de la puntuación debe estar entre 1 y 5")]

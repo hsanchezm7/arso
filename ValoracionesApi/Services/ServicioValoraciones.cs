@@ -1,8 +1,10 @@
-using ValoracionesApi.Common;
 using ValoracionesApi.Clients.Compraventas;
+using ValoracionesApi.Common;
+using ValoracionesApi.Dtos;
+using ValoracionesApi.Events;
+using ValoracionesApi.Events.Producers;
 using ValoracionesApi.Models;
 using ValoracionesApi.Repositories;
-using ValoracionesApi.Dtos;
 
 namespace ValoracionesApi.Services;
 
@@ -10,14 +12,17 @@ public class ServicioValoraciones : IServicioValoraciones
 {
     private readonly IRepositorio<Valoracion, int> _repositorio;
     private readonly ICompraventasClient _compraventasClient;
+    private readonly EventoProducer _eventoProducer;
 
     /* TODO: verificar parámetros en los métodos */
     public ServicioValoraciones(
         IRepositorio<Valoracion, int> repositorio,
-        ICompraventasClient compraventasClient)
+        ICompraventasClient compraventasClient,
+        EventoProducer eventoProducer)
     {
         _repositorio = repositorio;
         _compraventasClient = compraventasClient;
+        _eventoProducer = eventoProducer;
     }
 
     public async Task<Resultado<Valoracion>> CreateAsync(ValoracionCreateDto valoracionCreate)
@@ -46,8 +51,18 @@ public class ServicioValoraciones : IServicioValoraciones
             Puntuacion = valoracionCreate.Puntuacion,
             Comentario = valoracionCreate.Comentario
         };
-        
+
         await _repositorio.AddAsync(valoracion);
+
+        var evento = new EventoValoracionCreada(
+            valoracion.Id.ToString(),
+            valoracion.IdCompraventa,
+            valoracion.IdUsuarioEvaluador,
+            valoracion.IdUsuarioValorado,
+            valoracion.RolUsuarioValorado,
+            valoracion.Puntuacion);
+
+        await _eventoProducer.ProduceAsync(evento);
 
         return Resultado<Valoracion>.Ok(valoracion);
     }

@@ -13,11 +13,9 @@ import java.util.Map;
 public final class JwtUtils {
 
     private static final Gson GSON = new Gson();
-    private static final Type MAP_TYPE = new TypeToken<Map<String, Object>>() {
-    }.getType();
+    private static final Type MAP_TYPE = new TypeToken<Map<String, Object>>() {}.getType();
 
-    private JwtUtils() {
-    }
+    private JwtUtils() {}
 
     public static Claims parseClaimsUnverified(String token) {
         if (token == null || token.trim().isEmpty()) {

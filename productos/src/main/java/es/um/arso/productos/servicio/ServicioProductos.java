@@ -60,8 +60,8 @@ public class ServicioProductos implements IServicioProductos {
                 .findById(categoriaId)
                 .orElseThrow(() -> new EntidadNoEncontrada("Categoria " + categoriaId + " no encontrada"));
         Usuario vendedor = repositorioUsuarios
-            .findById(vendedorId)
-            .orElseThrow(() -> new EntidadNoEncontrada("Vendedor " + vendedorId + " no encontrado"));
+                .findById(vendedorId)
+                .orElseThrow(() -> new EntidadNoEncontrada("Vendedor " + vendedorId + " no encontrado"));
 
         Producto producto = new Producto(titulo, descripcion, precio, estado, categoria, envioDisponible, vendedor);
         producto = repositorioProductos.save(producto);
@@ -84,11 +84,7 @@ public class ServicioProductos implements IServicioProductos {
 
     @Override
     public void modificar(
-            String productoId,
-            Double nuevoPrecio,
-            String nuevaDescripcion,
-            boolean estaDisponible,
-            String vendedorId)
+            String productoId, Double nuevoPrecio, String nuevaDescripcion, boolean estaDisponible, String vendedorId)
             throws EntidadNoEncontrada {
         Producto producto = repositorioProductos
                 .findById(productoId)
@@ -229,7 +225,8 @@ public class ServicioProductos implements IServicioProductos {
         if (vendedorId == null || vendedorId.isEmpty()) {
             throw new IllegalArgumentException("Usuario no autenticado");
         }
-        if (producto.getVendedor() == null || !vendedorId.equals(producto.getVendedor().getId())) {
+        if (producto.getVendedor() == null
+                || !vendedorId.equals(producto.getVendedor().getId())) {
             throw new SecurityException("Solo el propietario puede modificar este producto");
         }
     }

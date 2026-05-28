@@ -50,4 +50,3 @@ public class UsuarioBusquedaInfo {
         this.roles = roles;
     }
 }
-

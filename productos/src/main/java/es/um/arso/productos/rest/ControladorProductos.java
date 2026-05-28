@@ -10,7 +10,6 @@ import es.um.arso.productos.servicio.IServicioProductos;
 import es.um.arso.productos.servicio.ProductoResumen;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import java.net.URI;
 import java.security.Principal;
 import javax.validation.Valid;
@@ -56,14 +55,14 @@ public class ControladorProductos {
     }
 
     @PostMapping
-        @PreAuthorize("hasAuthority('USUARIO')")
+    @PreAuthorize("hasAuthority('USUARIO')")
     @Operation(summary = "Crear producto", description = "Crea un nuevo producto.")
     @ApiResponse(responseCode = "201", description = "Producto creado exitosamente. URL en la cabecera Location.")
     public ResponseEntity<Void> crearProducto(@Valid @RequestBody NuevoProductoDto nuevoProducto, Principal principal)
             throws Exception {
 
         log.info(
-                                "POST /productos titulo={}, descripcion={}, precio={}, estado={}, categoriaId={}, envioDisponible={}, vendedorId={}",
+                "POST /productos titulo={}, descripcion={}, precio={}, estado={}, categoriaId={}, envioDisponible={}, vendedorId={}",
                 nuevoProducto.getTitulo(),
                 nuevoProducto.getDescripcion(),
                 nuevoProducto.getPrecio(),
@@ -100,14 +99,14 @@ public class ControladorProductos {
 
         EntityModel<ProductoDto> model = EntityModel.of(productoDto);
         model.add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(ControladorProductos.class).getProductoById(id))
+                        WebMvcLinkBuilder.methodOn(ControladorProductos.class).getProductoById(id))
                 .withSelfRel());
 
         return model;
     }
 
     @PutMapping("/{id}")
-        @PreAuthorize("hasAuthority('USUARIO')")
+    @PreAuthorize("hasAuthority('USUARIO')")
     @Operation(summary = "Modificar producto", description = "Modifica un producto existente.")
     @ApiResponse(responseCode = "204", description = "Producto modificado exitosamente.")
     public ResponseEntity<Void> modificarProducto(
@@ -131,7 +130,7 @@ public class ControladorProductos {
     }
 
     @PutMapping("/{id}/recogida")
-        @PreAuthorize("hasAuthority('USUARIO')")
+    @PreAuthorize("hasAuthority('USUARIO')")
     @Operation(summary = "Asignar recogida", description = "Establece o actualiza el lugar de recogida de un producto.")
     @ApiResponse(responseCode = "204", description = "Lugar de recogida actualizado exitosamente.")
     public ResponseEntity<Void> asignarLugarRecogida(
@@ -156,7 +155,9 @@ public class ControladorProductos {
 
     @PostMapping("/{id}/visualizaciones")
     @ApiResponse(responseCode = "204", description = "Incremento de visualizaciones exitoso.")
-    @Operation(summary = "Añadir visualización", description = "Incrementa el contador de visualizaciones de un producto específico.")
+    @Operation(
+            summary = "Añadir visualización",
+            description = "Incrementa el contador de visualizaciones de un producto específico.")
     public ResponseEntity<Void> anadirVisualizacion(@PathVariable String id) throws Exception {
         log.info("POST /productos/{}/visualizaciones", id);
         this.servicioProductos.anadirVisualizacion(id);
@@ -164,7 +165,10 @@ public class ControladorProductos {
     }
 
     @GetMapping("/historial/{mes}/{anio}")
-    @Operation(summary = "Historial del mes", description = "Obtiene un listado paginado con el resumen de los productos correspondientes a un mes y año concretos/")
+    @Operation(
+            summary = "Historial del mes",
+            description =
+                    "Obtiene un listado paginado con el resumen de los productos correspondientes a un mes y año concretos/")
     public PagedModel<EntityModel<ProductoResumen>> getHistorialMes(
             @PathVariable int mes, @PathVariable int anio, Pageable paginacion) throws Exception {
 
@@ -176,7 +180,9 @@ public class ControladorProductos {
     }
 
     @GetMapping
-    @Operation(summary = "Buscar productos", description = "Realiza una búsqueda paginada de productos a la venta. Admite filtros/")
+    @Operation(
+            summary = "Buscar productos",
+            description = "Realiza una búsqueda paginada de productos a la venta. Admite filtros/")
     public PagedModel<EntityModel<ProductoResumen>> buscarProductos(
             @RequestParam(required = false) String categoriaId,
             @RequestParam(required = false) String texto,
@@ -192,8 +198,8 @@ public class ControladorProductos {
                 estadoMinimo,
                 precioMaximo);
 
-        Page<ProductoResumen> resultado = this.servicioProductos.buscarPaginado(categoriaId, texto, estadoMinimo,
-                precioMaximo, paginacion);
+        Page<ProductoResumen> resultado =
+                this.servicioProductos.buscarPaginado(categoriaId, texto, estadoMinimo, precioMaximo, paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, productoResumenAssembler);
     }

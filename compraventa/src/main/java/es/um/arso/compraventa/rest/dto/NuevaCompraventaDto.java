@@ -1,8 +1,7 @@
 package es.um.arso.compraventa.rest.dto;
 
-import javax.validation.constraints.NotNull;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotNull;
 
 @Schema(description = "DTO con la información necesaria para registrar una nueva compraventa.")
 public class NuevaCompraventaDto {

@@ -1,9 +1,9 @@
 package es.um.arso.compraventa.servicio;
 
 import es.um.arso.compraventa.modelo.Compraventa;
-import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
 import es.um.arso.compraventa.modelo.eventos.EventoCompraventaCreada;
 import es.um.arso.compraventa.puertos.out.PublicadorEventos;
+import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
 import es.um.arso.compraventa.repositorio.RepositorioCompraventas;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioProductosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioUsuariosExterno;
@@ -37,18 +37,16 @@ public class ServicioCompraventa implements IServicioCompraventa {
     @Override
     public String realizarCompraventa(String idProducto, String idComprador) throws Exception {
 
-        if (idProducto == null || idProducto.isEmpty()) {
+        if (idProducto == null || idProducto.isEmpty())
             throw new IllegalArgumentException("El ID del producto es obligatorio");
-        }
-        if (idComprador == null || idComprador.isEmpty()) {
+
+        if (idComprador == null || idComprador.isEmpty())
             throw new IllegalArgumentException("El ID del comprador es obligatorio");
-        }
 
         ProductoInfo producto = servicioProductosExterno.getProducto(idProducto);
 
         // comprobar disponibilidad del producto
-        if (!producto.isDisponible())
-            throw new IllegalArgumentException("El producto no está disponible");
+        if (!producto.isDisponible()) throw new IllegalArgumentException("El producto no está disponible");
 
         UsuarioInfo comprador = servicioUsuariosExterno.getUsuario(idComprador);
 
@@ -115,12 +113,15 @@ public class ServicioCompraventa implements IServicioCompraventa {
     @Override
     public Page<CompraventaResumen> getCompraventasEntreUsuariosPaginado(
             String idComprador, String idVendedor, Pageable pageable) {
-        Page<Compraventa> compraventas = repositorioCompraventas.findByIdCompradorAndIdVendedor(idComprador, idVendedor, pageable);
+        Page<Compraventa> compraventas =
+                repositorioCompraventas.findByIdCompradorAndIdVendedor(idComprador, idVendedor, pageable);
         return compraventas.map(this::toCompraventaResumen);
     }
 
     @Override
     public Compraventa getCompraventa(String id) throws EntidadNoEncontrada {
+        if (id == null || id.isEmpty()) throw new IllegalArgumentException("El ID de la compraventa no debe ser nulo.");
+
         return repositorioCompraventas
                 .findById(id)
                 .orElseThrow(() -> new EntidadNoEncontrada("Compraventa no encontrada: " + id));

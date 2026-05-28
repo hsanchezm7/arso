@@ -56,10 +56,7 @@ public class ControladorUsuarios {
     @PermitAll
     public Response crear(UsuarioCreateDto dto) throws RepositorioException {
 
-        log.info(
-            "POST /usuarios recibido email={}, telefono={}",
-            dto.getEmail(),
-            dto.getTelefono());
+        log.info("POST /usuarios recibido email={}, telefono={}", dto.getEmail(), dto.getTelefono());
 
         String id = servicio.alta(
                 dto.getNombre(),
@@ -79,10 +76,7 @@ public class ControladorUsuarios {
     @PermitAll
     public Response crearOauth(UsuarioGithubCreateDto dto) throws RepositorioException, EntidadNoEncontrada {
 
-        log.info(
-            "POST /usuarios/oauth recibido githubId={}, email={}",
-            dto.getGithubId(),
-            dto.getEmail());
+        log.info("POST /usuarios/oauth recibido githubId={}, email={}", dto.getGithubId(), dto.getEmail());
 
         if (dto == null || dto.getEmail() == null || dto.getGithubId() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -145,10 +139,7 @@ public class ControladorUsuarios {
     @Path("/verificar")
     @PermitAll
     public Response verificarCredenciales(VerificarCredencialesDto dto) throws RepositorioException {
-        log.info(
-            "POST /usuarios/verificar recibido username={}, password={}",
-            dto.getUsername(),
-            dto.getPassword());
+        log.info("POST /usuarios/verificar recibido username={}, password={}", dto.getUsername(), dto.getPassword());
 
         if (dto == null || dto.getUsername() == null || dto.getPassword() == null) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -186,10 +177,7 @@ public class ControladorUsuarios {
     public Response buscarUsuario(@QueryParam("email") String email, @QueryParam("githubId") String githubId)
             throws RepositorioException {
 
-        log.info(
-            "GET /usuarios/buscar recibido githubId={}, email={}",
-            githubId,
-            email);
+        log.info("GET /usuarios/buscar recibido githubId={}, email={}", githubId, email);
 
         Usuario usuario = null;
 
@@ -224,11 +212,7 @@ public class ControladorUsuarios {
 
         Claims claims = (Claims) servletRequest.getAttribute("claims");
         String subject = claims != null ? claims.getSubject() : null;
-        log.info(
-            "PUT /usuarios/{} claims={}, subject={}",
-            id,
-            claims,
-            subject);
+        log.info("PUT /usuarios/{} claims={}, subject={}", id, claims, subject);
 
         if (claims == null || subject == null) {
             return Response.status(Response.Status.FORBIDDEN)

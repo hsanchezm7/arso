@@ -1,4 +1,4 @@
-namespace BookleApi.Middleware;
+namespace ValoracionesApi.Middleware;
 
 public class ExceptionMiddleware
 {

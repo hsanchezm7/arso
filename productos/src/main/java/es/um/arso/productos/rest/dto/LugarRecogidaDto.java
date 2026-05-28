@@ -2,7 +2,6 @@ package es.um.arso.productos.rest.dto;
 
 import es.um.arso.productos.modelo.LugarRecogida;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import javax.validation.constraints.NotNull;
 
 @Schema(description = "DTO con la información necesaria para modificar el lugar de recogida de un producto.")
