@@ -34,7 +34,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto request, HttpServletResponse response) {
-
         log.info(
                 "POST /auth/login recibido usernamePresent={}",
                 request != null
