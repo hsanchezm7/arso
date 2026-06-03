@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,9 +25,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private static final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
 
     private final JwtService jwtService;
-
-    @Value("${jwt.cookie.name:jwt}")
-    private String cookieName;
 
     public JwtRequestFilter(JwtService jwtService) {
         this.jwtService = jwtService;
@@ -49,11 +44,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Buscar token primero en header Authorization (Bearer), luego en cookies
         String token = extraerBearer(request);
-        if (token == null || token.isEmpty()) {
-            token = extraerCookie(request);
-        }
 
         if (token == null || token.isEmpty()) {
             filterChain.doFilter(request, response);
@@ -101,21 +92,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return false;
         }
         return uri.startsWith("/auth/") || uri.startsWith("/oauth2/") || uri.startsWith("/login/oauth2");
-    }
-
-    private String extraerCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            return null;
-        }
-
-        for (Cookie cookie : cookies) {
-            if (cookieName.equals(cookie.getName())) {
-                return cookie.getValue();
-            }
-        }
-
-        return null;
     }
 
     private List<SimpleGrantedAuthority> parseRoles(String roles) {
