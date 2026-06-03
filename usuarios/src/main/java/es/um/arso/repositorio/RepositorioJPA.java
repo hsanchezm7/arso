@@ -42,7 +42,7 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 
             T instancia = em.find(getClase(), entity.getId());
             if (instancia == null) {
-                throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
+                throw new EntidadNoEncontrada("Entidad no encontrada: " + entity.getId());
             }
 
             entity = em.merge(entity);
@@ -69,7 +69,7 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 
             T instancia = em.find(getClase(), entity.getId());
             if (instancia == null) {
-                throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
+                throw new EntidadNoEncontrada("Entidad no encontrada: " + entity.getId());
             }
 
             em.remove(instancia);
@@ -92,7 +92,7 @@ public abstract class RepositorioJPA<T extends Identificable> implements Reposit
 
             T instancia = em.find(getClase(), id);
             if (instancia == null) {
-                throw new EntidadNoEncontrada(id + " no existe en el repositorio");
+                throw new EntidadNoEncontrada("Entidad no encontrada: " + id);
             } else {
                 em.refresh(instancia);
             }

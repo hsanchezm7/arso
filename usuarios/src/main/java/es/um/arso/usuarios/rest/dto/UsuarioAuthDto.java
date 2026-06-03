@@ -3,14 +3,14 @@ package es.um.arso.usuarios.rest.dto;
 public class UsuarioAuthDto {
 
     private String id;
-    private String nombreCompleto;
+    private String nombre;
     private String roles;
 
     public UsuarioAuthDto() {}
 
-    public UsuarioAuthDto(String id, String nombreCompleto, String roles) {
+    public UsuarioAuthDto(String id, String nombre, String roles) {
         this.id = id;
-        this.nombreCompleto = nombreCompleto;
+        this.nombre = nombre;
         this.roles = roles;
     }
 
@@ -22,12 +22,12 @@ public class UsuarioAuthDto {
         this.id = id;
     }
 
-    public String getNombreCompleto() {
-        return nombreCompleto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getRoles() {

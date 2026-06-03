@@ -74,6 +74,16 @@ public class Usuario implements Identificable {
         return nombre;
     }
 
+    public String getNombreCompleto() {
+        String n = this.nombre != null ? this.nombre : "";
+        String a = this.apellidos != null ? this.apellidos : "";
+        String nombreCompleto = (n + " " + a).trim();
+        if (nombreCompleto.isEmpty()) { // por si inició con githubId
+            return this.email;
+        }
+        return nombreCompleto;
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

@@ -1,6 +1,5 @@
 package es.um.arso.compraventa.rest;
 
-import es.um.arso.compraventa.modelo.Compraventa;
 import es.um.arso.compraventa.rest.dto.CompraventaDto;
 import es.um.arso.compraventa.rest.dto.NuevaCompraventaDto;
 import es.um.arso.compraventa.servicio.CompraventaResumen;
@@ -79,8 +78,7 @@ public class ControladorCompraventas {
 
         log.info("GET /compraventas/{}", id);
 
-        Compraventa compraventa = this.servicioCompraventa.getCompraventa(id);
-        CompraventaDto compraventaDto = CompraventaDto.fromEntity(compraventa);
+        CompraventaDto compraventaDto = this.servicioCompraventa.getCompraventa(id);
 
         EntityModel<CompraventaDto> model = EntityModel.of(compraventaDto);
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ControladorCompraventas.class)
@@ -123,10 +121,14 @@ public class ControladorCompraventas {
     @GetMapping
     @Operation(
             summary = "Buscar compraventas",
-            description = "Obtiene un listado paginado de compraventas entre dos usuarios específicos.")
+            description =
+                    "Obtiene un listado paginado de compraventas. Permite filtrar por comprador, vendedor o ambos.")
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
     public PagedModel<EntityModel<CompraventaResumen>> getCompraventasEntreUsuarios(
-            @RequestParam String idComprador, @RequestParam String idVendedor, Pageable paginacion) throws Exception {
+            @RequestParam(required = false) String idComprador,
+            @RequestParam(required = false) String idVendedor,
+            Pageable paginacion)
+            throws Exception {
 
         log.info("GET /compraventas idComprador={}, idVendedor={}", idComprador, idVendedor);
 

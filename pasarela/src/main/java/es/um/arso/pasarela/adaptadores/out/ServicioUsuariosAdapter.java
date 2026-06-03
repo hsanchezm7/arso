@@ -6,8 +6,6 @@ import es.um.arso.pasarela.client.VerificarCredencialesRequest;
 import es.um.arso.pasarela.servicio.exception.UsuariosClientException;
 import es.um.arso.pasarela.servicio.puertos.out.IServicioUsuariosExterno;
 import es.um.arso.pasarela.servicio.puertos.out.UsuarioAuthInfo;
-import es.um.arso.pasarela.servicio.puertos.out.UsuarioBusquedaInfo;
-import es.um.arso.pasarela.servicio.puertos.out.UsuarioInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,13 +32,16 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
     }
 
     @Override
-    public UsuarioInfo getUsuario(String idUsuario) {
-        Response<UsuarioInfo> response;
+    public UsuarioAuthInfo getUsuario(String idUsuario) {
+        Response<UsuarioAuthInfo> response;
         try {
-            log.info("Consultando usuario en servicio usuarios id={}", idUsuario);
             response = client.getUsuario(idUsuario).execute();
         } catch (Exception e) {
             throw new UsuariosClientException("Error de comunicación con servicio usuarios", e);
+        }
+
+        if (response.code() == 404) {
+            return null;
         }
 
         if (!response.isSuccessful()) {
@@ -48,7 +49,7 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
                     "Error al obtener usuario: " + response.code() + " - " + response.message());
         }
 
-        UsuarioInfo body = response.body();
+        UsuarioAuthInfo body = response.body();
         if (body != null) {
             log.info("Usuario recuperado id={}", body.getId());
         }
@@ -60,14 +61,13 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
         VerificarCredencialesRequest request = new VerificarCredencialesRequest(username, password);
         Response<UsuarioAuthInfo> response;
         try {
-            log.info("Verificando credenciales en servicio usuarios username={}", username);
             response = client.verificarCredenciales(request).execute();
         } catch (Exception e) {
             throw new UsuariosClientException("Error de comunicación con servicio usuarios", e);
         }
 
         if (response.code() == 401) {
-            log.info("Credenciales invalidas segun servicio usuarios username={}", username);
+            log.info("Credenciales invalidas según servicio usuarios username={}", username);
             return null;
         }
 
@@ -84,13 +84,9 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
     }
 
     @Override
-    public UsuarioBusquedaInfo buscarUsuario(String githubId, String email) {
-        Response<UsuarioBusquedaInfo> response;
+    public UsuarioAuthInfo buscarUsuario(String githubId, String email) {
+        Response<UsuarioAuthInfo> response;
         try {
-            log.info(
-                    "Buscando usuario en servicio usuarios githubId={} emailPresent={}",
-                    githubId,
-                    email != null && !email.trim().isEmpty());
             response = client.buscarUsuario(githubId, email).execute();
         } catch (Exception e) {
             throw new UsuariosClientException("Error de comunicación con servicio usuarios", e);
@@ -106,7 +102,7 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
                     "Error al buscar usuario: " + response.code() + " - " + response.message());
         }
 
-        UsuarioBusquedaInfo usuario = response.body();
+        UsuarioAuthInfo usuario = response.body();
         if (usuario != null) {
             log.info("Usuario encontrado id={}", usuario.getId());
         }

@@ -13,7 +13,7 @@ public class EntidadNoEncontradaMapper implements ExceptionMapper<EntidadNoEncon
     public Response toResponse(EntidadNoEncontrada e) {
         return Response.status(Response.Status.NOT_FOUND)
                 .type(MediaType.APPLICATION_JSON)
-                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .entity("{\"error\": \"Not Found\", \"message\": \"" + e.getMessage() + "\"}")
                 .build();
     }
 }

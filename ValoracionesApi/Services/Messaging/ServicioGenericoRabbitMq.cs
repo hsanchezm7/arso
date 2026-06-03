@@ -10,7 +10,7 @@ public class ServicioGenericoRabbitMq<T> : IServicioGenericoRabbitMq<T> where T 
 {
     public const string RABBITMQ_URI = "amqp://arso:arso@rabbitmq:5672";
     public const string EXCHANGE_NAME = "arso.bus";
-    public const string ROUTING_KEY_PREFIX = "arso.valoraciones.";
+    public const string ROUTING_KEY_PREFIX = "bus.valoraciones.";
     private readonly ConnectionFactory _factory;
 
     /* serialización en camelCase para que todos los microservicios usen la mísma política de

@@ -13,7 +13,7 @@ public class RepositorioExceptionMapper implements ExceptionMapper<RepositorioEx
     public Response toResponse(RepositorioException e) {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .type(MediaType.APPLICATION_JSON)
-                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .entity("{\"error\": \"Internal Server Error\", \"message\": \"" + e.getMessage() + "\"}")
                 .build();
     }
 }

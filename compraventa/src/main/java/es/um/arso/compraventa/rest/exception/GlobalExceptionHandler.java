@@ -60,28 +60,28 @@ public class GlobalExceptionHandler {
     }
 
     public static class RespuestaError {
-        private String estado;
-        private String mensaje;
+        private String error;
+        private String message;
 
-        public RespuestaError(String estado, String mensaje) {
-            this.estado = estado;
-            this.mensaje = mensaje;
+        public RespuestaError(String error, String message) {
+            this.error = error;
+            this.message = message;
         }
 
-        public String getEstado() {
-            return estado;
+        public String getError() {
+            return error;
         }
 
-        public void setEstado(String estado) {
-            this.estado = estado;
+        public void setError(String error) {
+            this.error = error;
         }
 
-        public String getMensaje() {
-            return mensaje;
+        public String getMessage() {
+            return message;
         }
 
-        public void setMensaje(String mensaje) {
-            this.mensaje = mensaje;
+        public void setMessage(String message) {
+            this.message = message;
         }
     }
 }

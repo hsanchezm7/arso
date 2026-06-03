@@ -36,7 +36,7 @@ public class ServicioProductosAdapter implements IServicioProductosExterno {
 
         switch (code) {
             case 404:
-                throw new EntidadNoEncontrada("Producto no existe");
+                throw new EntidadNoEncontrada("Producto no encontrado");
             default:
                 throw new ServicioExternoException(
                         "Error con el servicio de productos. HTTP " + code + " - " + response.message());

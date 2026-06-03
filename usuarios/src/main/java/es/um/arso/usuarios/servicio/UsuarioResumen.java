@@ -1,10 +1,15 @@
 package es.um.arso.usuarios.servicio;
 
+import java.time.LocalDate;
+
 public class UsuarioResumen {
 
     private String id;
-    private String nombre;
+    private String nombreCompleto;
     private String email;
+    private LocalDate fechaNacimiento;
+    private String telefono;
+    private String githubId;
 
     public UsuarioResumen() {}
 
@@ -17,11 +22,11 @@ public class UsuarioResumen {
     }
 
     public String getNombre() {
-        return nombre;
+        return nombreCompleto;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombreCompleto = nombre;
     }
 
     public String getEmail() {
@@ -30,5 +35,29 @@ public class UsuarioResumen {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(String githubId) {
+        this.githubId = githubId;
     }
 }

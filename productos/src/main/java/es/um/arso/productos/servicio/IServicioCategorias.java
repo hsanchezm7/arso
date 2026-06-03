@@ -1,6 +1,6 @@
 package es.um.arso.productos.servicio;
 
-import es.um.arso.productos.modelo.Categoria;
+import es.um.arso.productos.rest.dto.CategoriaDto;
 import es.um.arso.repositorio.EntidadNoEncontrada;
 import java.util.List;
 
@@ -10,7 +10,9 @@ public interface IServicioCategorias {
 
     void modificarDescripcion(String categoriaId, String nuevaDescripcion) throws EntidadNoEncontrada;
 
-    List<Categoria> getRaices();
+    List<CategoriaDto> getRaices();
 
-    List<Categoria> getDescendientes(String categoriaId) throws EntidadNoEncontrada;
+    List<CategoriaDto> getDescendientes(String categoriaId) throws EntidadNoEncontrada;
+
+    List<CategoriaDto> getCategorias();
 }

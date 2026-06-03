@@ -49,7 +49,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = extraerCookie(request);
+        // Buscar token primero en header Authorization (Bearer), luego en cookies
+        String token = extraerBearer(request);
+        if (token == null || token.isEmpty()) {
+            token = extraerCookie(request);
+        }
 
         if (token == null || token.isEmpty()) {
             filterChain.doFilter(request, response);
@@ -77,6 +81,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.getWriter().write("{\"error\":\"Token invalido o caducado\"}");
         }
+    }
+
+    private String extraerBearer(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || authHeader.isEmpty()) {
+            return null;
+        }
+
+        if (!authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+
+        return authHeader.substring("Bearer ".length());
     }
 
     private boolean esRutaAuth(String uri) {

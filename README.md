@@ -1,5 +1,19 @@
 # arso
 
+## servicios
+
+| servicio        | directorio      | puertos (Host:Contenedor)  | OpenAPI / Swagger UI                                                           |
+|-----------------|-----------------|----------------------------|--------------------------------------------------------------------------------|
+| `mongo`         | -               | `27018:27017`              | -                                                                              |
+| `mongo-express` | -               | `8085:8085`                | -                                                                              |
+| `rabbitmq`      | -               | `5672:5672`, `15672:15672` | -                                                                              |
+| `mysql`         | -               | `3307:3306`                | -                                                                              |
+| `pasarela`      | pasarela        | `8080:8080`                | -                                                                              |
+| `usuarios`      | usuarios        | `8081:8081`                | -                                                                              |
+| `productos`     | productos       | `8082:8082`                | [http://localhost:8082/swagger-ui.html](http://localhost:8082/swagger-ui.html) |
+| `compraventa`   | compraventa     | `8083:8083`                | [http://localhost:8083/swagger-ui.html](http://localhost:8083/swagger-ui.html) |
+| `valoraciones`  | ValoracionesApi | `8084:8084`                | [http://localhost:8084/swagger](http://localhost:8084/swagger)                 |
+
 ## broker de mensajes RabbitMQ
 
 En el fichero [definitions.json](definitions.json) se declaran el bus, las colas y los bindings

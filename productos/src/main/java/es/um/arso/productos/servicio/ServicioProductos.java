@@ -9,6 +9,7 @@ import es.um.arso.productos.repositorio.RepositorioProductos;
 import es.um.arso.productos.repositorio.RepositorioUsuarios;
 import es.um.arso.repositorio.EntidadNoEncontrada;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,15 +54,15 @@ public class ServicioProductos implements IServicioProductos {
         if (estado == null) throw new IllegalArgumentException("estado obligatorio");
 
         if (vendedorId == null || vendedorId.isEmpty()) {
-            throw new IllegalArgumentException("Usuario no autenticado");
+            throw new IllegalArgumentException("vendedorId obligatorio");
         }
 
         Categoria categoria = repositorioCategorias
                 .findById(categoriaId)
-                .orElseThrow(() -> new EntidadNoEncontrada("Categoria " + categoriaId + " no encontrada"));
+                .orElseThrow(() -> new EntidadNoEncontrada("Categoría no encontrada: " + categoriaId));
         Usuario vendedor = repositorioUsuarios
                 .findById(vendedorId)
-                .orElseThrow(() -> new EntidadNoEncontrada("Vendedor " + vendedorId + " no encontrado"));
+                .orElseThrow(() -> new EntidadNoEncontrada("Vendedor no encontrado: " + vendedorId));
 
         Producto producto = new Producto(titulo, descripcion, precio, estado, categoria, envioDisponible, vendedor);
         producto = repositorioProductos.save(producto);
@@ -75,7 +76,7 @@ public class ServicioProductos implements IServicioProductos {
             throws EntidadNoEncontrada {
         Producto producto = repositorioProductos
                 .findById(productoId)
-                .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
+                .orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + productoId));
         validarPropietario(producto, vendedorId);
         producto.asignarLugarRecogida(descripcion, longitud, latitud);
         repositorioProductos.save(producto);
@@ -88,7 +89,7 @@ public class ServicioProductos implements IServicioProductos {
             throws EntidadNoEncontrada {
         Producto producto = repositorioProductos
                 .findById(productoId)
-                .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
+                .orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + productoId));
         validarPropietario(producto, vendedorId);
         if (nuevoPrecio != null) {
             if (nuevoPrecio < 0) throw new IllegalArgumentException("precio no válido");
@@ -108,7 +109,7 @@ public class ServicioProductos implements IServicioProductos {
     public void anadirVisualizacion(String productoId) throws EntidadNoEncontrada {
         Producto producto = repositorioProductos
                 .findById(productoId)
-                .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
+                .orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + productoId));
         producto.incrementarVisualizaciones();
         repositorioProductos.save(producto);
         log.info("Visualizacion añadida producto={}", productoId);
@@ -118,7 +119,7 @@ public class ServicioProductos implements IServicioProductos {
     public void marcarNoDisponible(String productoId) throws EntidadNoEncontrada {
         Producto producto = repositorioProductos
                 .findById(productoId)
-                .orElseThrow(() -> new EntidadNoEncontrada(productoId + " no existe"));
+                .orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + productoId));
         producto.setDisponible(false);
         repositorioProductos.save(producto);
         log.info("Producto marcado no disponible id={}", productoId);
@@ -127,7 +128,9 @@ public class ServicioProductos implements IServicioProductos {
     @Override
     @Transactional(readOnly = true)
     public Producto getProducto(String id) throws EntidadNoEncontrada {
-        return repositorioProductos.findById(id).orElseThrow(() -> new EntidadNoEncontrada(id + " no existe"));
+        return repositorioProductos
+                .findById(id)
+                .orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + id));
     }
 
     @Override
@@ -153,7 +156,13 @@ public class ServicioProductos implements IServicioProductos {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Producto> buscar(String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo) {
+    public List<Producto> buscar(
+            String categoriaId,
+            String texto,
+            EstadoProducto estadoMinimo,
+            Double precioMinimo,
+            Double precioMaximo,
+            String idVendedor) {
         java.util.Set<String> categoriasPermitidas = new java.util.HashSet<>();
         if (categoriaId != null) {
             repositorioCategorias.findById(categoriaId).ifPresent(cat -> {
@@ -177,8 +186,15 @@ public class ServicioProductos implements IServicioProductos {
         if (estadoMinimo != null) {
             stream = stream.filter(p -> p.getEstado() != null && p.getEstado().esIgualOMejorQue(estadoMinimo));
         }
+        if (precioMinimo != null) {
+            stream = stream.filter(p -> p.getPrecio() != null && p.getPrecio() >= precioMinimo);
+        }
         if (precioMaximo != null) {
             stream = stream.filter(p -> p.getPrecio() != null && p.getPrecio() <= precioMaximo);
+        }
+        if (idVendedor != null && !idVendedor.isEmpty()) {
+            stream = stream.filter(p ->
+                    p.getVendedor() != null && idVendedor.equals(p.getVendedor().getId()));
         }
 
         return stream.collect(Collectors.toList());
@@ -198,8 +214,14 @@ public class ServicioProductos implements IServicioProductos {
     @Override
     @Transactional(readOnly = true)
     public Page<ProductoResumen> buscarPaginado(
-            String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo, Pageable paginacion) {
-        List<Producto> productos = buscar(categoriaId, texto, estadoMinimo, precioMaximo);
+            String categoriaId,
+            String texto,
+            EstadoProducto estadoMinimo,
+            Double precioMinimo,
+            Double precioMaximo,
+            String idVendedor,
+            Pageable paginacion) {
+        List<Producto> productos = buscar(categoriaId, texto, estadoMinimo, precioMinimo, precioMaximo, idVendedor);
         int start = (int) paginacion.getOffset();
         int end = Math.min((start + paginacion.getPageSize()), productos.size());
         List<Producto> pageContent = start > productos.size() ? Collections.emptyList() : productos.subList(start, end);
@@ -223,11 +245,16 @@ public class ServicioProductos implements IServicioProductos {
 
     private void validarPropietario(Producto producto, String vendedorId) {
         if (vendedorId == null || vendedorId.isEmpty()) {
-            throw new IllegalArgumentException("Usuario no autenticado");
+            throw new IllegalArgumentException("vendedorId obligatorio");
         }
         if (producto.getVendedor() == null
                 || !vendedorId.equals(producto.getVendedor().getId())) {
             throw new SecurityException("Solo el propietario puede modificar este producto");
         }
+    }
+
+    @Override
+    public List<EstadoProducto> getEstadosProducto() {
+        return Arrays.asList(EstadoProducto.values());
     }
 }

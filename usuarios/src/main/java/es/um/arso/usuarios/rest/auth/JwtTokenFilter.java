@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.annotation.Priority;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -20,8 +19,6 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class JwtTokenFilter implements ContainerRequestFilter {
-
-    private static final String JWT_COOKIE_NAME = "jwt";
 
     @Context
     private ResourceInfo resourceInfo;
@@ -38,17 +35,19 @@ public class JwtTokenFilter implements ContainerRequestFilter {
         }
 
         // TODO: definir rutas públicas? Redundante? Ya comprobamos PermitAll
-        String token = extractTokenFromCookies();
+        String token = extractTokenFromBearer(requestContext);
         if (token == null || token.trim().isEmpty()) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("No se adjunta el token en la cookie")
+                    .entity("No se adjunta el token en el header Authorization")
                     .build());
             return;
         }
 
         try {
             Claims claims = JwtUtils.parseClaimsUnverified(token);
-            servletRequest.setAttribute("claims", claims);
+            if (servletRequest != null) {
+                servletRequest.setAttribute("claims", claims);
+            }
 
             if (resourceInfo != null
                     && resourceInfo.getResourceMethod() != null
@@ -81,22 +80,17 @@ public class JwtTokenFilter implements ContainerRequestFilter {
         }
     }
 
-    private String extractTokenFromCookies() {
-        if (servletRequest == null) {
+    private String extractTokenFromBearer(ContainerRequestContext requestContext) {
+        // Usar ContainerRequestContext directamente, más fiable que @Context HttpServletRequest
+        String authHeader = requestContext.getHeaderString("Authorization");
+        if (authHeader == null || authHeader.isEmpty()) {
             return null;
         }
 
-        Cookie[] cookies = servletRequest.getCookies();
-        if (cookies == null) {
+        if (!authHeader.startsWith("Bearer ")) {
             return null;
         }
 
-        for (Cookie cookie : cookies) {
-            if (JWT_COOKIE_NAME.equals(cookie.getName())) {
-                return cookie.getValue();
-            }
-        }
-
-        return null;
+        return authHeader.substring("Bearer ".length());
     }
 }

@@ -5,11 +5,13 @@ import es.um.arso.compraventa.modelo.eventos.EventoCompraventaCreada;
 import es.um.arso.compraventa.puertos.out.PublicadorEventos;
 import es.um.arso.compraventa.repositorio.EntidadNoEncontrada;
 import es.um.arso.compraventa.repositorio.RepositorioCompraventas;
+import es.um.arso.compraventa.rest.dto.CompraventaDto;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioProductosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioUsuariosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.ProductoInfo;
 import es.um.arso.compraventa.servicio.puertos.out.UsuarioInfo;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,18 +86,24 @@ public class ServicioCompraventa implements IServicioCompraventa {
     }
 
     @Override
-    public List<Compraventa> getComprasUsuario(String idComprador) {
-        return repositorioCompraventas.findByIdComprador(idComprador);
+    public List<CompraventaDto> getComprasUsuario(String idComprador) {
+        return repositorioCompraventas.findByIdComprador(idComprador).stream()
+                .map(CompraventaDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Compraventa> getVentasUsuario(String idVendedor) {
-        return repositorioCompraventas.findByIdVendedor(idVendedor);
+    public List<CompraventaDto> getVentasUsuario(String idVendedor) {
+        return repositorioCompraventas.findByIdVendedor(idVendedor).stream()
+                .map(CompraventaDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Compraventa> getCompraventasEntreUsuarios(String idComprador, String idVendedor) {
-        return repositorioCompraventas.findByIdCompradorAndIdVendedor(idComprador, idVendedor);
+    public List<CompraventaDto> getCompraventasEntreUsuarios(String idComprador, String idVendedor) {
+        return repositorioCompraventas.findByIdCompradorAndIdVendedor(idComprador, idVendedor).stream()
+                .map(CompraventaDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -113,18 +121,31 @@ public class ServicioCompraventa implements IServicioCompraventa {
     @Override
     public Page<CompraventaResumen> getCompraventasEntreUsuariosPaginado(
             String idComprador, String idVendedor, Pageable pageable) {
-        Page<Compraventa> compraventas =
-                repositorioCompraventas.findByIdCompradorAndIdVendedor(idComprador, idVendedor, pageable);
+        String comprador = normalizarId(idComprador);
+        String vendedor = normalizarId(idVendedor);
+
+        Page<Compraventa> compraventas;
+        if (comprador != null && vendedor != null) {
+            compraventas = repositorioCompraventas.findByIdCompradorAndIdVendedor(comprador, vendedor, pageable);
+        } else if (comprador != null) {
+            compraventas = repositorioCompraventas.findByIdComprador(comprador, pageable);
+        } else if (vendedor != null) {
+            compraventas = repositorioCompraventas.findByIdVendedor(vendedor, pageable);
+        } else {
+            compraventas = repositorioCompraventas.findAll(pageable);
+        }
+
         return compraventas.map(this::toCompraventaResumen);
     }
 
     @Override
-    public Compraventa getCompraventa(String id) throws EntidadNoEncontrada {
+    public CompraventaDto getCompraventa(String id) throws EntidadNoEncontrada {
         if (id == null || id.isEmpty()) throw new IllegalArgumentException("El ID de la compraventa no debe ser nulo.");
 
-        return repositorioCompraventas
+        Compraventa compraventa = repositorioCompraventas
                 .findById(id)
                 .orElseThrow(() -> new EntidadNoEncontrada("Compraventa no encontrada: " + id));
+        return CompraventaDto.fromEntity(compraventa);
     }
 
     private CompraventaResumen toCompraventaResumen(Compraventa compraventa) {
@@ -139,5 +160,14 @@ public class ServicioCompraventa implements IServicioCompraventa {
         resumen.setNombreComprador(compraventa.getNombreComprador());
         resumen.setFecha(compraventa.getFecha());
         return resumen;
+    }
+
+    private String normalizarId(String id) {
+        if (id == null) {
+            return null;
+        }
+
+        String trimmed = id.trim();
+        return trimmed.isEmpty() ? null : trimmed;
     }
 }

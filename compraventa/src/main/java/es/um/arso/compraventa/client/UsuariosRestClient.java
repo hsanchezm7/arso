@@ -8,6 +8,6 @@ import retrofit2.http.Path;
 
 public interface UsuariosRestClient {
     @Headers("Accept: application/json")
-    @GET("api/usuarios/{id}/nombre")
+    @GET("api/usuarios/{id}/info")
     Call<UsuarioInfo> getUsuario(@Path("id") String id);
 }

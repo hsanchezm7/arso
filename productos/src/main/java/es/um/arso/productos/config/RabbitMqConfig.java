@@ -25,11 +25,11 @@ public class RabbitMqConfig {
     public static final String EXCHANGE_NAME = "arso.bus";
     public static final String QUEUE_NAME = "arso.productos.queue";
 
-    public static final String ROUTING_KEY_PREFIX = "arso.productos.";
+    public static final String ROUTING_KEY_PREFIX = "bus.productos.";
 
     // binding keys
-    public static final String COMPRAVENTA_BINDING_KEY = "arso.compraventa.#";
-    public static final String USUARIOS_BINDING_KEY = "arso.usuarios.#";
+    public static final String COMPRAVENTA_BINDING_KEY = "bus.compraventa.#";
+    public static final String USUARIOS_BINDING_KEY = "bus.usuarios.#";
 
     @Bean
     public TopicExchange exchange() {

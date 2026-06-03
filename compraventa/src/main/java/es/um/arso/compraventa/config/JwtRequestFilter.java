@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,9 +21,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    @Value("${jwt.cookie.name:jwt}")
-    private String cookieName;
-
     public JwtRequestFilter(JwtService jwtService) {
         this.jwtService = jwtService;
     }
@@ -35,7 +30,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            String token = extraerCookie(request);
+            String token = extraerBearer(request);
             if (token != null && !token.isEmpty()) {
                 try {
                     Claims claims = jwtService.validateToken(token);
@@ -60,19 +55,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String extraerCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
+    private String extraerBearer(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || authHeader.isEmpty()) {
             return null;
         }
 
-        for (Cookie cookie : cookies) {
-            if (cookieName.equals(cookie.getName())) {
-                return cookie.getValue();
-            }
+        if (!authHeader.startsWith("Bearer ")) {
+            return null;
         }
 
-        return null;
+        return authHeader.substring("Bearer ".length());
     }
 
     private List<SimpleGrantedAuthority> parseRoles(String roles) {

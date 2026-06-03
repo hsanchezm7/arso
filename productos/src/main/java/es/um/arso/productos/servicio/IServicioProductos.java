@@ -34,10 +34,24 @@ public interface IServicioProductos {
 
     List<ProductoResumen> getHistorialMes(int mes, int anio);
 
-    List<Producto> buscar(String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo);
+    List<Producto> buscar(
+            String categoriaId,
+            String texto,
+            EstadoProducto estadoMinimo,
+            Double precioMinimo,
+            Double precioMaximo,
+            String idVendedor);
 
     Page<ProductoResumen> getHistorialMesPaginado(int mes, int anio, Pageable paginacion);
 
     Page<ProductoResumen> buscarPaginado(
-            String categoriaId, String texto, EstadoProducto estadoMinimo, Double precioMaximo, Pageable paginacion);
+            String categoriaId,
+            String texto,
+            EstadoProducto estadoMinimo,
+            Double precioMinimo,
+            Double precioMaximo,
+            String idVendedor,
+            Pageable paginacion);
+
+    List<EstadoProducto> getEstadosProducto();
 }

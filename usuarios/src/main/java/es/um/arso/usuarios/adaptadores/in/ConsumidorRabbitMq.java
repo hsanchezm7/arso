@@ -27,11 +27,12 @@ public class ConsumidorRabbitMq implements ServletContextListener {
 
     private static final Logger log = LoggerFactory.getLogger(ConsumidorRabbitMq.class);
 
-    public static final String RABBITMQ_URI = "amqp://arso:arso@rabbitmq:5672";
+    public static final String RABBITMQ_URI =
+            System.getenv("RABBITMQ_URI") != null ? System.getenv("RABBITMQ_URI") : "amqp://arso:arso@localhost:5672";
     public static final String EXCHANGE_NAME = "arso.bus";
     public static final String QUEUE_NAME = "arso.usuarios.queue";
-    public static final String BINDING_KEY = "arso.compraventa.#";
-    public static final String BINDING_KEY_VALORACIONES = "arso.valoraciones.#";
+    public static final String BINDING_KEY = "bus.compraventa.#";
+    public static final String BINDING_KEY_VALORACIONES = "bus.valoraciones.#";
 
     private static final String EVENTO_COMPRAVENTA_CREADA = EventoCompraventaCreada.TIPO_EVENTO;
     private static final String EVENTO_VALORACION_CREADA = EventoValoracionCreada.TIPO_EVENTO;

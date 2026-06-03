@@ -28,8 +28,9 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
     @Override
     public void modificar(String id, String nombre, String apellidos, String email) throws EntidadNoEncontrada {
-        Usuario usuario =
-                repositorioUsuarios.findById(id).orElseThrow(() -> new EntidadNoEncontrada(id + " no existe"));
+        Usuario usuario = repositorioUsuarios
+                .findById(id)
+                .orElseThrow(() -> new EntidadNoEncontrada("Usuario no encontrado: " + id));
         if (nombre != null && !nombre.isEmpty()) usuario.setNombre(nombre);
         if (apellidos != null && !apellidos.isEmpty()) usuario.setApellidos(apellidos);
         if (email != null && !email.isEmpty()) usuario.setEmail(email);
@@ -40,6 +41,8 @@ public class ServicioUsuarios implements IServicioUsuarios {
     @Override
     @Transactional(readOnly = true)
     public Usuario get(String id) throws EntidadNoEncontrada {
-        return repositorioUsuarios.findById(id).orElseThrow(() -> new EntidadNoEncontrada(id + " no existe"));
+        return repositorioUsuarios
+                .findById(id)
+                .orElseThrow(() -> new EntidadNoEncontrada("Usuario no encontrado: " + id));
     }
 }

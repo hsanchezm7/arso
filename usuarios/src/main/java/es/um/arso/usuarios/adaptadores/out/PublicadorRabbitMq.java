@@ -15,12 +15,13 @@ public class PublicadorRabbitMq implements PublicadorEventos {
 
     private static final Logger log = LoggerFactory.getLogger(PublicadorRabbitMq.class);
 
-    public static final String RABBITMQ_URI = "amqp://arso:arso@rabbitmq:5672";
+    public static final String RABBITMQ_URI =
+            System.getenv("RABBITMQ_URI") != null ? System.getenv("RABBITMQ_URI") : "amqp://arso:arso@localhost:5672";
 
     public static final String EXCHANGE_NAME = "arso.bus";
     public static final String QUEUE_NAME = "arso.usuarios.queue";
-    public static final String BINDING_KEY = "arso.usuarios.#";
-    public static final String ROUTING_KEY_PREFIX = "arso.usuarios.";
+    public static final String BINDING_KEY = "bus.usuarios.#";
+    public static final String ROUTING_KEY_PREFIX = "bus.usuarios.";
 
     private final ConnectionFactory factory;
     private final Gson gson;

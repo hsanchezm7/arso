@@ -12,7 +12,7 @@ public class IllegalArgumentExceptionMapper implements ExceptionMapper<IllegalAr
     public Response toResponse(IllegalArgumentException e) {
         return Response.status(Response.Status.BAD_REQUEST)
                 .type(MediaType.APPLICATION_JSON)
-                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .entity("{\"error\": \"Bad Request\", \"message\": \"" + e.getMessage() + "\"}")
                 .build();
     }
 }

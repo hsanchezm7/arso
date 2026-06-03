@@ -3,7 +3,7 @@ package es.um.arso.pasarela.servicio.puertos.out;
 public class UsuarioAuthInfo {
 
     private String id;
-    private String nombreCompleto;
+    private String nombre;
     private String roles;
 
     public UsuarioAuthInfo() {}
@@ -16,12 +16,12 @@ public class UsuarioAuthInfo {
         this.id = id;
     }
 
-    public String getNombreCompleto() {
-        return nombreCompleto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getRoles() {

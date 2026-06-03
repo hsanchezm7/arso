@@ -9,7 +9,6 @@ import es.um.arso.usuarios.rest.dto.UsuarioAuthDto;
 import es.um.arso.usuarios.rest.dto.UsuarioCreateDto;
 import es.um.arso.usuarios.rest.dto.UsuarioDto;
 import es.um.arso.usuarios.rest.dto.UsuarioGithubCreateDto;
-import es.um.arso.usuarios.rest.dto.UsuarioNombreDto;
 import es.um.arso.usuarios.rest.dto.UsuarioUpdateDto;
 import es.um.arso.usuarios.rest.dto.VerificarCredencialesDto;
 import es.um.arso.usuarios.servicio.IServicioUsuarios;
@@ -56,7 +55,7 @@ public class ControladorUsuarios {
     @PermitAll
     public Response crear(UsuarioCreateDto dto) throws RepositorioException {
 
-        log.info("POST /usuarios recibido email={}, telefono={}", dto.getEmail(), dto.getTelefono());
+        log.info("POST /usuarios email={}, telefono={}", dto.getEmail(), dto.getTelefono());
 
         String id = servicio.alta(
                 dto.getNombre(),
@@ -76,11 +75,7 @@ public class ControladorUsuarios {
     @PermitAll
     public Response crearOauth(UsuarioGithubCreateDto dto) throws RepositorioException, EntidadNoEncontrada {
 
-        log.info("POST /usuarios/oauth recibido githubId={}, email={}", dto.getGithubId(), dto.getEmail());
-
-        if (dto == null || dto.getEmail() == null || dto.getGithubId() == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        log.info("POST /usuarios/oauth githubId={}, email={}", dto.getGithubId(), dto.getEmail());
 
         // TODO: copmletar TODO del servicio de alta, para ver si se el email ya está en
         // uso y por
@@ -93,13 +88,7 @@ public class ControladorUsuarios {
 
         Usuario usuario = servicio.recuperar(id);
 
-        String nombre = usuario.getNombre() != null ? usuario.getNombre() : "";
-        String apellidos = usuario.getApellidos() != null ? usuario.getApellidos() : "";
-        String nombreCompleto = (nombre + " " + apellidos).trim();
-        if (nombreCompleto.isEmpty()) {
-            nombreCompleto = usuario.getEmail();
-        }
-
+        String nombreCompleto = usuario.getNombreCompleto();
         String roles = usuario.isAdministrador() ? "USUARIO,ADMINISTRADOR" : "USUARIO";
         UsuarioAuthDto dtoRespuesta = new UsuarioAuthDto(usuario.getId(), nombreCompleto, roles);
 
@@ -114,23 +103,27 @@ public class ControladorUsuarios {
     @RolesAllowed("USUARIO")
     public Response getUsuario(@PathParam("id") String id) throws RepositorioException, EntidadNoEncontrada {
 
-        log.info("GET /usuarios/{} recibido", id);
+        log.info("GET /usuarios/{}", id);
 
         Usuario usuario = servicio.recuperar(id);
         UsuarioDto dto = toUsuarioDTO(usuario);
         return Response.status(Response.Status.OK).entity(dto).build();
     }
 
-    // GET /usuarios/{id}/nombre (tarea 6)
+    // GET /usuarios/{id}/info
     @GET
-    @Path("/{id}/nombre")
+    @Path("/{id}/info")
     @PermitAll
-    public Response getNombreUsuario(@PathParam("id") String id) throws RepositorioException, EntidadNoEncontrada {
+    public Response getUsuarioInfo(@PathParam("id") String id) throws RepositorioException, EntidadNoEncontrada {
 
-        log.info("GET /usuarios/{}/nombre recibido", id);
+        log.info("GET /usuarios/{}/auth", id);
 
         Usuario usuario = servicio.recuperar(id);
-        UsuarioNombreDto dto = new UsuarioNombreDto(usuario.getId(), usuario.getNombre());
+
+        String nombreCompleto = usuario.getNombreCompleto();
+        String roles = usuario.isAdministrador() ? "USUARIO,ADMINISTRADOR" : "USUARIO";
+        UsuarioAuthDto dto = new UsuarioAuthDto(usuario.getId(), nombreCompleto, roles);
+
         return Response.status(Response.Status.OK).entity(dto).build();
     }
 
@@ -139,31 +132,17 @@ public class ControladorUsuarios {
     @Path("/verificar")
     @PermitAll
     public Response verificarCredenciales(VerificarCredencialesDto dto) throws RepositorioException {
-        log.info("POST /usuarios/verificar recibido username={}, password={}", dto.getUsername(), dto.getPassword());
-
-        if (dto == null || dto.getUsername() == null || dto.getPassword() == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Solicitud inválida")
-                    .build();
-        }
+        log.info("POST /usuarios/verificar username={}, password={}", dto.getUsername(), dto.getPassword());
 
         Usuario usuario = servicio.autenticar(dto.getUsername(), dto.getPassword());
         if (usuario == null) {
             log.info("Credenciales invalidas para username={}", dto.getUsername());
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Credenciales inválidas")
-                    .build();
+            throw new SeguridadException("Credenciales inválidas", Response.Status.UNAUTHORIZED);
         }
 
         log.info("Credenciales validas para id={}", usuario.getId());
 
-        String nombre = usuario.getNombre() != null ? usuario.getNombre() : "";
-        String apellidos = usuario.getApellidos() != null ? usuario.getApellidos() : "";
-        String nombreCompleto = (nombre + " " + apellidos).trim();
-        if (nombreCompleto.isEmpty()) {
-            nombreCompleto = usuario.getEmail();
-        }
-
+        String nombreCompleto = usuario.getNombreCompleto();
         String roles = usuario.isAdministrador() ? "USUARIO,ADMINISTRADOR" : "USUARIO";
         UsuarioAuthDto dtoRespuesta = new UsuarioAuthDto(usuario.getId(), nombreCompleto, roles);
 
@@ -177,7 +156,7 @@ public class ControladorUsuarios {
     public Response buscarUsuario(@QueryParam("email") String email, @QueryParam("githubId") String githubId)
             throws RepositorioException {
 
-        log.info("GET /usuarios/buscar recibido githubId={}, email={}", githubId, email);
+        log.info("GET /usuarios/buscar githubId={}, email={}", githubId, email);
 
         Usuario usuario = null;
 
@@ -208,24 +187,20 @@ public class ControladorUsuarios {
     public Response modificar(@PathParam("id") String id, UsuarioUpdateDto dto)
             throws RepositorioException, EntidadNoEncontrada {
 
-        log.info("PUT /usuarios/{} recibido body={}", id, dto);
+        log.info("PUT /usuarios/{} body={}", id, dto);
 
         Claims claims = (Claims) servletRequest.getAttribute("claims");
         String subject = claims != null ? claims.getSubject() : null;
         log.info("PUT /usuarios/{} claims={}, subject={}", id, claims, subject);
 
         if (claims == null || subject == null) {
-            return Response.status(Response.Status.FORBIDDEN)
-                    .entity("Solo puede modificar sus propios datos")
-                    .build();
+            throw new SeguridadException("Solo puede modificar sus propios datos", Response.Status.FORBIDDEN);
         }
 
         log.info("PUT /usuarios/{} subject={}, subjectMatchId={}", id, subject, subject.equals(id));
 
         if (!subject.equals(id)) {
-            return Response.status(Response.Status.FORBIDDEN)
-                    .entity("Solo puede modificar sus propios datos")
-                    .build();
+            throw new SeguridadException("Solo puede modificar sus propios datos", Response.Status.FORBIDDEN);
         }
 
         Usuario usuario = new Usuario();
@@ -245,7 +220,7 @@ public class ControladorUsuarios {
     @RolesAllowed("USUARIO")
     public Response getListadoUsuarios() throws RepositorioException {
 
-        log.info("GET /usuarios recibido");
+        log.info("GET /usuarios");
 
         List<UsuarioResumen> resultado = servicio.recuperarTodos();
 

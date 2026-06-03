@@ -36,7 +36,7 @@ public class ServicioUsuariosAdapter implements IServicioUsuariosExterno {
 
         switch (code) {
             case 404:
-                throw new EntidadNoEncontrada("Usuario no existe");
+                throw new EntidadNoEncontrada("Usuario no encontrado");
             default:
                 throw new ServicioExternoException(
                         "Error con el servicio de usuarios. HTTP " + code + " - " + response.message());

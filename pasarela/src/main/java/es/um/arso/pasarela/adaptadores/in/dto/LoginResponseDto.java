@@ -1,40 +1,32 @@
 package es.um.arso.pasarela.adaptadores.in.dto;
 
+import es.um.arso.pasarela.servicio.puertos.out.UsuarioAuthInfo;
+
 public class LoginResponseDto {
 
-    private String identificadorUsuario;
-    private String nombreCompleto;
-    private String roles;
+    private String accessToken;
+    private UsuarioAuthInfo usuario;
 
     public LoginResponseDto() {}
 
-    public LoginResponseDto(String identificadorUsuario, String nombreCompleto, String roles) {
-        this.identificadorUsuario = identificadorUsuario;
-        this.nombreCompleto = nombreCompleto;
-        this.roles = roles;
+    public LoginResponseDto(String accessToken, UsuarioAuthInfo usuario) {
+        this.accessToken = accessToken;
+        this.usuario = usuario;
     }
 
-    public String getIdentificadorUsuario() {
-        return identificadorUsuario;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setIdentificadorUsuario(String identificadorUsuario) {
-        this.identificadorUsuario = identificadorUsuario;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
-    public String getNombreCompleto() {
-        return nombreCompleto;
+    public UsuarioAuthInfo getUsuario() {
+        return usuario;
     }
 
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
-    }
-
-    public String getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
+    public void setUsuario(UsuarioAuthInfo usuario) {
+        this.usuario = usuario;
     }
 }

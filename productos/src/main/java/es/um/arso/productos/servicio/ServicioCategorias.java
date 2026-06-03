@@ -2,9 +2,11 @@ package es.um.arso.productos.servicio;
 
 import es.um.arso.productos.modelo.Categoria;
 import es.um.arso.productos.repositorio.RepositorioCategorias;
+import es.um.arso.productos.rest.dto.CategoriaDto;
 import es.um.arso.productos.servicio.xml.CategoriaXML;
 import es.um.arso.repositorio.EntidadNoEncontrada;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 import javax.xml.bind.JAXBContext;
@@ -76,23 +78,57 @@ public class ServicioCategorias implements IServicioCategorias {
     public void modificarDescripcion(String categoriaId, String nuevaDescripcion) throws EntidadNoEncontrada {
         Categoria c = repositorioCategorias
                 .findById(categoriaId)
-                .orElseThrow(() -> new EntidadNoEncontrada(categoriaId + " no existe"));
+                .orElseThrow(() -> new EntidadNoEncontrada("Categoría no encontrada: " + categoriaId));
         c.setDescripcion(nuevaDescripcion);
         repositorioCategorias.save(c);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Categoria> getRaices() {
-        return repositorioCategorias.getRaices();
+    public List<CategoriaDto> getRaices() {
+        return repositorioCategorias.getRaices().stream()
+                .map(c -> {
+                    CategoriaDto dto = new CategoriaDto();
+                    dto.setId(c.getId());
+                    dto.setNombre(c.getNombre());
+                    dto.setDescripcion(c.getDescripcion());
+                    return dto;
+                })
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Categoria> getDescendientes(String categoriaId) throws EntidadNoEncontrada {
+    public List<CategoriaDto> getDescendientes(String categoriaId) throws EntidadNoEncontrada {
         Categoria c = repositorioCategorias
                 .findById(categoriaId)
-                .orElseThrow(() -> new EntidadNoEncontrada(categoriaId + " no existe"));
-        return c.getDescendientes();
+                .orElseThrow(() -> new EntidadNoEncontrada("Categoría no encontrada: " + categoriaId));
+        return c.getDescendientes().stream()
+                .map(d -> {
+                    CategoriaDto dto = new CategoriaDto();
+                    dto.setId(d.getId());
+                    dto.setNombre(d.getNombre());
+                    dto.setDescripcion(d.getDescripcion());
+                    return dto;
+                })
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CategoriaDto> getCategorias() {
+
+        List<CategoriaDto> categorias = new ArrayList<>();
+
+        repositorioCategorias.findAll().forEach(categoria -> {
+            CategoriaDto dto = new CategoriaDto();
+            dto.setId(categoria.getId());
+            dto.setNombre(categoria.getNombre());
+            dto.setDescripcion(categoria.getDescripcion());
+
+            categorias.add(dto);
+        });
+
+        return categorias;
     }
 }

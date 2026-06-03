@@ -16,7 +16,7 @@ public class RabbitMqConfig {
 
     // TODO: Mover valores a archivo de config
     public static final String EXCHANGE_NAME = "arso.bus";
-    public static final String ROUTING_KEY_PREFIX = "arso.compraventa.";
+    public static final String ROUTING_KEY_PREFIX = "bus.compraventa.";
 
     @Bean
     TopicExchange exchange() {
