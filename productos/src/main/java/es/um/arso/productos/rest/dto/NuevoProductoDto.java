@@ -2,13 +2,14 @@ package es.um.arso.productos.rest.dto;
 
 import es.um.arso.productos.modelo.EstadoProducto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Schema(description = "DTO con la información necesaria para dar de alta un nuevo producto en el sistema.")
 public class NuevoProductoDto {
 
-    @NotNull(message = "El título es obligatorio")
+    @NotBlank(message = "El título no debe estar vacío")
     @Schema(description = "Nombre del producto.", example = "PSP 1004 Japan (Fat)")
     private String titulo;
 
@@ -26,7 +27,7 @@ public class NuevoProductoDto {
     @Schema(description = "Estado de conservación actual del producto.", example = "COMO_NUEVO")
     private EstadoProducto estado;
 
-    @NotNull(message = "La categoría es obligatoria")
+    @NotBlank(message = "La categoría no debe estar vacía")
     @Schema(description = "Identificador único de la categoría a la que pertenece el producto.")
     private String categoriaId;
 
