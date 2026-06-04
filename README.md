@@ -2,17 +2,17 @@
 
 ## Servicios
 
-| servicio        | directorio                          | puertos (Host:Contenedor)  | OpenAPI / Swagger UI                                                           |
-|-----------------|-------------------------------------|----------------------------|--------------------------------------------------------------------------------|
-| `mongo`         | -                                   | `27018:27017`              | -                                                                              |
-| `mongo-express` | -                                   | `8085:8085`                | -                                                                              |
-| `rabbitmq`      | -                                   | `5672:5672`, `15672:15672` | -                                                                              |
-| `mysql`         | -                                   | `3307:3306`                | -                                                                              |
-| `pasarela`      | [pasarela](pasarela/)               | `8080:8080`                | -                                                                              |
-| `usuarios`      | [usuarios](usuarios/)               | `8081:8081`                | -                                                                              |
-| `productos`     | [productos](productos/)             | `8082:8082`                | [http://localhost:8082/swagger-ui.html](http://localhost:8082/swagger-ui.html) |
-| `compraventa`   | [compraventa](compraventa/)         | `8083:8083`                | [http://localhost:8083/swagger-ui.html](http://localhost:8083/swagger-ui.html) |
-| `valoraciones`  | [ValoracionesApi](ValoracionesApi/) | `8084:8084`                | [http://localhost:8084/swagger](http://localhost:8084/swagger)                 |
+| servicio        | directorio                          | puertos (host:contenedor)  | acceso                                      | credenciales     |
+|-----------------|-------------------------------------|----------------------------|---------------------------------------------|------------------|
+| `mongo`         | -                                   | `27018:27017`              | -                                           | -                |
+| `mongo-express` | -                                   | `8085:8085`                | [Ir](http://localhost:8084/swagger)         | `admin:pass`     |
+| `rabbitmq`      | -                                   | `5672:5672`, `15672:15672` | [Ir](http://localhost:15672)                | `arso:arso`      |
+| `mysql`         | -                                   | `3307:3306`                | -                                           | `root:practicas` |
+| `pasarela`      | [pasarela](pasarela/)               | `8080:8080`                | -                                           | -                |
+| `usuarios`      | [usuarios](usuarios/)               | `8081:8081`                | -                                           | -                |
+| `productos`     | [productos](productos/)             | `8082:8082`                | [Ir](http://localhost:8082/swagger-ui.html) | -                |
+| `compraventa`   | [compraventa](compraventa/)         | `8083:8083`                | [Ir](http://localhost:8083/swagger-ui.html) | -                |
+| `valoraciones`  | [ValoracionesApi](ValoracionesApi/) | `8084:8084`                | [Ir](http://localhost:8084/swagger)         | -                |
 
 ## Broker de mensajes RabbitMQ
 
