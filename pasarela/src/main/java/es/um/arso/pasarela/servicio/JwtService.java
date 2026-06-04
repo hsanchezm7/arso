@@ -22,10 +22,10 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.access.expirationSeconds:15}")
+    @Value("${jwt.access.expirationSeconds}")
     private int accessExpirationSeconds;
 
-    @Value("${jwt.refresh.expirationSeconds:2592000}")
+    @Value("${jwt.refresh.expirationSeconds}")
     private int refreshExpirationSeconds;
 
     public String generateAccessToken(String subject, String roles) {
