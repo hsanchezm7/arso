@@ -30,6 +30,11 @@ registrado con un email puede iniciar sesión con GitHub si usa el mismo email. 
 necesario establecer el email público en GitHub para la correcta autenticación vía OAuth. De otra
 forma, GitHub lo oculta a la aplicación.
 
+## Sobre el entorno
+
+Aunque sea una mala práctica, se hace uso de un fichero [.env](.env) para las variables de entorno.
+Se asume que este proyecto tiene una finalidad académica aunque no sería lo correcto en producción.
+
 ## Pruebas postman
 
 Las pruebas en Postman se han configurado mediante variables de entorno. Se van definiendo los

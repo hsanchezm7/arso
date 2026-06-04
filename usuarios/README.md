@@ -17,7 +17,7 @@ El servicio usuarios reacciona a los siguientes eventos consumiendo mensajes de 
 
 El servicio publica los siguientes eventos en el exchange `arso.bus` con el prefijo de enrutamiento `bus.usuarios.*`:
 
-| Evento               | Clase de Evento           | Necesidad                                                         | Generación                            |
-|----------------------|---------------------------|-------------------------------------------------------------------|---------------------------------------|
-| `usuario-creado`     | `EventoUsuarioCreado`     | Notificar al resto de servicios que usen datos de usuarios.       | Un usuario se registra en el sistema. |
-| `usuario-modificado` | `EventoUsuarioModificado` | Que los servicios mantenga su copia local de usuario actualizada. | Un usuario actualiza sus datos.       |
+| Evento               | Clase de Evento           | Necesidad                                                                                   | Generación                            |
+|----------------------|---------------------------|---------------------------------------------------------------------------------------------|---------------------------------------|
+| `usuario-creado`     | `EventoUsuarioCreado`     | Notificar al resto de servicios que usen datos de usuarios.                                 | Un usuario se registra en el sistema. |
+| `usuario-modificado` | `EventoUsuarioModificado` | Que los servicios mantengan su copia local de usuario actualizada (productos, compraventa). | Un usuario actualiza sus datos.       |

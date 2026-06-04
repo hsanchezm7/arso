@@ -206,6 +206,7 @@ public class ControladorUsuarios {
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
         usuario.setApellidos(dto.getApellidos());
+        usuario.setEmail(dto.getEmail());
         usuario.setClave(dto.getClave());
         usuario.setFechaNacimiento(dto.getFechaNacimiento());
         usuario.setTelefono(dto.getTelefono());

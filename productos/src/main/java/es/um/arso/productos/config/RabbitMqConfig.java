@@ -32,17 +32,17 @@ public class RabbitMqConfig {
     public static final String USUARIOS_BINDING_KEY = "bus.usuarios.#";
 
     @Bean
-    public TopicExchange exchange() {
+    TopicExchange exchange() {
         return new TopicExchange(EXCHANGE_NAME);
     }
 
     @Bean
-    public Queue queue() {
+    Queue queue() {
         return QueueBuilder.durable(QUEUE_NAME).build();
     }
 
     @Bean
-    public Binding compraventaBinding(Queue queue, Exchange exchange) {
+    Binding compraventaBinding(Queue queue, Exchange exchange) {
         return BindingBuilder.bind(queue)
                 .to(exchange)
                 .with(COMPRAVENTA_BINDING_KEY)
@@ -50,7 +50,7 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Binding usuariosBinding(Queue queue, Exchange exchange) {
+    Binding usuariosBinding(Queue queue, Exchange exchange) {
         return BindingBuilder.bind(queue)
                 .to(exchange)
                 .with(USUARIOS_BINDING_KEY)
@@ -58,7 +58,7 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public MessageConverter jsonMessageConverter() {
+    MessageConverter jsonMessageConverter() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -66,7 +66,7 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+    RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
 
@@ -74,7 +74,7 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
+    SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(new SimpleMessageConverter());

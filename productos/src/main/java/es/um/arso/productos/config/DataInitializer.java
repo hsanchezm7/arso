@@ -30,8 +30,8 @@ public class DataInitializer {
     }
 
     public void initializeData(String adminId) {
-        long categoriasCount = repositorioCategorias.count();
-        if (categoriasCount > 0) {
+        long numCategorias = repositorioCategorias.count();
+        if (numCategorias > 0) {
             log.info("Base de datos ya contiene datos. Omitiendo inicialización.");
             return;
         }

@@ -97,6 +97,13 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
         if (usuario.getNombre() != null && !usuario.getNombre().isEmpty()) u.setNombre(usuario.getNombre());
         if (usuario.getApellidos() != null && !usuario.getApellidos().isEmpty()) u.setApellidos(usuario.getApellidos());
+        if (usuario.getEmail() != null && !usuario.getEmail().isEmpty() && !usuario.getEmail().equals(u.getEmail())) {
+            Usuario existente = recuperarPorEmail(usuario.getEmail());
+            if (existente != null) {
+                throw new IllegalArgumentException("El email " + usuario.getEmail() + " ya está en uso");
+            }
+            u.setEmail(usuario.getEmail());
+        }
         if (usuario.getClave() != null && !usuario.getClave().isEmpty()) u.setClave(usuario.getClave());
         if (usuario.getFechaNacimiento() != null) u.setFechaNacimiento(usuario.getFechaNacimiento());
         if (usuario.getTelefono() != null) u.setTelefono(usuario.getTelefono());

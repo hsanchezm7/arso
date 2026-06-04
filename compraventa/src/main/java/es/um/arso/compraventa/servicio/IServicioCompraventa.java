@@ -24,4 +24,6 @@ public interface IServicioCompraventa {
             String idComprador, String idVendedor, Pageable pageable);
 
     CompraventaDto getCompraventa(String id) throws EntidadNoEncontrada;
+
+    int updateNombreUsuario(String idUsuario, String newNombre);
 }

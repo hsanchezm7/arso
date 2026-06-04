@@ -6,7 +6,13 @@ Proyecto Spring Boot correspondiente al microservicio encargado de gestionar las
 
 ### Consumidos
 
-Este servicio no produce ningún evento del broker de mensajes. En su lugar, usa clientes REST de Retrofit para comunicar con los servicios de **productos** y **usuarios** para validar información de una nueva transacción.
+El servicio compraventa reacciona a los siguientes eventos consumiendo mensajes de la cola `arso.compraventa.queue` (asociada a la clave de enrutamiento `bus.usuarios.#` del exchange `arso.bus`):
+
+| Evento               | Productor    | Clase mapeada             | Necesidad                                                        |
+|----------------------|--------------|---------------------------|------------------------------------------------------------------|
+| `usuario-modificado` | **usuarios** | `EventoUsuarioModificado` | Actualizar el nombre del vendedor/comprador en las compraventas. |
+
+Además, usa clientes REST de Retrofit para comunicar con los servicios de **productos** y **usuarios** para validar información de una nueva transacción.
 
 ### Producidos
 

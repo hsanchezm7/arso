@@ -10,6 +10,8 @@ import es.um.arso.compraventa.servicio.puertos.out.IServicioProductosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.IServicioUsuariosExterno;
 import es.um.arso.compraventa.servicio.puertos.out.ProductoInfo;
 import es.um.arso.compraventa.servicio.puertos.out.UsuarioInfo;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -148,6 +150,26 @@ public class ServicioCompraventa implements IServicioCompraventa {
         return CompraventaDto.fromEntity(compraventa);
     }
 
+    @Override
+    public int updateNombreUsuario(String idUsuario, String newNombre) {
+        List<Compraventa> transacciones = new ArrayList<>();
+
+        transacciones.addAll(repositorioCompraventas.findByIdVendedor(idUsuario));
+        transacciones.addAll(repositorioCompraventas.findByIdComprador(idUsuario));
+
+        transacciones.forEach(c -> {
+            if (idUsuario.equals(c.getIdVendedor()))
+                c.setNombreVendedor(newNombre);
+
+            if (idUsuario.equals(c.getIdComprador()))
+                c.setNombreComprador(newNombre);
+        });
+
+        repositorioCompraventas.saveAll(transacciones);
+
+        return transacciones.size();
+    }
+
     private CompraventaResumen toCompraventaResumen(Compraventa compraventa) {
         CompraventaResumen resumen = new CompraventaResumen();
         resumen.setId(compraventa.getId());
@@ -170,4 +192,5 @@ public class ServicioCompraventa implements IServicioCompraventa {
         String trimmed = id.trim();
         return trimmed.isEmpty() ? null : trimmed;
     }
+
 }

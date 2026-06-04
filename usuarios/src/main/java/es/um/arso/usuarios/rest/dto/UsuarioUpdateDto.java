@@ -6,11 +6,20 @@ public class UsuarioUpdateDto {
 
     private String nombre;
     private String apellidos;
+    private String email;
     private String clave;
     private LocalDate fechaNacimiento;
     private String telefono;
 
     public UsuarioUpdateDto() {}
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getNombre() {
         return nombre;
