@@ -117,7 +117,6 @@ public class ServicioCategorias implements IServicioCategorias {
     @Override
     @Transactional(readOnly = true)
     public List<CategoriaDto> getCategorias() {
-
         List<CategoriaDto> categorias = new ArrayList<>();
 
         repositorioCategorias.findAll().forEach(categoria -> {

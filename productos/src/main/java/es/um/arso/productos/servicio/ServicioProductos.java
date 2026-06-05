@@ -7,19 +7,21 @@ import es.um.arso.productos.modelo.Usuario;
 import es.um.arso.productos.repositorio.RepositorioCategorias;
 import es.um.arso.productos.repositorio.RepositorioProductos;
 import es.um.arso.productos.repositorio.RepositorioUsuarios;
+import es.um.arso.productos.repositorio.especificaciones.EspecificacionesProducto;
 import es.um.arso.repositorio.EntidadNoEncontrada;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -156,52 +158,6 @@ public class ServicioProductos implements IServicioProductos {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Producto> buscar(
-            String categoriaId,
-            String texto,
-            EstadoProducto estadoMinimo,
-            Double precioMinimo,
-            Double precioMaximo,
-            String idVendedor) {
-        java.util.Set<String> categoriasPermitidas = new java.util.HashSet<>();
-        if (categoriaId != null) {
-            repositorioCategorias.findById(categoriaId).ifPresent(cat -> {
-                categoriasPermitidas.add(categoriaId);
-                for (Categoria d : cat.getDescendientes()) categoriasPermitidas.add(d.getId());
-            });
-        }
-
-        java.util.stream.Stream<Producto> stream =
-                StreamSupport.stream(repositorioProductos.findAll().spliterator(), false);
-
-        if (!categoriasPermitidas.isEmpty()) {
-            stream = stream.filter(p -> p.getCategoria() != null
-                    && categoriasPermitidas.contains(p.getCategoria().getId()));
-        }
-        if (texto != null && !texto.isEmpty()) {
-            String t = texto.toLowerCase();
-            stream = stream.filter(p -> p.getDescripcion() != null
-                    && p.getDescripcion().toLowerCase().contains(t));
-        }
-        if (estadoMinimo != null) {
-            stream = stream.filter(p -> p.getEstado() != null && p.getEstado().esIgualOMejorQue(estadoMinimo));
-        }
-        if (precioMinimo != null) {
-            stream = stream.filter(p -> p.getPrecio() != null && p.getPrecio() >= precioMinimo);
-        }
-        if (precioMaximo != null) {
-            stream = stream.filter(p -> p.getPrecio() != null && p.getPrecio() <= precioMaximo);
-        }
-        if (idVendedor != null && !idVendedor.isEmpty()) {
-            stream = stream.filter(p ->
-                    p.getVendedor() != null && idVendedor.equals(p.getVendedor().getId()));
-        }
-
-        return stream.collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public Page<ProductoResumen> getHistorialMesPaginado(int mes, int anio, Pageable paginacion) {
         List<ProductoResumen> historial = getHistorialMes(mes, anio);
         int start = (int) paginacion.getOffset();
@@ -221,26 +177,31 @@ public class ServicioProductos implements IServicioProductos {
             Double precioMaximo,
             String idVendedor,
             Pageable paginacion) {
-        List<Producto> productos = buscar(categoriaId, texto, estadoMinimo, precioMinimo, precioMaximo, idVendedor);
-        int start = (int) paginacion.getOffset();
-        int end = Math.min((start + paginacion.getPageSize()), productos.size());
-        List<Producto> pageContent = start > productos.size() ? Collections.emptyList() : productos.subList(start, end);
+        List<String> categoriasBusqueda = new LinkedList<>();
 
-        List<ProductoResumen> resumenes = pageContent.stream()
-                .map(p -> {
-                    ProductoResumen r = new ProductoResumen();
-                    r.setId(p.getId());
-                    r.setTitulo(p.getTitulo());
-                    r.setPrecio(p.getPrecio());
-                    r.setFechaPublicacion(p.getFechaPublicacion());
-                    r.setNombreCategoria(
-                            p.getCategoria() != null ? p.getCategoria().getNombre() : null);
-                    r.setVisualizaciones(p.getVisualizaciones());
-                    return r;
-                })
-                .collect(Collectors.toList());
+        if (categoriaId != null) {
+            repositorioCategorias.findById(categoriaId).ifPresent(cat -> {
+                categoriasBusqueda.add(categoriaId);
+                for (Categoria c : cat.getDescendientes())
+                    categoriasBusqueda.add(c.getId());
+            });
+        }
 
-        return new PageImpl<>(resumenes, paginacion, productos.size());
+        Specification<Producto> spec = EspecificacionesProducto.crearEspecificacionBusqueda(
+            categoriasBusqueda, texto, estadoMinimo, precioMinimo, precioMaximo, idVendedor);
+
+        Page<Producto> productos = repositorioProductos.findAll(spec, paginacion);
+
+        return productos.map(p -> {
+            ProductoResumen r = new ProductoResumen();
+            r.setId(p.getId());
+            r.setTitulo(p.getTitulo());
+            r.setPrecio(p.getPrecio());
+            r.setFechaPublicacion(p.getFechaPublicacion());
+            r.setNombreCategoria(p.getCategoria() != null ? p.getCategoria().getNombre() : null);
+            r.setVisualizaciones(p.getVisualizaciones());
+            return r;
+        });
     }
 
     private void validarPropietario(Producto producto, String vendedorId) {
