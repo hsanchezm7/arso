@@ -33,6 +33,9 @@ public class NuevoProductoDto {
 
     @Schema(description = "Indica si el vendedor está dispuesto a enviar el producto.", example = "true")
     private boolean envioDisponible;
+    
+    @Schema(description = "URL de la imagen del producto.", example = "https://assets.goal.com/images/v3/blt8cb811763ffb2564/5af5ea90680221c2c05f83ea903895f127c456f6.jpg?&width=3840")
+    private String urlImagen;
 
     public NuevoProductoDto() {}
 
@@ -82,5 +85,13 @@ public class NuevoProductoDto {
 
     public void setEnvioDisponible(boolean envioDisponible) {
         this.envioDisponible = envioDisponible;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
     }
 }

@@ -16,7 +16,8 @@ public interface IServicioProductos {
             EstadoProducto estado,
             String categoriaId,
             boolean envioDisponible,
-            String vendedorId)
+            String vendedorId,
+            String urlImagen)
             throws EntidadNoEncontrada;
 
     void asignarLugarRecogida(String productoId, String descripcion, Double longitud, Double latitud, String vendedorId)

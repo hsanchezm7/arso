@@ -48,7 +48,8 @@ public class ServicioProductos implements IServicioProductos {
             EstadoProducto estado,
             String categoriaId,
             boolean envioDisponible,
-            String vendedorId)
+            String vendedorId,
+            String urlImagen)
             throws EntidadNoEncontrada {
 
         if (titulo == null || titulo.isEmpty()) throw new IllegalArgumentException("titulo obligatorio");
@@ -66,7 +67,7 @@ public class ServicioProductos implements IServicioProductos {
                 .findById(vendedorId)
                 .orElseThrow(() -> new EntidadNoEncontrada("Vendedor no encontrado: " + vendedorId));
 
-        Producto producto = new Producto(titulo, descripcion, precio, estado, categoria, envioDisponible, vendedor);
+        Producto producto = new Producto(titulo, descripcion, precio, estado, categoria, envioDisponible, vendedor, urlImagen);
         producto = repositorioProductos.save(producto);
         log.info("Producto creado: id={}", producto.getId());
         return producto.getId();
@@ -151,6 +152,9 @@ public class ServicioProductos implements IServicioProductos {
                     r.setNombreCategoria(
                             p.getCategoria() != null ? p.getCategoria().getNombre() : null);
                     r.setVisualizaciones(p.getVisualizaciones());
+                    r.setUrlImagen(p.getUrlImagen());
+                    r.setEnvioDisponible(p.isEnvioDisponible());
+                    r.setDescripcion(p.getDescripcion());
                     return r;
                 })
                 .collect(Collectors.toList());
@@ -200,6 +204,9 @@ public class ServicioProductos implements IServicioProductos {
             r.setFechaPublicacion(p.getFechaPublicacion());
             r.setNombreCategoria(p.getCategoria() != null ? p.getCategoria().getNombre() : null);
             r.setVisualizaciones(p.getVisualizaciones());
+            r.setUrlImagen(p.getUrlImagen());
+            r.setEnvioDisponible(p.isEnvioDisponible());
+            r.setDescripcion(p.getDescripcion());
             return r;
         });
     }

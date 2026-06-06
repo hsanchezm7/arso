@@ -2,7 +2,6 @@ package es.um.arso.productos.adaptadores.in;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import es.um.arso.productos.config.DataInitializer;
 import es.um.arso.productos.config.RabbitMqConfig;
 import es.um.arso.productos.modelo.eventos.EventoCompraventaCreada;
 import es.um.arso.productos.modelo.eventos.EventoUsuarioCreado;
@@ -22,13 +21,11 @@ public class ConsumidorEventos {
 
     private final IManejadorEventos manejadorEventos;
     private final ObjectMapper objectMapper;
-    private final DataInitializer dataInitializer;
 
     public ConsumidorEventos(
-            @Autowired ManejadorEventos manejadorEventos, ObjectMapper objectMapper, DataInitializer dataInitializer) {
+            @Autowired ManejadorEventos manejadorEventos, ObjectMapper objectMapper) {
         this.manejadorEventos = manejadorEventos;
         this.objectMapper = objectMapper;
-        this.dataInitializer = dataInitializer;
     }
 
     // TODO: valorar implementar RabbitHandlers para no tener que usar ifs ni switch
@@ -56,11 +53,6 @@ public class ConsumidorEventos {
                         eventoUsuario.getNombre(),
                         eventoUsuario.getApellidos());
 
-                // si es el usuario admin, inicializar datos
-                if ("admin@arso.es".equals(eventoUsuario.getEmail())) {
-                    log.info("Usuario admin creado. Inicializando datos de prueba.");
-                    dataInitializer.initializeData(eventoUsuario.getIdUsuario());
-                }
             } else if ("usuario-modificado".equals(tipoEvento)) {
                 EventoUsuarioModificado eventoUsuario = objectMapper.treeToValue(raiz, EventoUsuarioModificado.class);
 

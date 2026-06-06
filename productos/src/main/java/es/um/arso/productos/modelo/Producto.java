@@ -22,6 +22,7 @@ public class Producto {
     private String titulo;
     private String descripcion;
     private Double precio;
+    private String urlImagen;
 
     @Enumerated(EnumType.STRING)
     private EstadoProducto estado;
@@ -52,7 +53,8 @@ public class Producto {
             EstadoProducto estado,
             Categoria categoria,
             boolean envioDisponible,
-            Usuario vendedor) {
+            Usuario vendedor,
+            String urlImagen) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -60,6 +62,7 @@ public class Producto {
         this.categoria = categoria;
         this.envioDisponible = envioDisponible;
         this.vendedor = vendedor;
+        this.urlImagen = urlImagen;
         this.fechaPublicacion = LocalDateTime.now();
     }
 
@@ -93,6 +96,14 @@ public class Producto {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
     }
 
     public EstadoProducto getEstado() {

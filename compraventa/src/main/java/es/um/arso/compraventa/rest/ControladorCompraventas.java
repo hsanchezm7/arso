@@ -87,33 +87,33 @@ public class ControladorCompraventas {
         return model;
     }
 
-    @GetMapping("/compras/{idComprador}")
+    @GetMapping("/compras")
     @Operation(
             summary = "Obtener compras de usuario",
             description = "Obtiene un listado paginado de las compras realizadas por un usuario.")
-    @PreAuthorize("hasAuthority('USUARIO') and #idComprador == authentication.name")
+    @PreAuthorize("hasAuthority('USUARIO')")
     public PagedModel<EntityModel<CompraventaResumen>> getComprasUsuario(
-            @PathVariable String idComprador, Pageable paginacion) throws Exception {
+            Principal principal, Pageable paginacion) throws Exception {
 
-        log.info("GET /compraventas/compras/{}", idComprador);
+        log.info("GET /compraventas/compras idComprador={}", principal.getName());
 
         Page<CompraventaResumen> resultado =
-                this.servicioCompraventa.getComprasUsuarioPaginado(idComprador, paginacion);
+                this.servicioCompraventa.getComprasUsuarioPaginado(principal.getName(), paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, compraventaResumenAssembler);
     }
 
-    @GetMapping("/ventas/{idVendedor}")
+    @GetMapping("/ventas")
     @Operation(
             summary = "Obtener ventas de usuario",
             description = "Obtiene un listado paginado de las ventas realizadas por un usuario.")
-    @PreAuthorize("hasAuthority('USUARIO') and #idVendedor == authentication.name")
+    @PreAuthorize("hasAuthority('USUARIO')")
     public PagedModel<EntityModel<CompraventaResumen>> getVentasUsuario(
-            @PathVariable String idVendedor, Pageable paginacion) throws Exception {
+            Principal principal, Pageable paginacion) throws Exception {
 
-        log.info("GET /compraventas/ventas/{}", idVendedor);
+        log.info("GET /compraventas/ventas idVendedor={}", principal.getName());
 
-        Page<CompraventaResumen> resultado = this.servicioCompraventa.getVentasUsuarioPaginado(idVendedor, paginacion);
+        Page<CompraventaResumen> resultado = this.servicioCompraventa.getVentasUsuarioPaginado(principal.getName(), paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, compraventaResumenAssembler);
     }

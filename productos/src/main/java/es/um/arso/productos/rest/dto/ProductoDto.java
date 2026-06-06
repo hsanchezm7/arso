@@ -48,6 +48,8 @@ public class ProductoDto {
 
     @Schema(description = "Nombre del vendedor")
     private String nombreVendedor;
+    @Schema(description = "URL de la imagen del producto")
+    private String urlImagen;
 
     public ProductoDto() {}
 
@@ -163,6 +165,14 @@ public class ProductoDto {
         this.nombreVendedor = nombreVendedor;
     }
 
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+    }
+
     public static ProductoDto fromEntity(Producto producto) {
         ProductoDto dto = new ProductoDto();
         dto.setId(producto.getId());
@@ -177,6 +187,7 @@ public class ProductoDto {
         dto.setVisualizaciones(producto.getVisualizaciones());
         dto.setEnvioDisponible(producto.isEnvioDisponible());
         dto.setDisponible(producto.isDisponible());
+        dto.setUrlImagen(producto.getUrlImagen());
 
         if (producto.getRecogida() != null) {
             dto.setRecogida(LugarRecogidaDto.fromEntity(producto.getRecogida()));

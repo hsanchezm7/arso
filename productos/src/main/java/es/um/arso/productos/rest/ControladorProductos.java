@@ -88,7 +88,8 @@ public class ControladorProductos {
                 nuevoProducto.getEstado(),
                 nuevoProducto.getCategoriaId(),
                 nuevoProducto.isEnvioDisponible(),
-                principal.getName());
+                principal.getName(),
+                nuevoProducto.getUrlImagen());
 
         URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

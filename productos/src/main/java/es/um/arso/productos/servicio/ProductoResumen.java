@@ -10,6 +10,9 @@ public class ProductoResumen {
     private LocalDateTime fechaPublicacion;
     private String nombreCategoria;
     private int visualizaciones;
+    private String urlImagen;
+    private boolean envioDisponible;
+    private String descripcion;
 
     public String getId() {
         return id;
@@ -57,6 +60,30 @@ public class ProductoResumen {
 
     public void setVisualizaciones(int visualizaciones) {
         this.visualizaciones = visualizaciones;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+    }
+
+    public boolean isEnvioDisponible() {
+        return envioDisponible;
+    }
+
+    public void setEnvioDisponible(boolean envioDisponible) {
+        this.envioDisponible = envioDisponible;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
