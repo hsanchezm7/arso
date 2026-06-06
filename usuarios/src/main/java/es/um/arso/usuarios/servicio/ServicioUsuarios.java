@@ -107,12 +107,27 @@ public class ServicioUsuarios implements IServicioUsuarios {
         if (usuario.getClave() != null && !usuario.getClave().isEmpty()) u.setClave(usuario.getClave());
         if (usuario.getFechaNacimiento() != null) u.setFechaNacimiento(usuario.getFechaNacimiento());
         if (usuario.getTelefono() != null) u.setTelefono(usuario.getTelefono());
+        
+        u.setNumeroCompras(usuario.getNumeroCompras());
+        u.setNumeroVentas(usuario.getNumeroVentas());
+        u.setNumeroValoracionesAsComprador(usuario.getNumeroValoracionesAsComprador());
+        u.setNumeroValoracionesAsVendedor(usuario.getNumeroValoracionesAsVendedor());
+        u.setPuntuacionAsComprador(usuario.getPuntuacionAsComprador());
+        u.setPuntuacionAsVendedor(usuario.getPuntuacionAsVendedor());
 
         repoUsuarios.update(u);
 
         log.info("Usuario modificado: id={}", id);
 
         emitirEventoUsuarioModificado(u.getId(), u.getEmail(), u.getNombre(), u.getApellidos());
+    }
+
+    @Override
+    public void doAdmin(String id) throws RepositorioException, EntidadNoEncontrada {
+        Usuario u = repoUsuarios.getById(id);
+        u.setAdministrador(true);
+        repoUsuarios.update(u);
+        log.info("Usuario ascendido a administrador: id={}", id);
     }
 
     @Override

@@ -71,9 +71,6 @@ services:
     ports:
       - "8080:8080"
     env_file: .env
-    depends_on:
-      - usuarios
-      - productos
     restart: unless-stopped
 
   usuarios:
@@ -137,6 +134,15 @@ services:
       mysql:
         condition: service_healthy
     restart: unless-stopped
+    
+  seeder:
+    image: python:3.11-alpine
+    container_name: seeder
+    volumes:
+      - ./seeder:/app
+    working_dir: /app
+    command: sh -c "pip install requests && python -u seeder.py"
+    restart: "no"
     
 volumes:
     mongo_data:

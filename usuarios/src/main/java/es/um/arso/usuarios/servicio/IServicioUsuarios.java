@@ -15,6 +15,8 @@ public interface IServicioUsuarios {
 
     void modificar(String id, Usuario usuario) throws RepositorioException, EntidadNoEncontrada;
 
+    void doAdmin(String id) throws RepositorioException, EntidadNoEncontrada;
+
     Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada;
 
     Usuario recuperarPorEmail(String email) throws RepositorioException;

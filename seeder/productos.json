@@ -1,0 +1,650 @@
+[
+  {
+    "titulo": "Bicicleta MTB Rockrider 520",
+    "descripcion": "Bicicleta de montaña de 27.5 pulgadas en buen estado.",
+    "precio": 280.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-bicicletas",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Bicicleta de carretera Orbea Aqua",
+    "descripcion": "Ideal para entrenamientos y rutas largas.",
+    "precio": 550.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-bicicletas",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Bicicleta urbana plegable",
+    "descripcion": "Perfecta para desplazamientos por ciudad.",
+    "precio": 180.0,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-bicicletas",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "MacBook Air M1 256GB",
+    "descripcion": "Portátil ligero con excelente autonomía.",
+    "precio": 720.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-portatiles",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Lenovo ThinkPad T480",
+    "descripcion": "Portátil profesional con SSD y 16GB RAM.",
+    "precio": 390.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-portatiles",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "HP Pavilion 15",
+    "descripcion": "Portátil doméstico para estudio y trabajo.",
+    "precio": 260.0,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-portatiles",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Yamaha MT-07",
+    "descripcion": "Moto naked muy cuidada y con mantenimiento al día.",
+    "precio": 5400.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-motos",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Honda PCX 125",
+    "descripcion": "Scooter ideal para ciudad.",
+    "precio": 2100.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-motos",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Kawasaki ER-6N",
+    "descripcion": "Moto con algunos desperfectos estéticos.",
+    "precio": 1800.0,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-motos",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Mesa de comedor extensible",
+    "descripcion": "Mesa de madera para hasta 8 comensales.",
+    "precio": 220.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-muebles",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Sofá chaise longue gris",
+    "descripcion": "Muy cómodo y con poco uso.",
+    "precio": 350.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-muebles",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Estantería IKEA Kallax",
+    "descripcion": "Estantería modular blanca.",
+    "precio": 45.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-muebles",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Spider-Man 2 PS5",
+    "descripcion": "Juego completo en caja original.",
+    "precio": 42.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-juegos-ps5",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "God of War Ragnarök PS5",
+    "descripcion": "Versión física para PlayStation 5.",
+    "precio": 38.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-juegos-ps5",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "EA Sports FC 25 PS5",
+    "descripcion": "Juego de fútbol para PS5.",
+    "precio": 30.0,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-juegos-ps5",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Cinta de correr plegable",
+    "descripcion": "Máquina de cardio para uso doméstico.",
+    "precio": 320.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-deportes",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Set de mancuernas ajustables",
+    "descripcion": "Juego de pesas para entrenamiento en casa.",
+    "precio": 95.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-deportes",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Raqueta de pádel Bullpadel",
+    "descripcion": "Raqueta para jugadores intermedios.",
+    "precio": 70.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-deportes",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Monitor LG 27 pulgadas",
+    "descripcion": "Pantalla Full HD ideal para oficina.",
+    "precio": 120.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-informatica",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Tarjeta gráfica GTX 1660 Super",
+    "descripcion": "Perfecta para gaming en 1080p.",
+    "precio": 180.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-informatica",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Llantas de aleación 17 pulgadas",
+    "descripcion": "Juego de 4 llantas en buen estado.",
+    "precio": 260.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-motor",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Navegador GPS Garmin",
+    "descripcion": "Navegador para coche actualizado.",
+    "precio": 85.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-motor",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Casco integral para moto",
+    "descripcion": "Casco homologado talla M.",
+    "precio": 60.0,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-motor",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Cortacésped eléctrico",
+    "descripcion": "Ideal para jardines pequeños y medianos.",
+    "precio": 110.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-hogar",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Taladro percutor Bosch",
+    "descripcion": "Herramienta de bricolaje multifunción.",
+    "precio": 55.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-hogar",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Lámpara de pie moderna",
+    "descripcion": "Diseño minimalista para salón.",
+    "precio": 35.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-hogar",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Chaqueta de cuero negra",
+    "descripcion": "Chaqueta de estilo casual.",
+    "precio": 75.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-moda",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Zapatillas Nike Air Max",
+    "descripcion": "Calzado deportivo muy cómodo.",
+    "precio": 65.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-moda",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Reloj analógico clásico",
+    "descripcion": "Diseño elegante para uso diario.",
+    "precio": 40.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-moda",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "PlayStation 5 Slim",
+    "descripcion": "Consola con mando original.",
+    "precio": 390.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-consolas",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Nintendo Switch OLED",
+    "descripcion": "Incluye base y accesorios.",
+    "precio": 250.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-consolas",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Mando Xbox Series X",
+    "descripcion": "Mando inalámbrico original.",
+    "precio": 38.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-consolas",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Carrito de bebé plegable",
+    "descripcion": "Ligero y fácil de transportar.",
+    "precio": 140.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-bebes",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Trona evolutiva infantil",
+    "descripcion": "Ajustable en altura.",
+    "precio": 55.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-bebes",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Lote de juguetes educativos",
+    "descripcion": "Juguetes para niños de 2 a 5 años.",
+    "precio": 25.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-bebes",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Moneda antigua de plata",
+    "descripcion": "Pieza de colección conservada.",
+    "precio": 90.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-coleccionismo",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Máquina de escribir vintage",
+    "descripcion": "Modelo clásico decorativo.",
+    "precio": 150.0,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-coleccionismo",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Figura coleccionable Star Wars",
+    "descripcion": "Edición limitada en caja.",
+    "precio": 85.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-coleccionismo",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Colección completa de Harry Potter",
+    "descripcion": "Saga completa en tapa dura.",
+    "precio": 70.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-libros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Vinilo The Dark Side of the Moon",
+    "descripcion": "Disco clásico en buen estado.",
+    "precio": 28.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-libros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Pack de cómics Marvel",
+    "descripcion": "Lote de 15 cómics variados.",
+    "precio": 45.0,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-libros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Maleta rígida grande",
+    "descripcion": "Ideal para viajes largos.",
+    "precio": 60.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-otros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Proyector portátil LED",
+    "descripcion": "Compatible con HDMI y USB.",
+    "precio": 90.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-otros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Mochila de viaje 50L",
+    "descripcion": "Gran capacidad para escapadas.",
+    "precio": 35.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-otros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Raqueta de tenis profesional",
+    "descripcion": "Modelo de alta gama de fibra de carbono. Muy ligera y con excelente balance.",
+    "precio": 129.95,
+    "estado": "NUEVO",
+    "categoriaId": "cat-deportes",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Bicicleta de montaña doble suspensión",
+    "descripcion": "Bici de montaña de 29 pulgadas, cuadro de aluminio, cambios Shimano de 12 velocidades.",
+    "precio": 849.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-bicicletas",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Monitor Gaming 27\" 144Hz",
+    "descripcion": "Resolución QHD, tiempo de respuesta de 1ms, ideal para juego competitivo.",
+    "precio": 199.99,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-informatica",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Portátil Ultrabook i7 16GB",
+    "descripcion": "Procesador Intel Core i7, 512GB SSD. Tiene una línea de píxeles en la pantalla pero funciona perfectamente.",
+    "precio": 420.5,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-portatiles",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Chaqueta de moto Cordura",
+    "descripcion": "Incluye protecciones homologadas en codos, hombros y espalda. Forro térmico desmontable.",
+    "precio": 85.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-motos",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Casco integral de carbono para moto",
+    "descripcion": "Edición limitada. Solo se ha sacado de la caja para comprobar la talla. Impecable.",
+    "precio": 299.99,
+    "estado": "NUEVO",
+    "categoriaId": "cat-motos",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Sofá cama de 3 plazas gris",
+    "descripcion": "Tapizado en tela lavable. Se convierte en cama de 140x190cm muy fácilmente.",
+    "precio": 175.4,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-muebles",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Mesa de comedor nórdica",
+    "descripcion": "Madera maciza de haya con patas blancas. Diseño moderno para 6 comensales.",
+    "precio": 115.25,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-muebles",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "The Last of Us Part II Remastered PS5",
+    "descripcion": "Versión remasterizada para PlayStation 5. Disco sin marcas, caja original incluida.",
+    "precio": 39.95,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-juegos-ps5",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Elden Ring Shadow of the Erdtree Edition PS5",
+    "descripcion": "Juego base más expansión. El código de la expansión ya está usado, incluye el juego base en formato físico.",
+    "precio": 34.5,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-juegos-ps5",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Consola Nintendo Switch Lite",
+    "descripcion": "Color turquesa. No enciende tras una caída, ideal para quien sepa arreglarla o para extraer componentes.",
+    "precio": 45.0,
+    "estado": "PARA_PIEZAS_O_REPARAR",
+    "categoriaId": "cat-consolas",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Zapatillas de running amortiguadas",
+    "descripcion": "Zapatillas profesionales de running, talla 42. Compradas por error de talla, sin estrenar.",
+    "precio": 79.99,
+    "estado": "NUEVO",
+    "categoriaId": "cat-moda",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Abrigo de lana vintage",
+    "descripcion": "Corte clásico de los años 80, 100% pura lana virgen, talla M. Muy abrigado y bien conservado.",
+    "precio": 65.5,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-moda",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Moneda de plata histórica 1870",
+    "descripcion": "5 pesetas del Gobierno Provisional de 1870. Auténtica, excelente pátina numismática.",
+    "precio": 120.0,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-coleccionismo",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Cámara de fotos analógica réflex",
+    "descripcion": "Modelo clásico de los 70 con objetivo 50mm f/1.8. El obturador se queda atascado a veces.",
+    "precio": 35.8,
+    "estado": "PARA_PIEZAS_O_REPARAR",
+    "categoriaId": "cat-coleccionismo",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Vinilo Pink Floyd - The Dark Side of the Moon",
+    "descripcion": "Edición original británica. Carpeta con desgaste ligero en bordes, el disco se escucha sin saltos.",
+    "precio": 48.9,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-libros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Novela gráfica Watchmen - Edición Deluxe",
+    "descripcion": "Tapa dura, excelente estado de conservación, páginas perfectas sin dobleces.",
+    "precio": 22.5,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-libros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Herramienta multiusos rotativa",
+    "descripcion": "Tipo Dremel con 40 accesorios para lijar, pulir y cortar. Incluye maletín original.",
+    "precio": 29.99,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-hogar",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Cargador de batería inteligente coche/moto",
+    "descripcion": "Válido para baterías de 12V y 6V. Función de reparación por pulsos automática integrada.",
+    "precio": 18.75,
+    "estado": "NUEVO",
+    "categoriaId": "cat-motor",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Kit de limpieza para acuarios",
+    "descripcion": "Incluye rascador de cristales, red, sifón limpiafondos y pinzas para plantas de acuario.",
+    "precio": 12.4,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-otros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Mochila porta bebés ergonómica",
+    "descripcion": "Soporta hasta 20kg. Posición en M recomendada por pediatras. Completamente lavada.",
+    "precio": 44.9,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-bebes",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Teclado mecánico RGB Switch Blue",
+    "descripcion": "Teclado compacto 60%. Ideal para mecanografía y gaming, excelente respuesta táctil sonora.",
+    "precio": 32.65,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-informatica",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Tarjeta gráfica RTX 3060 12GB",
+    "descripcion": "Usada solo para edición de vídeo ligera. Da fallos de artifacts gráficos tras unas horas de uso continuo.",
+    "precio": 110.0,
+    "estado": "PARA_PIEZAS_O_REPARAR",
+    "categoriaId": "cat-informatica",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Espejos retrovisores universales para moto",
+    "descripcion": "Homologados, acabado en imitación fibra de carbono. Rosca M10 estándar métrica.",
+    "precio": 15.99,
+    "estado": "NUEVO",
+    "categoriaId": "cat-motos",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Estantería metálica para garaje o trastero",
+    "descripcion": "Cinco baldas reforzadas. Presenta marcas superficiales de óxido.",
+    "precio": 24.5,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-hogar",
+    "envioDisponible": false,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Bicicleta estática plegable",
+    "descripcion": "Pantalla LCD con medición de calorías, pulso y tiempo. Ideal para espacios muy pequeños.",
+    "precio": 68.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-deportes",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Lote de 5 cómics variados de Marvel",
+    "descripcion": "Grapas individuales de Spiderman y Vengadores en español.",
+    "precio": 9.95,
+    "estado": "BUEN_ESTADO",
+    "categoriaId": "cat-libros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  },
+  {
+    "titulo": "Maleta rígida de viaje grande",
+    "descripcion": "Cierre con combinación numérica TSA. Candado lateral atascado.",
+    "precio": 19.3,
+    "estado": "ACEPTABLE",
+    "categoriaId": "cat-otros",
+    "envioDisponible": true,
+    "urlImagen": ""
+  }
+]

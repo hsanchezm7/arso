@@ -197,10 +197,10 @@ public class Usuario implements Identificable {
     /* incrementar el número de puntaciones y actualizar puntuación */
     public void valorar(int puntuacion, String as) {
         if (as.equals("comprador"))
-            this.puntuacionAsComprador = ((this.puntuacionAsComprador * this.puntuacionAsComprador) + puntuacion)
+            this.puntuacionAsComprador = ((this.puntuacionAsComprador * this.nValoracionesAsComprador) + puntuacion)
                     / ++this.nValoracionesAsComprador;
         else if (as.equals("vendedor"))
-            this.puntuacionAsVendedor = ((this.puntuacionAsVendedor * this.puntuacionAsVendedor) + puntuacion)
+            this.puntuacionAsVendedor = ((this.puntuacionAsVendedor * this.nValoracionesAsVendedor) + puntuacion)
                     / ++this.nValoracionesAsVendedor;
     }
 
