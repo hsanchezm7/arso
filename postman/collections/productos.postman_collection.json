@@ -1,0 +1,389 @@
+{
+  "info": {
+    "_postman_id": "d6f35cf1-82ca-4916-81c9-e8b692682fc3",
+    "name": "productos",
+    "description": "Colección para testear las rutas del microservicio Spring Boot **productos**.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42776752"
+  },
+  "item": [
+    {
+      "name": "/productos",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    let location = pm.response.headers.get(\"Location\");",
+              "    ",
+              "    if (location) {",
+              "        let id = location.split('/').pop();",
+              "        ",
+              "        pm.environment.set(\"currentProduct\", id);",
+              "    }",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"titulo\": \"Bicicleta\",\n    \"descripcion\": \"Bici de montaña\",\n    \"precio\": 120.5,\n    \"estado\": \"COMO_NUEVO\",\n    \"categoriaId\": \"COMPLETAR_CON_ID_CAT\",\n    \"envioDisponible\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/productos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos/{id}",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/productos/{{currentProduct}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos",
+            "{{currentProduct}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos/{id}",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"precio\": 45.95,\n    \"descripcion\": \"Rebajo el precio por venta urgente. Consola PlayStation Portable modelo 1004.\",\n    \"disponibilidad\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/productos/{{currentProduct}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos",
+            "{{currentProduct}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos/{id}/recogida",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"descripcion\": \"Amazon Locker Espinardo\",\n    \"longitud\": -1.1723137,\n    \"latitud\": 38.0219426\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/productos/{{currentProduct}}/recogida",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos",
+            "{{currentProduct}}",
+            "recogida"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos/{id}/visualizaciones",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/productos/{{currentProduct}}/visualizaciones",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos",
+            "{{currentProduct}}",
+            "visualizaciones"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos/historial/mes/anio",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{gateway_url}}/productos/historial/05/2026?page=0&size=5&sort=precio,desc",
+          "host": [
+            "{{gateway_url}}"
+          ],
+          "path": [
+            "productos",
+            "historial",
+            "05",
+            "2026"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0",
+              "description": "Página"
+            },
+            {
+              "key": "size",
+              "value": "5",
+              "description": "Elementos por página"
+            },
+            {
+              "key": "sort",
+              "value": "precio,desc",
+              "description": "Criterio de ordenación"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/productos/?estadoMinimo=ACEPTABLE&precioMinimo=2.00&precioMaximo=150.00&sort=visualizaciones,desc",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos",
+            ""
+          ],
+          "query": [
+            {
+              "key": "estadoMinimo",
+              "value": "ACEPTABLE",
+              "description": "Estado mínimo"
+            },
+            {
+              "key": "idVendedor",
+              "value": "{{currentUser}}",
+              "description": "ID del vendedor",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "precioMinimo",
+              "value": "2.00",
+              "description": "Precio mínimo"
+            },
+            {
+              "key": "precioMaximo",
+              "value": "150.00",
+              "description": "Precio máximo"
+            },
+            {
+              "key": "categoriaId",
+              "value": "{{currentCategoria}}",
+              "description": "Filtro de categoría",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "page",
+              "value": "0",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "size",
+              "value": "10",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "texto",
+              "value": "gris",
+              "description": "Filtro de texto (título y descripción)",
+              "disabled": true
+            },
+            {
+              "key": "sort",
+              "value": "visualizaciones,desc",
+              "description": "Filtro de ordenación"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos/estados",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/productos/estados",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos",
+            "estados"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos/categorias",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/productos/categorias",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos",
+            "categorias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos/categorias/raices",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/productos/categorias/raices",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos",
+            "categorias",
+            "raices"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/productos/categorias/raices/descendientes",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/productos/categorias/{{currentCategoria}}/descendientes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "productos",
+            "categorias",
+            "{{currentCategoria}}",
+            "descendientes"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}

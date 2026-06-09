@@ -1,0 +1,93 @@
+{
+  "info": {
+    "_postman_id": "8ee66c62-beb5-4a3a-bda2-aaea49656203",
+    "name": "valoraciones",
+    "description": "Colección para testear las rutas del microservicio ASP.NET **ValoracionesApi**.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42776752"
+  },
+  "item": [
+    {
+      "name": "/valoraciones",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"idCompraventa\": {{currentCompraventa}},\n    \"rolEvaluador\": \"comprador\",\n    \"puntuacion\": 3,\n    \"comentario\": \"Normal. Mala experiencia con el vendedor\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/valoraciones",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "valoraciones"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/valoraciones/{id}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/valoraciones/{{currentValoracion}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "valoraciones",
+            "{{currentValoracion}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/valoraciones/comprador/{id}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/valoraciones/comprador/I{{currentUser}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "valoraciones",
+            "comprador",
+            "I{{currentUser}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/valoraciones/vendedor/{id}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/valoraciones/vendedor/{{currentUser}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "valoraciones",
+            "vendedor",
+            "{{currentUser}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
