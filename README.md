@@ -103,7 +103,19 @@ permisos se limitan al servidor OAuth y no suponen mayor riesgo.
 
 Aunque sea una mala práctica, se hace uso de un fichero [`.env`](./.env) para las variables 
 de entorno. Se asume que este proyecto tiene una finalidad académica aunque no sería lo 
-correcto en producción. 
+correcto en producción.
+
+## Adecuación de los requisitos
+
+Con motivo de adaptar el backend a las prácticas de la asginatura de desarrollado de
+Aplicaciones Web, se han realizado una serie de cambios respecto al enunciado de la
+práctica. Algunos de ellos:
+
+- Imágenes de productos: un usuario puede añadir una imagen cualquiera en forma de URL a cualquiera
+de sus productos. Dicha imagen es añadida en forma de URL. Esta propiedad es opcional.
+
+- Eliminación de productos: un usuario puede eliminar cualquiera de sus productos de forma
+completa. Requiere que el producto no haya sido vendido.
 
 ## Pruebas postman
 

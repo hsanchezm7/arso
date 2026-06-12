@@ -6,7 +6,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-bicicletas",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://www.tutiendaenergetica.es/18160-superlarge_default/ebike-montana-motor-central-eleven.jpg"
   },
   {
     "titulo": "Bicicleta de carretera Orbea Aqua",
@@ -15,7 +15,7 @@
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-bicicletas",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://vendre-son-velo.com/wp-content/uploads/listing-uploads/cover/2022/11/e50a114786f6453c42c9f3a578b0aff88d373cac.jpg"
   },
   {
     "titulo": "Bicicleta urbana plegable",
@@ -24,7 +24,7 @@
     "estado": "ACEPTABLE",
     "categoriaId": "cat-bicicletas",
     "envioDisponible": false,
-    "urlImagen": ""
+    "urlImagen": "https://cdn.mammothbikes.com/blogs/medium/230220_0.jpg"
   },
   {
     "titulo": "MacBook Air M1 256GB",
@@ -33,7 +33,7 @@
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-portatiles",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://files.refurbed.com/ii/apple-macbook-air-m1-2020-1756878399851308867.jpg"
   },
   {
     "titulo": "Lenovo ThinkPad T480",
@@ -42,7 +42,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-portatiles",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://amso.eu/hpeciai/baca6809d11f1d45d759c18108c38c51/spa_pl_Lenovo-ThinkPad-T480-i5-8250U-8GB-240GB-SSD-1366x768-Clase-A-Windows-11-Home-207222_2.jpg"
   },
   {
     "titulo": "HP Pavilion 15",
@@ -51,7 +51,7 @@
     "estado": "ACEPTABLE",
     "categoriaId": "cat-portatiles",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://cdn.mos.cms.futurecdn.net/v2/t:0,l:412,cw:1096,ch:822,q:80,w:1096/4yhE6PqBETXNZ6Lwo3dEBG.jpg"
   },
   {
     "titulo": "Yamaha MT-07",
@@ -60,7 +60,7 @@
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-motos",
     "envioDisponible": false,
-    "urlImagen": ""
+    "urlImagen": "https://motos.espirituracer.com/archivos/2018/08/Yamaha-MT-07-2.jpg"
   },
   {
     "titulo": "Honda PCX 125",
@@ -69,7 +69,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-motos",
     "envioDisponible": false,
-    "urlImagen": ""
+    "urlImagen": "https://www.honda.es/content/dam/central/motorcycles/scooters/pcx125-2025/overview/discover-more/honda-pcx125-discover-more-01-1728x972-desktop.jpg/_jcr_content/renditions/c3.jpg"
   },
   {
     "titulo": "Kawasaki ER-6N",
@@ -78,16 +78,16 @@
     "estado": "ACEPTABLE",
     "categoriaId": "cat-motos",
     "envioDisponible": false,
-    "urlImagen": ""
+    "urlImagen": "https://www.motoplanete.com/kawasaki/zoom-700px/Kawasaki-650-ER-6n-2014-700px.webp"
   },
   {
     "titulo": "Mesa de comedor extensible",
-    "descripcion": "Mesa de madera para hasta 8 comensales.",
+    "descripcion": "Mesa de madera para hasta 4 comensales.",
     "precio": 220.0,
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-muebles",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://grupohermogenes.com/wp-content/uploads/2024/02/Foto-14.png"
   },
   {
     "titulo": "Sofá chaise longue gris",
@@ -105,7 +105,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-muebles",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://i.etsystatic.com/19009148/r/il/09752e/5406797627/il_fullxfull.5406797627_amoy.jpg"
   },
   {
     "titulo": "Spider-Man 2 PS5",
@@ -114,7 +114,7 @@
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-juegos-ps5",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://m.media-amazon.com/images/I/81DC-janmJL._AC_UF894,1000_QL80_.jpg"
   },
   {
     "titulo": "God of War Ragnarök PS5",
@@ -123,7 +123,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-juegos-ps5",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://assets.mmsrg.com/isr/166325/c1/-/ASSET_MMS_95614844?x=536&y=402&format=jpg&quality=80&sp=yes&strip=yes&trim&ex=536&ey=402&align=center&resizesource&unsharp=1.5x1+0.7+0.02&cox=0&coy=0&cdx=536&cdy=402"
   },
   {
     "titulo": "EA Sports FC 25 PS5",
@@ -132,7 +132,7 @@
     "estado": "ACEPTABLE",
     "categoriaId": "cat-juegos-ps5",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/202407/18/00197581508831____4__1200x1200.jpg"
   },
   {
     "titulo": "Cinta de correr plegable",
@@ -141,7 +141,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-deportes",
     "envioDisponible": false,
-    "urlImagen": ""
+    "urlImagen": "https://behumax.com/wp-content/uploads/2025/09/cinta-de-correr-plegable-move-on-2.jpg"
   },
   {
     "titulo": "Set de mancuernas ajustables",
@@ -150,7 +150,7 @@
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-deportes",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://www.trendingfit.com/5048-home_default/set-de-mancuernas-ajustables.jpg"
   },
   {
     "titulo": "Raqueta de pádel Bullpadel",
@@ -159,7 +159,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-deportes",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://www.bullpadel.com/18920-home_default/pala-bullpadel-vertex-05.jpg"
   },
   {
     "titulo": "Monitor LG 27 pulgadas",
@@ -168,7 +168,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-informatica",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://album.mediaset.es/eimg/2025/03/13/este-monitor-lg-de-27-pulgadas-y-con-resolucion-4k-puede-ser-tuyo-por-menos-de-200-oferton_8374.jpg?w=1024"
   },
   {
     "titulo": "Tarjeta gráfica GTX 1660 Super",
@@ -177,7 +177,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-informatica",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://www.hardmaniacos.com/wp-content/uploads/2019/11/Grafica-GTX-1660-Super-1.jpg"
   },
   {
     "titulo": "Llantas de aleación 17 pulgadas",
@@ -186,16 +186,16 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-motor",
     "envioDisponible": false,
-    "urlImagen": ""
+    "urlImagen": "https://usedparts.mercedes-benz.es/out/pictures/master/product/1/A2534010600_VI-ZB.IMB1006386.1.jpg"
   },
   {
     "titulo": "Navegador GPS Garmin",
-    "descripcion": "Navegador para coche actualizado.",
+    "descripcion": "Navegador para biciletas actualizado.",
     "precio": 85.0,
     "estado": "COMO_NUEVO",
-    "categoriaId": "cat-motor",
+    "categoriaId": "cat-bicicletas",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://i.blogs.es/18ffec/garmin-530/450_1000.webp"
   },
   {
     "titulo": "Casco integral para moto",
@@ -204,7 +204,7 @@
     "estado": "ACEPTABLE",
     "categoriaId": "cat-motor",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://motopasionstore.com/blog/wp-content/uploads/2022/08/DSC_0182-2-1024x1024.jpg"
   },
   {
     "titulo": "Cortacésped eléctrico",
@@ -213,7 +213,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-hogar",
     "envioDisponible": false,
-    "urlImagen": ""
+    "urlImagen": "https://eu.cleva.com/cdn/shop/files/Lawnmower_Electric_Rotary_34cm_AC_Cable.jpg"
   },
   {
     "titulo": "Taladro percutor Bosch",
@@ -222,7 +222,7 @@
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-hogar",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://e01-elmundo.uecdn.es/assets/multimedia/imagenes/2022/11/12/16682514690034.jpg"
   },
   {
     "titulo": "Lámpara de pie moderna",
@@ -231,7 +231,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-hogar",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://img5.su-cdn.com/cdn-cgi/image/width=750,height=750/mall/file/2022/07/28/8b15af5c750f5c0c728bd3bf72d2f507.jpg"
   },
   {
     "titulo": "Chaqueta de cuero negra",
@@ -240,7 +240,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-moda",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1672829224-pullandbear-1672829164.jpg"
   },
   {
     "titulo": "Zapatillas Nike Air Max",
@@ -249,7 +249,7 @@
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-moda",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://acdn-us.mitiendanube.com/stores/001/164/554/products/imagen-de-whatsapp-2024-06-25-a-las-16-07-21_3266dc12-341f8b2c41f31623b617193428158182-1024-1024.webp"
   },
   {
     "titulo": "Reloj analógico clásico",
@@ -258,7 +258,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-moda",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://joyeriaflores.com/36939-home_default/casio-reloj-analogico-clasico-plateado.jpg"
   },
   {
     "titulo": "PlayStation 5 Slim",
@@ -267,7 +267,7 @@
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-consolas",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://i.ytimg.com/vi/I6H8IUQIvtY/maxresdefault.jpg"
   },
   {
     "titulo": "Nintendo Switch OLED",
@@ -276,7 +276,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-consolas",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://m.media-amazon.com/images/I/A1l8YQE7wrL.jpg"
   },
   {
     "titulo": "Mando Xbox Series X",
@@ -285,7 +285,7 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-consolas",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://i.redd.it/xbox-series-x-unboxing-v0-i40adwd9jdt51.jpg?width=1920&format=pjpg&auto=webp&s=a52a309a14b3b9441a003cce6f9457caa48c92e4"
   },
   {
     "titulo": "Carrito de bebé plegable",
@@ -294,16 +294,16 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-bebes",
     "envioDisponible": false,
-    "urlImagen": ""
+    "urlImagen": "https://images3.memedroid.com/images/UPLOADED886/619544020eb70.jpeg"
   },
   {
     "titulo": "Trona evolutiva infantil",
-    "descripcion": "Ajustable en altura.",
+    "descripcion": "Incluye el bebé. Ajustable en altura.",
     "precio": 55.0,
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-bebes",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://m.media-amazon.com/images/I/71onZDA8xQL._AC_UF894,1000_QL80_.jpg"
   },
   {
     "titulo": "Lote de juguetes educativos",
@@ -321,25 +321,25 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-coleccionismo",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://museoarqueologico.lorca.es/nuestras-colecciones/04%20Denario%20anverso.jpg"
   },
   {
     "titulo": "Máquina de escribir vintage",
-    "descripcion": "Modelo clásico decorativo.",
-    "precio": 150.0,
-    "estado": "ACEPTABLE",
-    "categoriaId": "cat-coleccionismo",
-    "envioDisponible": true,
-    "urlImagen": ""
-  },
-  {
-    "titulo": "Figura coleccionable Star Wars",
-    "descripcion": "Edición limitada en caja.",
-    "precio": 85.0,
+    "descripcion": "Modelo clásico decorativo. Muy bien conservado.",
+    "precio": 1.50,
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-coleccionismo",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://humorgeeky.com/wp-content/uploads/2012/12/teclado-roto.jpg"
+  },
+  {
+    "titulo": "Lote de joyas árabes",
+    "descripcion": "Heredado de la familia. Urge su venta.",
+    "precio": 1300.0,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-coleccionismo",
+    "envioDisponible": true,
+    "urlImagen": "https://objetos-xlk.estaticos-marca.com/uploads/2026/06/11/6a2ac26dd6b2a.jpeg"
   },
   {
     "titulo": "Colección completa de Harry Potter",
@@ -348,34 +348,34 @@
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-libros",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://d2j6dbq0eux0bg.cloudfront.net/images/25838309/products/248064796/1720864368.jpg"
   },
   {
-    "titulo": "Vinilo The Dark Side of the Moon",
+    "titulo": "Vinilo My Beautiful Dark Twisted Fantasy",
     "descripcion": "Disco clásico en buen estado.",
     "precio": 28.0,
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-libros",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://assai.co.uk/cdn/shop/products/photo-output8_700x700.jpg?v=1652105181"
   },
   {
-    "titulo": "Pack de cómics Marvel",
-    "descripcion": "Lote de 15 cómics variados.",
-    "precio": 45.0,
-    "estado": "ACEPTABLE",
-    "categoriaId": "cat-libros",
-    "envioDisponible": true,
-    "urlImagen": ""
-  },
-  {
-    "titulo": "Maleta rígida grande",
-    "descripcion": "Ideal para viajes largos.",
-    "precio": 60.0,
-    "estado": "BUEN_ESTADO",
+    "titulo": "Viaje en Falcon",
+    "descripcion": "Se alquila avión Falcon presidencial para viajes.",
+    "precio": 5000.0,
+    "estado": "COMO_NUEVO",
     "categoriaId": "cat-otros",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://static-abcblogs.abc.es/wp-content/uploads/sites/46/2019/10/C67A64A8-1B25-4E96-82C2-1D818F17DD2B.jpeg"
+  },
+  {
+    "titulo": "Abono del Real Murcia",
+    "descripcion": "Lo regalo antes de romperlo. No se aceptan devoluciones",
+    "precio": 0.01,
+    "estado": "PARA_PIEZAS_O_REPARAR",
+    "categoriaId": "cat-otros",
+    "envioDisponible": true,
+    "urlImagen": "https://cloudfront-eu-central-1.images.arcpublishing.com/prisaradio/I3J44KENKZKO5MBGV7ZDGLBECY.jpg"
   },
   {
     "titulo": "Proyector portátil LED",
@@ -387,22 +387,22 @@
     "urlImagen": ""
   },
   {
-    "titulo": "Mochila de viaje 50L",
-    "descripcion": "Gran capacidad para escapadas.",
-    "precio": 35.0,
-    "estado": "BUEN_ESTADO",
+    "titulo": "S-81 Isaac Peral",
+    "descripcion": "Gran capacidad para escapadas. Necesita reparar.",
+    "precio": 49999.99,
+    "estado": "PARA_PIEZAS_O_REPARAR",
     "categoriaId": "cat-otros",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://www.latribunadetalavera.es/media/IMG/2023/4C16C1AD-C959-B784-5F91F090EF189E36.JPG"
   },
   {
-    "titulo": "Raqueta de tenis profesional",
-    "descripcion": "Modelo de alta gama de fibra de carbono. Muy ligera y con excelente balance.",
-    "precio": 129.95,
+    "titulo": "Camiseta selección 2026",
+    "descripcion": "Camiseta de la selección para el mundial 2026. Modelo original. Solo efectivo",
+    "precio": 29.95,
     "estado": "NUEVO",
     "categoriaId": "cat-deportes",
-    "envioDisponible": true,
-    "urlImagen": ""
+    "envioDisponible": false,
+    "urlImagen": "https://www.latribunadetalavera.es/media/IMG/2026/08FA2138-99C4-4A32-A2F943FC28214639.JPG"
   },
   {
     "titulo": "Bicicleta de montaña doble suspensión",
@@ -423,13 +423,13 @@
     "urlImagen": ""
   },
   {
-    "titulo": "Portátil Ultrabook i7 16GB",
-    "descripcion": "Procesador Intel Core i7, 512GB SSD. Tiene una línea de píxeles en la pantalla pero funciona perfectamente.",
+    "titulo": "Alianza de bodas",
+    "descripcion": "Negociable si eres abogado de divorcios",
     "precio": 420.5,
     "estado": "ACEPTABLE",
-    "categoriaId": "cat-portatiles",
+    "categoriaId": "cat-coleccionimos",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://finagarcia.com/cdn/shop/articles/portada_tipos_de_acabado1..jpg?v=1733417789&width=360"
   },
   {
     "titulo": "Chaqueta de moto Cordura",
@@ -441,20 +441,20 @@
     "urlImagen": ""
   },
   {
-    "titulo": "Casco integral de carbono para moto",
-    "descripcion": "Edición limitada. Solo se ha sacado de la caja para comprobar la talla. Impecable.",
-    "precio": 299.99,
+    "titulo": "Bombo Manolo el del Bombo",
+    "descripcion": "Edición limitada especial aniversario mundial del 82.",
+    "precio": 399.99,
     "estado": "NUEVO",
-    "categoriaId": "cat-motos",
+    "categoriaId": "cat-coleccionismo",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://npdrums.com/wp-content/uploads/2021/08/PHOTO-2021-08-04-12-09-55-3-768x1024.jpg"
   },
   {
     "titulo": "Sofá cama de 3 plazas gris",
     "descripcion": "Tapizado en tela lavable. Se convierte en cama de 140x190cm muy fácilmente.",
     "precio": 175.4,
     "estado": "BUEN_ESTADO",
-    "categoriaId": "cat-muebles",
+    "categoriaId": "cat-coleccionismo",
     "envioDisponible": false,
     "urlImagen": ""
   },
@@ -468,22 +468,22 @@
     "urlImagen": ""
   },
   {
-    "titulo": "The Last of Us Part II Remastered PS5",
-    "descripcion": "Versión remasterizada para PlayStation 5. Disco sin marcas, caja original incluida.",
-    "precio": 39.95,
+    "titulo": "Servilleta Figo Florentino",
+    "descripcion": "Servilleta original de Florentino a Figo para ficharle en el año 2000.",
+    "precio": 399.95,
     "estado": "COMO_NUEVO",
-    "categoriaId": "cat-juegos-ps5",
+    "categoriaId": "cat-coleccionismo",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://cdn.resfu.com/media/img_news/servilleta-donde-leo-messi-firmo-su-primer-contrato-con-el-fc-barcelona-en-diciembre-de-2000--twitter.jpg"
   },
   {
-    "titulo": "Elden Ring Shadow of the Erdtree Edition PS5",
-    "descripcion": "Juego base más expansión. El código de la expansión ya está usado, incluye el juego base en formato físico.",
-    "precio": 34.5,
+    "titulo": "Informe Robinson 2010",
+    "descripcion": "CD documental del Informe Robinson de cuando España ganó la Copa del Mundo de 2010.",
+    "precio": 24.5,
     "estado": "BUEN_ESTADO",
-    "categoriaId": "cat-juegos-ps5",
+    "categoriaId": "cat-deportes",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://www.movistarplus.es/recorte/n/caratula5/F3835884"
   },
   {
     "titulo": "Consola Nintendo Switch Lite",
@@ -513,13 +513,13 @@
     "urlImagen": ""
   },
   {
-    "titulo": "Moneda de plata histórica 1870",
-    "descripcion": "5 pesetas del Gobierno Provisional de 1870. Auténtica, excelente pátina numismática.",
+    "titulo": "Camiseta EuroGeta",
+    "descripcion": "Camiseta histórica del EuroGeta del 2007.",
     "precio": 120.0,
     "estado": "BUEN_ESTADO",
     "categoriaId": "cat-coleccionismo",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://www.oldfootballshirts.com/img/shirts/326/getafe-home-football-shirt-2007-2008-s_39362_1.jpg"
   },
   {
     "titulo": "Cámara de fotos analógica réflex",
@@ -531,13 +531,13 @@
     "urlImagen": ""
   },
   {
-    "titulo": "Vinilo Pink Floyd - The Dark Side of the Moon",
-    "descripcion": "Edición original británica. Carpeta con desgaste ligero en bordes, el disco se escucha sin saltos.",
-    "precio": 48.9,
+    "titulo": "Vinilo Estopa - Estopa",
+    "descripcion": "Disco histórico. Es el de por la raja de tu falda.",
+    "precio": 8.9,
     "estado": "ACEPTABLE",
     "categoriaId": "cat-libros",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://static.fnac-static.com/multimedia/Images/ES/NR/3d/0f/13/1249085/1507-1/tsp20160701094137/Estopa-Vinilo.jpg"
   },
   {
     "titulo": "Novela gráfica Watchmen - Edición Deluxe",
@@ -585,13 +585,13 @@
     "urlImagen": ""
   },
   {
-    "titulo": "Teclado mecánico RGB Switch Blue",
-    "descripcion": "Teclado compacto 60%. Ideal para mecanografía y gaming, excelente respuesta táctil sonora.",
-    "precio": 32.65,
-    "estado": "BUEN_ESTADO",
-    "categoriaId": "cat-informatica",
+    "titulo": "Suscripción anual DAZN",
+    "descripcion": "Cuenta DAZN con paquete LaLiga y Segunda División. Lo vendo porque narra Alba Oliveros.",
+    "precio": 12.65,
+    "estado": "COMO_NUEVO",
+    "categoriaId": "cat-otros",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://static.eldiario.es/clip/a85b6622-21fb-4f89-9ea8-5b7fcc9a39cd_16-9-discover-aspect-ratio_default_0.jpg"
   },
   {
     "titulo": "Tarjeta gráfica RTX 3060 12GB",
@@ -600,34 +600,34 @@
     "estado": "PARA_PIEZAS_O_REPARAR",
     "categoriaId": "cat-informatica",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://customer-e5dv0zdx7q80qq2x.cloudflarestream.com/5b5eba15b92847bf9417ad2e8b75f506/thumbnails/thumbnail.jpg"
   },
   {
-    "titulo": "Espejos retrovisores universales para moto",
-    "descripcion": "Homologados, acabado en imitación fibra de carbono. Rosca M10 estándar métrica.",
-    "precio": 15.99,
+    "titulo": "Balón Nastic - Málaga",
+    "descripcion": "Se vende balón lanzado al campo por la grada del Nástic del Tarragona que no sirvió para nada.",
+    "precio": 55.99,
     "estado": "NUEVO",
-    "categoriaId": "cat-motos",
+    "categoriaId": "cat-deportes",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://s3.sportstatics.com/relevo/www/multimedia/202406/15/media/cortadas/dos-balones-RypqejfzgFKyGHBGvPCRwQM-1200x648@Relevo.jpg"
   },
   {
-    "titulo": "Estantería metálica para garaje o trastero",
-    "descripcion": "Cinco baldas reforzadas. Presenta marcas superficiales de óxido.",
-    "precio": 24.5,
+    "titulo": "Estadio Enrique Roca",
+    "descripcion": "Se alquila campo de fútbol para bodas y eventos. El precio no sube.",
+    "precio": 240.5,
     "estado": "ACEPTABLE",
-    "categoriaId": "cat-hogar",
+    "categoriaId": "cat-otros",
     "envioDisponible": false,
-    "urlImagen": ""
+    "urlImagen": "https://www.regiondemurciafilm.com/wp-content/uploads/2024/02/VI7UUBZU2JGSPBLQ7X5XBLQEL4.jpeg"
   },
   {
-    "titulo": "Bicicleta estática plegable",
-    "descripcion": "Pantalla LCD con medición de calorías, pulso y tiempo. Ideal para espacios muy pequeños.",
-    "precio": 68.0,
+    "titulo": "Volante R24 Fernando alonso",
+    "descripcion": "Volante original del R24 de 2004 de Fernando Alonso.",
+    "precio": 680.0,
     "estado": "COMO_NUEVO",
     "categoriaId": "cat-deportes",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://soymotor.com/sites/default/files/usuarios/redaccion/portal/avazquez/renault-r24-sothebys-alonso-1-soymotor.jpg"
   },
   {
     "titulo": "Lote de 5 cómics variados de Marvel",
@@ -639,12 +639,12 @@
     "urlImagen": ""
   },
   {
-    "titulo": "Maleta rígida de viaje grande",
-    "descripcion": "Cierre con combinación numérica TSA. Candado lateral atascado.",
-    "precio": 19.3,
+    "titulo": "Cabeza cochinillo Figo",
+    "descripcion": "Cabeza original de cochinillo lanzada a Figo en el Camp Nou. No comestible, únicamente para coleccionismo.",
+    "precio": 129.3,
     "estado": "ACEPTABLE",
-    "categoriaId": "cat-otros",
+    "categoriaId": "cat-coleccionismo",
     "envioDisponible": true,
-    "urlImagen": ""
+    "urlImagen": "https://estaticos-cdn.prensaiberica.es/clip/a2642901-36ff-4e89-bc9f-0654056c6da1_16-9-discover-aspect-ratio_default_0.jpg"
   }
 ]
