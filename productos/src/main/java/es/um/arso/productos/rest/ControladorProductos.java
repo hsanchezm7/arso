@@ -29,6 +29,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -125,17 +126,15 @@ public class ControladorProductos {
             throws Exception {
 
         log.info(
-                "PUT /productos/{} precio={}, descripcion={}, disponibilidad={}",
+                "PUT /productos/{} precio={}, descripcion={}",
                 id,
                 modificacion.getPrecio(),
-                modificacion.getDescripcion(),
-                modificacion.isDisponibilidad());
+                modificacion.getDescripcion());
 
         this.servicioProductos.modificar(
                 id,
                 modificacion.getPrecio(),
                 modificacion.getDescripcion(),
-                modificacion.isDisponibilidad(),
                 principal.getName());
         return ResponseEntity.noContent().build();
     }
@@ -146,17 +145,28 @@ public class ControladorProductos {
     @ApiResponse(responseCode = "204", description = "Lugar de recogida actualizado exitosamente.")
     public ResponseEntity<Void> asignarLugarRecogida(
             @PathVariable String id, @Valid @RequestBody LugarRecogidaDto recogida, Principal principal)
-            throws Exception {
+                    throws Exception {
 
-        log.info(
-                "PUT /productos/{}/recogida descripcion={}, longitud={}, latitud={}",
-                id,
-                recogida.getDescripcion(),
-                recogida.getLongitud(),
-                recogida.getLatitud());
+            log.info(
+                            "PUT /productos/{}/recogida descripcion={}, longitud={}, latitud={}",
+                            id,
+                            recogida.getDescripcion(),
+                            recogida.getLongitud(),
+                            recogida.getLatitud());
 
-        this.servicioProductos.asignarLugarRecogida(
-                id, recogida.getDescripcion(), recogida.getLongitud(), recogida.getLatitud(), principal.getName());
+            this.servicioProductos.asignarLugarRecogida(
+                            id, recogida.getDescripcion(), recogida.getLongitud(), recogida.getLatitud(),
+                            principal.getName());
+            return ResponseEntity.noContent().build();
+    }
+    
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USUARIO')")
+    @Operation(summary = "Eliminar producto", description = "Elimina un producto existente.")
+    @ApiResponse(responseCode = "204", description = "Producto eliminado exitosamente.")
+    public ResponseEntity<Void> eliminarProducto(@PathVariable String id, Principal principal) throws Exception {
+        log.info("DELETE /productos/{}", id);
+        this.servicioProductos.eliminar(id, principal.getName());
         return ResponseEntity.noContent().build();
     }
 

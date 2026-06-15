@@ -15,9 +15,6 @@ public class ModificarProductoDto {
             example = "Rebajo el precio por venta urgente. Consola PlayStation Portable modelo 1004.")
     private String descripcion;
 
-    @Schema(description = "Indica si el producto sigue disponible para su venta.", example = "true")
-    private Boolean disponibilidad;
-
     public ModificarProductoDto() {}
 
     public Double getPrecio() {
@@ -34,13 +31,5 @@ public class ModificarProductoDto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public boolean isDisponibilidad() {
-        return disponibilidad;
-    }
-
-    public void setDisponibilidad(boolean disponibilidad) {
-        this.disponibilidad = disponibilidad;
     }
 }

@@ -88,24 +88,38 @@ public class ServicioProductos implements IServicioProductos {
 
     @Override
     public void modificar(
-            String productoId, Double nuevoPrecio, String nuevaDescripcion, boolean estaDisponible, String vendedorId)
+            String productoId, Double nuevoPrecio, String nuevaDescripcion, String vendedorId)
             throws EntidadNoEncontrada {
         Producto producto = repositorioProductos
                 .findById(productoId)
                 .orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + productoId));
         validarPropietario(producto, vendedorId);
+
         if (nuevoPrecio != null) {
-            if (nuevoPrecio < 0) throw new IllegalArgumentException("precio no válido");
+            if (nuevoPrecio < 0)
+                throw new IllegalArgumentException("precio no válido");
             producto.setPrecio(nuevoPrecio);
         }
-        if (nuevaDescripcion != null && !nuevaDescripcion.isEmpty()) {
+        
+        if (nuevaDescripcion != null && !nuevaDescripcion.isEmpty())
             producto.setDescripcion(nuevaDescripcion);
-        }
-
-        producto.setDisponible(estaDisponible);
 
         repositorioProductos.save(producto);
         log.info("Producto modificado: id={}", productoId);
+    }
+    
+    @Override
+    public void eliminar(String productoId, String vendedorId) throws EntidadNoEncontrada {
+        Producto producto = repositorioProductos
+                .findById(productoId)
+                .orElseThrow(() -> new EntidadNoEncontrada("Producto no encontrado: " + productoId));
+        validarPropietario(producto, vendedorId);
+        
+        if (!producto.isDisponible())
+            throw new IllegalArgumentException("No se puede eliminar un producto que no está disponible");
+        
+        repositorioProductos.delete(producto);
+        log.info("Producto eliminado: id={}", productoId);
     }
 
     @Override
