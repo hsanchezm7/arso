@@ -1,6 +1,6 @@
 # arso
 
-Prácticas de Arquitectura del Software. Grado en Ingeniería Informática 2025/2026. 
+Prácticas de Arquitectura del Software. Grado en Ingeniería Informática 2025/2026.
 Facultad de Informática. Universidad de Murcia.
 
 ## Acerca del proyecto
@@ -34,12 +34,11 @@ La única dependencia del proyecto es tener instalado:
 > [!NOTE]  
 > La aplicación puede tardar varios minutos en iniciarse si es el primer arranque debido a la inicialización de datos.
 
-
 ## Arquitectura
 
 ![Diagrama arquitectura de la aplicación](./docs/figures/arquitectura.png)
 
-La aplicación se divide usando microservicios definidos en un fichero [`compose.yml`](compose.yml) 
+La aplicación se divide usando microservicios definidos en un fichero [`compose.yml`](compose.yml)
 de Docker. Cada uno de los servicios de la aplicación tiene su propio build especificado en un
 Dockerfile multi-stage.
 
@@ -49,7 +48,7 @@ Dockerfile multi-stage.
 > se combina usando la caché de Maven en los Dockerfiles.
 
 | servicio      | directorio                             | puertos (host:contenedor)  | acceso                                      | credenciales     |
-|---------------|----------------------------------------|----------------------------|---------------------------------------------|------------------|
+| ------------- | -------------------------------------- | -------------------------- | ------------------------------------------- | ---------------- |
 | mongo         | -                                      | `27018:27017`              | -                                           | -                |
 | mongo-express | -                                      | `8085:8085`                | [Ir](http://localhost:8085)                 | `admin:pass`     |
 | rabbitmq      | -                                      | `5672:5672`, `15672:15672` | [Ir](http://localhost:15672)                | `arso:arso`      |
@@ -70,18 +69,17 @@ La base de datos se inicializa con un script en [`seeder/`](./seeder/), donde se
 los usuarios creados. Los usuarios principales son los siguientes:
 
 | Email           | Clave   | Nombre      | Apellidos | Roles           |
-|-----------------|---------|-------------|-----------|-----------------|
+| --------------- | ------- | ----------- | --------- | --------------- |
 | `admin@arso.es` | `admin` | Arso        | Admin     | "USUARIO,ADMIN" |
 | `arso1@arso.es` | `arso1` | Arso Prueba | 1         | "USUARIO"       |
-
 
 ## Broker de mensajes RabbitMQ
 
 En el fichero [`definitions.json`](./definitions.json) se declaran el bus, las colas y los bindings
-necesarios en la arquitectura. Esto ayuda a crear las conexiones en el arranque de la plataforma. 
+necesarios en la arquitectura. Esto ayuda a crear las conexiones en el arranque de la plataforma
 En dicho fichero se definen también el usuario y la contraseña de RabbitMQ (`arso:arso`).
 
-Los eventos consumidos y producidos por cada microservicio se especifican en el README de su 
+Los eventos consumidos y producidos por cada microservicio se especifican en el README de su
 directorio.
 
 ![Diagrama broker de mensajes](./docs/figures/broker.png)
@@ -96,13 +94,13 @@ registrado con un email puede iniciar sesión con GitHub si usa el mismo email. 
 necesario establecer el email público en GitHub para la correcta autenticación vía OAuth. De otra
 forma, GitHub lo oculta a la aplicación.
 
-Se han dejado públicas las variables `GITHUB_CLIENT_ID` y `GITHUB_CLIENT_SECRET` pues sus 
-permisos se limitan al servidor OAuth y no suponen mayor riesgo.
+Se han dejado públicas las variables `GITHUB_CLIENT_ID` y `GITHUB_CLIENT_SECRET` pues sus permisos
+se limitan al servidor OAuth y no suponen mayor riesgo.
 
 ## Acerca del entorno
 
-Aunque sea una mala práctica, se hace uso de un fichero [`.env`](./.env) para las variables 
-de entorno. Se asume que este proyecto tiene una finalidad académica aunque no sería lo 
+Aunque sea una mala práctica, se hace uso de un fichero [`.env`](./.env) para las variables
+de entorno. Se asume que este proyecto tiene una finalidad académica aunque no sería lo
 correcto en producción.
 
 ## Adecuación de los requisitos
@@ -112,24 +110,28 @@ Aplicaciones Web, se han realizado una serie de cambios respecto al enunciado de
 práctica. Algunos de ellos:
 
 - Imágenes de productos: un usuario puede añadir una imagen cualquiera en forma de URL a cualquiera
-de sus productos. Dicha imagen es añadida en forma de URL. Esta propiedad es opcional.
+  de sus productos. Dicha imagen es añadida en forma de URL. Esta propiedad es opcional.
 
 - Eliminación de productos: un usuario puede eliminar cualquiera de sus productos de forma
-completa. Requiere que el producto no haya sido vendido.
+  completa. Requiere que el producto no haya sido vendido.
 
-## Pruebas postman
+## Pruebas Postman
 
-Las pruebas en Postman se han configurado mediante variables de entorno. Se van definiendo los
-valores de éstas con scripts que extraen los datos de los cuerpos de las respuestas o de las
-cabeceras (como `Location` gracias a HATEOAS). Se recomienda seguir el siguiente flujo entre
-colecciones:
+Las pruebas en Postman incluidas en [`postman/`](./postman/) están formadas por una serie de colecciones,
+cada una relativa a un microservicio, y un entorno. Éste último es necesario para ir estableciendo las
+variables necesarias para probar los endpoints.
 
-1. auth (microservicios pararela y usuarios)
+Mediante scripts de Postman, se extraen los datos de los cuerpos de las respuestas o de las cabeceras
+(como `Location` gracias a HATEOAS). De todas formas, algunas variables deben ser establecidas manualmente,
+como la categoría. Se recomienda seguir el siguiente flujo entre colecciones:
 
-2. usuarios
+1. **auth** (pararela y usuarios)
 
-3. productos
+2. **usuarios**
 
-4. compraventas
+3. **productos**
 
-5. usuarios y productos nuevamente para visualizar los cambios en las entidades
+4. **compraventas**
+
+5. **usuarios** y **productos** nuevamente para visualizar los cambios en las entidades ante los posibles
+   eventos emitidos por la colección anterior

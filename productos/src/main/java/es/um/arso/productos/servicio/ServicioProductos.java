@@ -12,8 +12,10 @@ import es.um.arso.repositorio.EntidadNoEncontrada;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -238,5 +240,25 @@ public class ServicioProductos implements IServicioProductos {
     @Override
     public List<EstadoProducto> getEstadosProducto() {
         return Arrays.asList(EstadoProducto.values());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Double> getRangoPrecios() {
+        Map<String, Double> rango = new HashMap<>();
+        rango.put("min", 0.0);
+        rango.put("max", 0.0);
+
+        List<Object[]> res = repositorioProductos.getMinMaxPrecios();
+        if (res != null && !res.isEmpty()) {
+            Object[] minMax = res.get(0);   // primera y única fila
+            if (minMax[0] != null)
+                rango.put("min", (Double) minMax[0]);
+
+            if (minMax[1] != null) 
+                rango.put("max", (Double) minMax[1]);
+        }
+
+        return rango;
     }
 }

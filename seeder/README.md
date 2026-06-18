@@ -6,7 +6,7 @@ generado con IA.
 ## Usuarios
 
 | Email            | Clave    | Nombre      | Apellidos |
-|------------------|----------|-------------|-----------|
+| ---------------- | -------- | ----------- | --------- |
 | `admin@arso.es`  | `admin`  | Arso        | Admin     |
 | `arso1@arso.es`  | `arso1`  | Arso Prueba | 1         |
 | `arso2@arso.es`  | `arso2`  | Arso Prueba | 2         |

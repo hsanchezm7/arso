@@ -1,6 +1,8 @@
 package es.um.arso.compraventa.modelo;
 
 import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,6 +23,7 @@ public class Compraventa {
     private String idComprador;
     private String nombreComprador;
 
+    @CreatedDate
     private LocalDateTime fecha;
 
     public Compraventa() {}
@@ -42,7 +45,6 @@ public class Compraventa {
         this.nombreVendedor = nombreVendedor;
         this.idComprador = idComprador;
         this.nombreComprador = nombreComprador;
-        this.fecha = LocalDateTime.now();
     }
 
     public String getId() {

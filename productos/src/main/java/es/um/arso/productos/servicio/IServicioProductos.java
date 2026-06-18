@@ -4,6 +4,7 @@ import es.um.arso.productos.modelo.EstadoProducto;
 import es.um.arso.productos.modelo.Producto;
 import es.um.arso.repositorio.EntidadNoEncontrada;
 import java.util.List;
+import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -49,4 +50,6 @@ public interface IServicioProductos {
             Pageable paginacion);
 
     List<EstadoProducto> getEstadosProducto();
+
+    Map<String, Double> getRangoPrecios();
 }

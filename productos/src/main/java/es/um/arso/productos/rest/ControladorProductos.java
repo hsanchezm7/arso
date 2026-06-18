@@ -7,6 +7,7 @@ import es.um.arso.productos.rest.dto.LugarRecogidaDto;
 import es.um.arso.productos.rest.dto.ModificarProductoDto;
 import es.um.arso.productos.rest.dto.NuevoProductoDto;
 import es.um.arso.productos.rest.dto.ProductoDto;
+import es.um.arso.productos.rest.dto.RangoPreciosDto;
 import es.um.arso.productos.servicio.IServicioCategorias;
 import es.um.arso.productos.servicio.IServicioProductos;
 import es.um.arso.productos.servicio.ProductoResumen;
@@ -262,5 +263,13 @@ public class ControladorProductos {
                 .collect(Collectors.toMap(e -> e, EstadoProducto::getValor, (e1, e2) -> e1, LinkedHashMap::new));
 
         return estadoValor;
+    }
+
+    @GetMapping("/metricas/precios")
+    @Operation(summary = "Rango de precios de los productos", description = "Obtiene el precio mínimo y máximo entre todos los productos")
+    public RangoPreciosDto getRangoPrecios() {
+        log.info("GET /productos/metricas/precios");
+        Map<String, Double> rango = servicioProductos.getRangoPrecios();
+        return new RangoPreciosDto(rango.get("min"), rango.get("max"));
     }
 }

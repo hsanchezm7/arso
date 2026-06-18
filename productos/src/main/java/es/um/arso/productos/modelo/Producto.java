@@ -3,6 +3,7 @@ package es.um.arso.productos.modelo;
 import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -10,8 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Producto {
 
     @Id
@@ -27,6 +31,7 @@ public class Producto {
     @Enumerated(EnumType.STRING)
     private EstadoProducto estado;
 
+    @CreatedDate
     private LocalDateTime fechaPublicacion;
     private int visualizaciones = 0;
     private boolean envioDisponible;
@@ -63,7 +68,6 @@ public class Producto {
         this.envioDisponible = envioDisponible;
         this.vendedor = vendedor;
         this.urlImagen = urlImagen;
-        this.fechaPublicacion = LocalDateTime.now();
     }
 
     public String getId() {

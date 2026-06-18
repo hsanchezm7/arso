@@ -18,4 +18,7 @@ public interface RepositorioProductos
 
     @Query("SELECT p FROM Producto p WHERE p.fechaPublicacion >= :ini AND p.fechaPublicacion < :fin")
     List<Producto> getByPublicadosEntre(@Param("ini") LocalDateTime ini, @Param("fin") LocalDateTime fin);
+
+    @Query("SELECT MIN(p.precio), MAX(p.precio) FROM Producto p")
+    List<Object[]> getMinMaxPrecios();
 }

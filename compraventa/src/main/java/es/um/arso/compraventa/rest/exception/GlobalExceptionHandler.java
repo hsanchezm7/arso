@@ -7,44 +7,38 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public RespuestaError handleRuntimeException(RuntimeException e) {
-        return new RespuestaError("Internal Server Error", e.getMessage());
+        return new RespuestaError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e.getMessage());
     }
 
     @ExceptionHandler(EntidadNoEncontrada.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public RespuestaError handleEntidadNoEncontrada(EntidadNoEncontrada e) {
-        return new RespuestaError("Not Found", e.getMessage());
+        return new RespuestaError(HttpStatus.NOT_FOUND.getReasonPhrase(), e.getMessage());
     }
 
     @ExceptionHandler(ServicioExternoException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
     public RespuestaError handleServicioExternoException(ServicioExternoException e) {
-        return new RespuestaError("Bad Gateway", e.getMessage());
+        return new RespuestaError(HttpStatus.BAD_GATEWAY.getReasonPhrase(), e.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RespuestaError handleIllegalArgumentException(IllegalArgumentException e) {
-        return new RespuestaError("Bad Request", e.getMessage());
+        return new RespuestaError(HttpStatus.BAD_REQUEST.getReasonPhrase(), e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
 
