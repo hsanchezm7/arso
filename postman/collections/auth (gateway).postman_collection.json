@@ -69,7 +69,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"username\": \"arso@arso.es\",\n    \"password\": \"arso\"\n}",
+              "raw": "{\n    \"username\": \"arso1@arso.es\",\n    \"password\": \"arso1\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

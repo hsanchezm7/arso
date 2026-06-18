@@ -198,7 +198,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/productos/?estadoMinimo=ACEPTABLE&precioMinimo=2.00&precioMaximo=150.00&sort=visualizaciones,desc",
+          "raw": "{{baseUrl}}/productos/?page=1&size=16&sort=visualizaciones,desc",
           "host": [
             "{{baseUrl}}"
           ],
@@ -210,7 +210,8 @@
             {
               "key": "estadoMinimo",
               "value": "ACEPTABLE",
-              "description": "Estado mínimo"
+              "description": "Estado mínimo",
+              "disabled": true
             },
             {
               "key": "idVendedor",
@@ -222,12 +223,14 @@
             {
               "key": "precioMinimo",
               "value": "2.00",
-              "description": "Precio mínimo"
+              "description": "Precio mínimo",
+              "disabled": true
             },
             {
               "key": "precioMaximo",
               "value": "150.00",
-              "description": "Precio máximo"
+              "description": "Precio máximo",
+              "disabled": true
             },
             {
               "key": "categoriaId",
@@ -238,15 +241,11 @@
             },
             {
               "key": "page",
-              "value": "0",
-              "type": "text",
-              "disabled": true
+              "value": "1"
             },
             {
               "key": "size",
-              "value": "10",
-              "type": "text",
-              "disabled": true
+              "value": "16"
             },
             {
               "key": "texto",
