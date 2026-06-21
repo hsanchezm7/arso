@@ -1,7 +1,5 @@
 package es.um.arso.pasarela.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import es.um.arso.pasarela.adaptadores.in.dto.LoginResponseDto;
 import es.um.arso.pasarela.servicio.JwtService;
 import es.um.arso.pasarela.servicio.puertos.out.IServicioUsuariosExterno;
 import es.um.arso.pasarela.servicio.puertos.out.UsuarioAuthInfo;
@@ -12,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
@@ -23,19 +23,19 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
     private static final Logger log = LoggerFactory.getLogger(SecuritySuccessHandler.class);
 
     private final JwtService jwtService;
-    private final ObjectMapper objectMapper;
     private final JwtUtils jwtUtils;
     private final IServicioUsuariosExterno servicioUsuarios;
+    private final String frontendRedirectUrl;
 
     public SecuritySuccessHandler(
             JwtService jwtService,
-            ObjectMapper objectMapper,
             JwtUtils jwtUtils,
-            IServicioUsuariosExterno servicioUsuarios) {
+            IServicioUsuariosExterno servicioUsuarios,
+            @Value("${frontend.oauth2.redirect-url}") String frontendRedirectUrl) {
         this.jwtService = jwtService;
-        this.objectMapper = objectMapper;
         this.jwtUtils = jwtUtils;
         this.servicioUsuarios = servicioUsuarios;
+        this.frontendRedirectUrl = frontendRedirectUrl;
     }
 
     @Override
@@ -71,13 +71,12 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 
         jwtUtils.addRefreshTokenCookie(response, refreshToken);
 
-        LoginResponseDto resultado = new LoginResponseDto();
-        resultado.setAccessToken(accessToken);
-        resultado.setUsuario(usuario);
+        String targetUrl = UriComponentsBuilder.fromUriString(frontendRedirectUrl)
+                .queryParam("token", accessToken)
+                .build().toUriString();
 
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json");
-        objectMapper.writeValue(response.getWriter(), resultado);
+        log.info("Redirecting to frontend: {}", targetUrl);
+        response.sendRedirect(targetUrl);
     }
 
     private UsuarioAuthInfo fetchUserInfo(DefaultOAuth2User usuario) {
