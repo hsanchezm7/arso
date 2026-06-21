@@ -208,20 +208,22 @@ public class ControladorProductos {
             @RequestParam(required = false) Double precioMinimo,
             @RequestParam(required = false) Double precioMaximo,
             @RequestParam(required = false) String idVendedor,
+            @RequestParam(required = false) Boolean disponible,
             Pageable paginacion)
             throws Exception {
 
         log.info(
-                "GET /productos categoriaId={}, texto={}, estadoMinimo={}, precioMinimo={}, precioMaximo={}, idVendedor={}",
+                "GET /productos categoriaId={}, texto={}, estadoMinimo={}, precioMinimo={}, precioMaximo={}, idVendedor={}, disponible={}",
                 categoriaId,
                 texto,
                 estadoMinimo,
                 precioMinimo,
                 precioMaximo,
-                idVendedor);
+                idVendedor,
+                disponible);
 
         Page<ProductoResumen> resultado = this.servicioProductos.buscarPaginado(
-                categoriaId, texto, estadoMinimo, precioMinimo, precioMaximo, idVendedor, paginacion);
+                categoriaId, texto, estadoMinimo, precioMinimo, precioMaximo, idVendedor, disponible, paginacion);
 
         return this.pagedResourcesAssembler.toModel(resultado, productoResumenAssembler);
     }

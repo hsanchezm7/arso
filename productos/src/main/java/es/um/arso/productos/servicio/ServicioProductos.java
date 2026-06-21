@@ -196,6 +196,7 @@ public class ServicioProductos implements IServicioProductos {
             Double precioMinimo,
             Double precioMaximo,
             String idVendedor,
+            Boolean disponible,
             Pageable paginacion) {
         List<String> categoriasBusqueda = new LinkedList<>();
 
@@ -208,7 +209,7 @@ public class ServicioProductos implements IServicioProductos {
         }
 
         Specification<Producto> spec = EspecificacionesProducto.crearEspecificacionBusqueda(
-            categoriasBusqueda, texto, estadoMinimo, precioMinimo, precioMaximo, idVendedor);
+            categoriasBusqueda, texto, estadoMinimo, precioMinimo, precioMaximo, idVendedor, disponible);
 
         Page<Producto> productos = repositorioProductos.findAll(spec, paginacion);
 

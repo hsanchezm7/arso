@@ -62,6 +62,10 @@ public final class EspecificacionesProducto {
         return (root, query, cb) -> root.get("categoria").get("id").in(categoriaIds);
     }
 
+    public static Specification<Producto> conDisponibilidad(Boolean disponible) {
+        return (root, query, cb) -> cb.equal(root.get("disponible"), disponible);
+    }
+
     public static Specification<Producto> fetchCategoria() {
         return (root, query, cb) -> {
             if (query.getResultType() != Long.class && query.getResultType() != long.class) {
@@ -77,7 +81,8 @@ public final class EspecificacionesProducto {
             EstadoProducto estadoMinimo,
             Double precioMinimo,
             Double precioMaximo,
-            String idVendedor) {
+            String idVendedor,
+            Boolean disponible) {
         Specification<Producto> spec = Specification.where(fetchCategoria());
 
         if (categoriasPermitidas != null && !categoriasPermitidas.isEmpty()) {
@@ -94,6 +99,9 @@ public final class EspecificacionesProducto {
         }
         if (idVendedor != null && !idVendedor.isEmpty()) {
             spec = spec.and(delVendedor(idVendedor));
+        }
+        if (disponible != null) {
+            spec = spec.and(conDisponibilidad(disponible));
         }
 
         return spec;

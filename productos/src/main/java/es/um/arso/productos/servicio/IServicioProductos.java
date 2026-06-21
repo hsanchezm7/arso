@@ -47,6 +47,7 @@ public interface IServicioProductos {
             Double precioMinimo,
             Double precioMaximo,
             String idVendedor,
+            Boolean disponible,
             Pageable paginacion);
 
     List<EstadoProducto> getEstadosProducto();
